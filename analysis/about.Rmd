@@ -5,4 +5,5 @@ output:
     toc: false
 ---
 
-Describe your project.
+
+This project will focus on the analysis of alternative splicing using Oxford Nanopore sequencing data. Although there are a series of tools for analysing Oxford Nanopore data, few of them are designed for analysing gene expression or characterising alternative splicing. We will delve into the characteristics of Oxford Nanopore data and will develop robust methods to solve the challenges involved in mapping transcripts back to the genome and in quantifying isoforms. The objective of developing the methods is to reveal the mechanism within this pathway and provide us with a better understanding of the link between genotypes and phenotypes. 

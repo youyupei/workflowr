@@ -1,0 +1,28 @@
+---
+title: "Meeting Summary"
+site: workflowr::wflow_site
+date: 2019-03-05
+output:
+  workflowr::wflow_html:
+    toc: False
+---
+###Topic: 
+  First step of PhD project
+  
+###Objective: 
+  Find the exact splicing site using Oxford Nanopore data.
+  
+###Motivation:
+  The Oxford nanopore sequence data have advantages in analysing mRNA because of its nature of long read. However, the main limitation of this technology is its high error rate (mostly small deletion), which hindered the accurate identification of splicing site. Errors near the splicing will dramatically affect the functional analysis of the given mRNA. Therefore, an accurate method for identifying the exact splicing site is very desirable.
+  
+###Approach:
+We are not going to apply any base caller but the raw data (squiggle) since the high error rate of current base callers. The squiggle is believed to have more information and has been used in some current studies (e.g. identifying barcode). The potential sequences of splicing site could be inferred given the sequenced region we are interested in. We need to construct the squiggle patterns of those potential splicing sites and looking for a match within the region we interest in [^Question1].  Note that a match allows horizontal or vertical scaling of the squiggle, which may be induced by the different speed that the sequenced molecule traverse through the pore. The speed is affected by the ATP concentration. An appropriate approach might be dynamic time warping (DTW). In the end, we need to output the probabilities of each potential splicing site is the correct one.
+
+[^Question1]: How and how complete?
+
+###Things to do next:
+* Read paper about DTW and talk with Heejung on 1 pm next Thursday (13 Mar 2019)
+* Reproduce some examples in SquiggleKit or use data from Mike.
+* Mike’s talk (Friday 4 pm)
+
+

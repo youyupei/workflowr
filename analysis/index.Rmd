@@ -3,7 +3,13 @@ title: "Home"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: True
+
 ---
 
-Welcome to my research website.
+Welcome! This is a website for organizing the summaries of my meetings and readings.
+
+#Meeting
+###[Tue 5 Mar 2019](5_Mar__with_HJ_and_MK_.html) (with Heejung and Mike)
+
+#Reading
