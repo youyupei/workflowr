@@ -17,7 +17,7 @@ Select subset of DNA from a pool of molecules for sequencing with minimal specia
 * the voltage across the pore could be reversed so that reject the individual DNA molecules to be seqenced
 * Reads that are rejected are unlikely to be sequenced again [^1]
 
-[^1] The motor protein will have already migrated along the DNA and will not be available to slow the translocation of DNA through the pore. 
+[^1]: The motor protein will have already migrated along the DNA and will not be available to slow the translocation of DNA through the pore. 
 
 #Approach: matching squiggle 
 Compare bases to a reference may have problems that the real-time basecalling implimentations are currently to slow and need subsequent optimiztions th improve quaulity.
