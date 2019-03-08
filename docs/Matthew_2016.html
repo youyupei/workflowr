@@ -9,10 +9,11 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="youyupei" />
 
-<meta name="date" content="2019-03-05" />
+<meta name="date" content="2019-03-06" />
 
-<title>Meeting Summary</title>
+<title>Real-time selective sequencing using nanopore technology</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -267,6 +271,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -315,8 +414,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Meeting Summary</h1>
-<h4 class="date"><em>2019-03-05</em></h4>
+<h1 class="title toc-ignore">Real-time selective sequencing using nanopore technology</h1>
+<h4 class="author"><em>youyupei</em></h4>
+<h4 class="date"><em>2019-03-06</em></h4>
 
 </div>
 
@@ -386,8 +486,8 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  analysis/5_Mar__with_HJ_and_MK_.Rmd
     Untracked:  analysis/Matthew 2016/
+    Untracked:  analysis/Matthew_2016.Rmd
 
 </code></pre>
 <p>
@@ -431,13 +531,13 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/youyupei/workflowr/blob/a1f2a6045d732c7f5926928762b35a4daa7c2edc/analysis/5 Mar (with HJ and MK).Rmd" target="_blank">a1f2a60</a>
+<a href="https://github.com/youyupei/workflowr/blob/7099769e95bdf3f747920541156c881e2f16d3bc/analysis/Matthew 2016.Rmd" target="_blank">7099769</a>
 </td>
 <td>
 youyupei
 </td>
 <td>
-2019-03-06
+2019-03-08
 </td>
 <td>
 wflow_publish(“*.Rmd“)
@@ -450,35 +550,50 @@ wflow_publish(“*.Rmd“)
 </div>
 </div>
 </div>
-<div id="topic" class="section level3">
-<h3>Topic:</h3>
-<p>First step of PhD project</p>
+<div id="objective" class="section level1">
+<h1>Objective:</h1>
+<p>Select subset of DNA from a pool of molecules for sequencing with minimal specialized library preparation based on the identity of an initial set of sequenced bases.(Software: Read Until).</p>
 </div>
-<div id="objective" class="section level3">
-<h3>Objective:</h3>
-<p>Find the exact splicing site using Oxford Nanopore data.</p>
-</div>
-<div id="motivation" class="section level3">
-<h3>Motivation:</h3>
-<p>The Oxford nanopore sequence data have advantages in analysing mRNA because of its nature of long read. However, the main limitation of this technology is its high error rate (mostly small deletion), which hindered the accurate identification of splicing site. Errors near the splicing will dramatically affect the functional analysis of the given mRNA. Therefore, an accurate method for identifying the exact splicing site is very desirable.</p>
-</div>
-<div id="approach" class="section level3">
-<h3>Approach:</h3>
-<p>We are not going to apply any base caller but the raw data (squiggle) since the high error rate of current base callers. The squiggle is believed to have more information and has been used in some current studies (e.g. identifying barcode). The potential sequences of splicing site could be inferred given the sequenced region we are interested in. We need to construct the squiggle patterns of those potential splicing sites and looking for a match within the region we interest in <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Note that a match allows horizontal or vertical scaling of the squiggle, which may be induced by the different speed that the sequenced molecule traverse through the pore. The speed is affected by the ATP concentration. An appropriate approach might be dynamic time warping (DTW). In the end, we need to output the probabilities of each potential splicing site is the correct one.</p>
-</div>
-<div id="things-to-do-next" class="section level3">
-<h3>Things to do next:</h3>
+<div id="motivation" class="section level1">
+<h1>Motivation:</h1>
 <ul>
-<li>Read paper about DTW and talk with Heejung on 1 pm next Thursday (13 Mar 2019)</li>
-<li>Reproduce some examples in SquiggleKit or use data from Mike.</li>
-<li>Mike’s talk (Friday 4 pm)</li>
+<li>Current sequencing methods can result in unnecessary sequencing.</li>
+<li>The ratio of interested region can not be modified after library preparation is complete.</li>
+<li>The problem of ratios cannot be detected during sequencing.</li>
 </ul>
 </div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>How and how complete?<a href="#fnref1">↩</a></p></li>
-</ol>
+<div id="advantage-of-nanopore-seq" class="section level1">
+<h1>Advantage of Nanopore seq</h1>
+<ul>
+<li>the voltage across the pore could be reversed so that reject the individual DNA molecules to be seqenced</li>
+<li>Reads that are rejected are unlikely to be sequenced again [^1]</li>
+</ul>
+<p>[^1] The motor protein will have already migrated along the DNA and will not be available to slow the translocation of DNA through the pore.</p>
+</div>
+<div id="approach-matching-squiggle" class="section level1">
+<h1>Approach: matching squiggle</h1>
+<p>Compare bases to a reference may have problems that the real-time basecalling implimentations are currently to slow and need subsequent optimiztions th improve quaulity.</p>
+<p>The matching of two squiggles is complicated, including voltage changes, noise and interactions between channels. These behaviors are captured by shift, scale and drift.z-score normalization can be used to overcome shift and scale. However drift is insignificant in short nanopore traces,</p>
+<div id="generate-squiggle-from-nucleotide-sequence." class="section level2">
+<h2>Generate squiggle from nucleotide sequence.</h2>
+<p>To do squiggle matching, the reference sequences have to been converted to squiggles. For each k-mer in the reference, the expected mean current calue from the model file is calculated as squiggle value. <img src="Matthew%202016/S%20F2.png" alt="S Figure 2" /> **Figure S2: Top row is a simulation of shift, acle and drift. Bottem row is Z-score normalised.</p>
+</div>
+<div id="dynamic-time-warping-dtw" class="section level2">
+<h2>Dynamic time warping (DTW)</h2>
+<p>DTW is guaranteed to find the optimal alignment of two series of <strong>time-ordered</strong> data, which has been used in the analysis of sequence data. The naive DTW has O(m*n), where m is reference length and n is query length. The speed of match by DTW is constrained by m. In theory, DTW can be applied to genomes up to 5 Mb in length. It’s main idea is to find best possible alignment between two time series rather than use just some distances and is able to <strong>ignore shifts in time dimention.</strong></p>
+<p>An explaination of DTW see: <a href="https://www.youtube.com/watch?v=tfOevFKQIjQ" class="uri">https://www.youtube.com/watch?v=tfOevFKQIjQ</a></p>
+<p>There are some points to be noted:</p>
+<ul>
+<li>DTW treats the squiggle as a serie of discrete points</li>
+<li>A range of distance metrics are available. (Euclidean, absolute, Manhattan distance…)</li>
+<li><p>A cost Matrix(C) need to be predefined for the lowest cost of moving. C[i,j] = min(C[i-1,j],C[i,j-1],C[i-1,j-1]+D[i,j])</p></li>
+<li><p>The complexity is O(m*n)</p></li>
+</ul>
+<div id="an-inportance-variation-of-dtw-for-sub-sequence-alignment-is-termed-subsequence-dtw-sdtw" class="section level3">
+<h3>An inportance variation of DTW for sub-sequence alignment is termed subsequence DTW (sDTW)</h3>
+<p>Variation: row C[0,1..n] is initialised the same as D[0,1..n].</p>
+</div>
+</div>
 </div>
 
 
@@ -495,6 +610,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 
