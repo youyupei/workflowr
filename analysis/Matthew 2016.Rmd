@@ -28,7 +28,7 @@ The matching of two squiggles is complicated, including voltage changes, noise a
 
 To do squiggle matching, the reference sequences have to been converted to squiggles. For each k-mer in the reference, the expected mean current calue from the model file is calculated as squiggle value.
 ![S Figure 2](Matthew 2016/S F2.png)
-**Figure S2: Top row is a simulation of shift, acle and drift. Bottem row is Z-score normalised.
+**Figure S2: Top row is a simulation of shift, acle and drift. Bottem row is Z-score normalised.**
 
 ## Dynamic time warping (DTW)
 
