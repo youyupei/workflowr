@@ -11,9 +11,9 @@
 
 <meta name="author" content="youyupei" />
 
-<meta name="date" content="2019-03-06" />
+<meta name="date" content="2019-03-13" />
 
-<title>Real-time selective sequencing using nanopore technology</title>
+<title>SquiggleKit</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -414,9 +414,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Real-time selective sequencing using nanopore technology</h1>
+<h1 class="title toc-ignore">SquiggleKit</h1>
 <h4 class="author"><em>youyupei</em></h4>
-<h4 class="date"><em>2019-03-06</em></h4>
+<h4 class="date"><em>2019-03-13</em></h4>
 
 </div>
 
@@ -444,7 +444,7 @@ div.section {
 <strong>Last updated:</strong> 2019-03-13
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -465,7 +465,55 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190306code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190306)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190306code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190306)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
 </div>
 </div>
 </div>
@@ -488,14 +536,12 @@ Ignored files:
     Ignored:    docs/.DS_Store
 
 Untracked files:
-    Untracked:  analysis/Matthew_2016.Rmd
     Untracked:  analysis/SquiggleKit.Rmd
     Untracked:  analysis/img/
     Untracked:  docs/img/
 
 Unstaged changes:
     Modified:   analysis/Matthew 2016.Rmd
-    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -508,139 +554,112 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/24000a243d44d87ed46203a46aa4c5b3005f1626/analysis/Matthew 2016.Rmd" target="_blank">24000a2</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-No comment
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/c1c457a13f90c3fc615eacc758e624388cbcd8cb/analysis/Matthew 2016.Rmd" target="_blank">c1c457a</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-DWT paper
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/7099769e95bdf3f747920541156c881e2f16d3bc/analysis/Matthew 2016.Rmd" target="_blank">7099769</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-wflow_publish(“*.Rmd“)
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="objective" class="section level1">
-<h1>Objective:</h1>
-<p>Select subset of DNA from a pool of molecules for sequencing with minimal specialized library preparation based on the identity of an initial set of sequenced bases.(Software: Read Until).</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>SquiggleKit is a tool for handling raw nanopore data, from which extra information beside teh called bases could be mined.SquiggleKit is for managing the extensive number of data files, extracting signal data, plotting, and examples of processing the noisy raw signal data. SquiggleKit also acts as a simple guide and starting point for developing new tools which utilise nanopore signal data. More details is in <a href="https://psy-fer.github.io/SquiggleKitDocs/files/">SquiggleKit Docs</a>.</p>
 </div>
-<div id="motivation" class="section level1">
-<h1>Motivation:</h1>
-<ul>
-<li>Current sequencing methods can result in unnecessary sequencing.</li>
-<li>The ratio of interested region can not be modified after library preparation is complete.</li>
-<li>The problem of ratios cannot be detected during sequencing.</li>
-</ul>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Tool</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><a href="https://psy-fer.github.io/SquiggleKitDocs/fast5_fetcher/">Fast5_fetcher</a></td>
+<td align="center">Fetched fast5 files from filtered list</td>
+</tr>
+<tr class="even">
+<td align="center"><a href="https://psy-fer.github.io/SquiggleKitDocs/SquigglePull/">SquigglePull</a></td>
+<td align="center">From <code>.fast5</code> to <code>.tsv</code></td>
+</tr>
+<tr class="odd">
+<td align="center"><a href="https://psy-fer.github.io/SquiggleKitDocs/SquigglePlot/">SquigglePlot</a></td>
+<td align="center">Visualise reads (<code>.fast5</code>)</td>
+</tr>
+<tr class="even">
+<td align="center"><a href="https://psy-fer.github.io/SquiggleKitDocs/segmenter/">Segmenter</a></td>
+<td align="center">Finds adapter stall, and homopolymer regions</td>
+</tr>
+<tr class="odd">
+<td align="center"><a href="https://psy-fer.github.io/SquiggleKitDocs/MotifSeq/">MotifSeq</a></td>
+<td align="center">Finds nucleotide sequence motifs in signal</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="advantage-of-nanopore-seq" class="section level1">
-<h1>Advantage of Nanopore seq</h1>
-<ul>
-<li>the voltage across the pore could be reversed so that reject the individual DNA molecules to be seqenced</li>
-<li>Reads that are rejected are unlikely to be sequenced again <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></li>
-</ul>
+<div id="example-run-using-squigglekit" class="section level2">
+<h2>Example run using SquiggleKit</h2>
+<p>This is an example from original paper: <a href="https://www.biorxiv.org/content/10.1101/549741v1">SquiggleKit: A toolkit for manipulating nanopore signal data</a>. The objective is to find the 3’ end from the squiggle data.</p>
+<div class="figure">
+<img src="../docs/img/SquiggleKit.png" alt="Figure A (from original paper)" />
+<p class="caption">Figure A (from original paper)</p>
 </div>
-<div id="approach-matching-squiggle" class="section level1">
-<h1>Approach: matching squiggle</h1>
-<p>Compare bases to a reference may have problems that the real-time basecalling implimentations are currently to slow and need subsequent optimiztions th improve quaulity.</p>
-<p>The matching of two squiggles is complicated, including voltage changes, noise and interactions between channels. These behaviors are captured by shift, scale and drift.z-score normalization can be used to overcome shift and scale. However drift is insignificant in short nanopore traces,</p>
-<div id="generate-squiggle-from-nucleotide-sequence." class="section level2">
-<h2>Generate squiggle from nucleotide sequence.</h2>
-<p>To do squiggle matching, the reference sequences have to been converted to squiggles. For each k-mer in the reference, the expected mean current calue from the model file is calculated as squiggle value. <img src="img/Matthew%202016%20S%20F2.png" alt="S Figure 2" /> <strong>Figure S2: Top row is a simulation of shift, acle and drift. Bottem row is Z-score normalised.</strong></p>
+<div id="step-1-fast5_fetcher" class="section level3">
+<h3>Step 1: fast5_fetcher</h3>
+<p>The fast5 files are usually zipped in a single file (<code>example_fast5s.tar</code> in this example, 60 reads inside).</p>
+<p>In order to use fast5_fetcher, the <code>.fast5</code> files inside the <code>.tar</code> file, we need firstly index the <code>.fast5</code> files without unpacking the <code>.tar</code> file:</p>
+<p>We will get a file named <code>name.index.gz</code> by running following commend:</p>
+<pre class="bash"><code>for file in example/example_fast5s.tar ; do echo $file; tar -tf $file; done &gt;&gt; example/name.index
+
+gzip example/name.index</code></pre>
+<p>Next, we will fetch 10 reads belong to <em>R2_151</em> by using a filter file <code>filtered_R2_151.paf</code>. A sequence summary file (<code>test_seq_sum.txt</code>) is required.</p>
+<pre class="bash"><code>python fast5_fetcher.py -p example/filtered_R2_151.paf -s example/test_seq_sum.txt.gz -i example/name.index.gz -o example/fetched_fast5s</code></pre>
+<p>Folder <code>fetched_fast5s/</code> with fetched reads will be generated.</p>
 </div>
-<div id="dynamic-time-warping-dtw" class="section level2">
-<h2>Dynamic time warping (DTW)</h2>
-<p>DTW is guaranteed to find the optimal alignment of two series of <strong>time-ordered</strong> data, which has been used in the analysis of sequence data. The naive DTW has O(m*n), where m is reference length and n is query length. The speed of match by DTW is constrained by m. In theory, DTW can be applied to genomes up to 5 Mb in length. It’s main idea is to find best possible alignment between two time series rather than use just some distances and is able to <strong>ignore shifts in time dimention.</strong></p>
-<p>An explaination of DTW see: <a href="https://www.youtube.com/watch?v=tfOevFKQIjQ" class="uri">https://www.youtube.com/watch?v=tfOevFKQIjQ</a></p>
-<p>There are some points to be noted:</p>
-<ul>
-<li>DTW treats the squiggle as a serie of discrete points</li>
-<li>A range of distance metrics are available. (Euclidean, absolute, Manhattan distance…)</li>
-<li><p>A cost Matrix(C) need to be predefined for the lowest cost of moving. C[i,j] = min(C[i-1,j],C[i,j-1],C[i-1,j-1]+D[i,j])</p></li>
-<li><p>The complexity is O(m*n)</p></li>
-</ul>
-<div id="an-inportance-variation-of-dtw-for-sub-sequence-alignment-is-termed-subsequence-dtw-sdtw" class="section level3">
-<h3>An inportance variation of DTW for sub-sequence alignment is termed subsequence DTW (sDTW)</h3>
-<p>Variation: row C[0,1..n] is initialised the same as D[0,1..n].</p>
+<div id="step-2-extract-signal-data-from-fast5s-using-squigglepull-and-squiggleplot" class="section level3">
+<h3>Step 2: Extract signal data from fast5s using SquigglePull and SquigglePlot</h3>
+<p>The signal information in <code>.fast5</code> reads can be either extracted to <code>.tsv</code> by SquigglePull or visualized by SquigglePlot:</p>
+<pre class="bash"><code>python SquigglePull.py -rv -p example/fetched_fast5s -f all &gt; example/signal.tsv</code></pre>
+<p>or</p>
+<pre class="bash"><code>python SquigglePlot.py -p example/fetched_fast5s</code></pre>
+</div>
+<div id="step-3-segment-and-stall-detection" class="section level3">
+<h3>Step 3: Segment and stall detection</h3>
+<p>The 3’ end should appears near the start of the reads. The <code>segment.py</code> is able to detect the stall and return the location.</p>
+<pre class="bash"><code>python segmenter.py -s example/signal.tsv.gz -ku -v &gt; example/signals_stall_segments.tsv</code></pre>
+<p><img src="../docs/img/SquiggleKit%20Stall.png" alt="Stall detection" /> Match the model from 3’ end of isoform A, which is converted into normalized signal space</p>
+<pre class="bash"><code>python MotifSeq.py -s example/signal.tsv.gz --segs example/signals_stall_segments.tsv -m example/CATCTATCCAGGGTTAAATT.model -v</code></pre>
+<img src="../docs/img/SquiggleKit%20Kmer.png" alt="Kmer Matching" /> <br> <br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.5.1 (2018-07-02)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS  10.14
+
+Matrix products: default
+BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] workflowr_1.2.0 Rcpp_1.0.0      digest_0.6.18   rprojroot_1.3-2
+ [5] backports_1.1.2 git2r_0.23.0    magrittr_1.5    evaluate_0.13  
+ [9] stringi_1.3.1   fs_1.2.6        rmarkdown_1.11  tools_3.5.1    
+[13] stringr_1.4.0   glue_1.3.0      xfun_0.5        yaml_2.2.0     
+[17] compiler_3.5.1  htmltools_0.3.6 knitr_1.21     </code></pre>
 </div>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>The motor protein will have already migrated along the DNA and will not be available to slow the translocation of DNA through the pore.<a href="#fnref1">↩</a></p></li>
-</ol>
 </div>
 
 

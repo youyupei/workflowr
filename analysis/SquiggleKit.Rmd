@@ -1,0 +1,76 @@
+---
+title: "SquiggleKit"
+author: "youyupei"
+date: "2019-03-13"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+SquiggleKit is a tool for handling raw nanopore data, from which extra information beside teh called bases could be mined.SquiggleKit is for managing the extensive number of data files,
+extracting signal data, plotting, and examples of processing the noisy raw signal data.
+SquiggleKit also acts as a simple guide and starting point for developing new tools which
+utilise nanopore signal data. More details is in [SquiggleKit Docs](https://psy-fer.github.io/SquiggleKitDocs/files/).
+
+## Overview
+
+|                                    Tool                                   |                  Description                 |
+|:-------------------------------------------------------------------------:|:--------------------------------------------:|
+| [Fast5_fetcher](https://psy-fer.github.io/SquiggleKitDocs/fast5_fetcher/) |    Fetched fast5 files from filtered list    |
+|  [SquigglePull](https://psy-fer.github.io/SquiggleKitDocs/SquigglePull/)  |            From `.fast5` to `.tsv`           |
+|  [SquigglePlot](https://psy-fer.github.io/SquiggleKitDocs/SquigglePlot/)  |          Visualise reads (`.fast5`)          |
+|     [Segmenter](https://psy-fer.github.io/SquiggleKitDocs/segmenter/)     | Finds adapter stall, and homopolymer regions |
+|      [MotifSeq](https://psy-fer.github.io/SquiggleKitDocs/MotifSeq/)      |  Finds nucleotide sequence motifs in signal  |
+
+
+
+## Example run using SquiggleKit 
+
+This is an example from original paper: [SquiggleKit: A toolkit for manipulating nanopore signal data](https://www.biorxiv.org/content/10.1101/549741v1). The objective is to find the 3' end from the squiggle data.
+
+![Figure A (from original paper)](../docs/img/SquiggleKit.png)
+
+### Step 1: fast5_fetcher
+
+The fast5 files are usually zipped in a single file (`example_fast5s.tar` in this example, 60 reads inside).
+
+In order to use fast5_fetcher, the `.fast5` files inside the `.tar` file, we need firstly index the `.fast5` files without unpacking the `.tar` file:
+
+We will get a file named `name.index.gz` by running following commend:
+
+```{bash, eval=FALSE}
+for file in example/example_fast5s.tar ; do echo $file; tar -tf $file; done >> example/name.index
+
+gzip example/name.index
+```
+
+Next, we will fetch 10 reads belong to *R2_151* by using a filter file `filtered_R2_151.paf`. A sequence summary file (`test_seq_sum.txt`) is required.
+```{bash, eval = F}
+python fast5_fetcher.py -p example/filtered_R2_151.paf -s example/test_seq_sum.txt.gz -i example/name.index.gz -o example/fetched_fast5s
+```
+Folder `fetched_fast5s/` with fetched reads will be generated.
+
+### Step 2: Extract signal data from fast5s using SquigglePull and SquigglePlot
+The signal information in `.fast5` reads can be either extracted to `.tsv` by SquigglePull or visualized by SquigglePlot:
+
+```{bash, eval = F}
+python SquigglePull.py -rv -p example/fetched_fast5s -f all > example/signal.tsv
+```
+or
+```{bash, eval = F}
+python SquigglePlot.py -p example/fetched_fast5s
+```
+
+### Step 3: Segment and stall detection
+
+The 3' end should appears near the start of the reads. The `segment.py` is able to detect the stall and return the location.
+
+```{bash, eval = F}
+python segmenter.py -s example/signal.tsv.gz -ku -v > example/signals_stall_segments.tsv
+```
+![Stall detection](../docs/img/SquiggleKit Stall.png)
+Match the model from 3’ end of isoform A, which is converted into normalized signal space
+```{bash, eval = F}
+python MotifSeq.py -s example/signal.tsv.gz --segs example/signals_stall_segments.tsv -m example/CATCTATCCAGGGTTAAATT.model -v
+```
+![Kmer Matching](../docs/img/SquiggleKit Kmer.png)
