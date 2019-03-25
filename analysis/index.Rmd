@@ -10,10 +10,11 @@ output:
 Welcome! This is a website for organizing the summaries of my meetings and readings.
 
 #Meeting
-###[Tue 5 Mar 2019](5_Mar__with_HJ_and_MK_.html) (with Heejung and Mike)
+####[Tue 5 Mar 2019: project description](5_Mar__with_HJ_and_MK_.html) (with Heejung and Mike)
+####[Mon 18 Mar 2019:Ideas about the direction at the start of the project](18_Mar_with_HJ_and_MK.html) (with Heejung and Mike)
 
 #Reading
-###[Real-time selective sequencing using nanopore technology](Matthew_2016.html)
+####[Real-time selective sequencing using nanopore technology](Matthew_2016.html)
 
 #Software
-###[SquiggleKit](SquiggleKit.html)
+####[SquiggleKit](SquiggleKit.html)
