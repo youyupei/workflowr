@@ -18,3 +18,4 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 #Software
 ####[SquiggleKit](SquiggleKit.html)
+####[Tombo resquiggle Algorithm](Tombo_resquiggle.html)

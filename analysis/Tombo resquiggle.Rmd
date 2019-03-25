@@ -1,0 +1,36 @@
+---
+title: "Tombo resquiggle"
+author: "youyupei"
+date: "2019-03-25"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+Tombo is primarily for identification of modifications from nanopore data. Here, I document the algorithm of `Tombo resquiggle`, which can be used to align squiggle to genomic sequence.
+
+## Tombo resquiggle Algorithm:
+**Note:** This is just brief summary, for more detial, go to [https://nanoporetech.github.io/tombo/resquiggle.html](https://nanoporetech.github.io/tombo/resquiggle.html)
+
+### Step 1, Genome mapping.
+  + via `minimap2`
+
+### Step 2, Nomalisation.
+  The raw signal is normailized using median shift and MAD [^1] scale parameters:
+  $$ NormSignal = \frac{RawSignal-Shift}{Scale}$$
+  + For RNA, the end of each read is trimmed, so that the adaptor does not affect normalization parameter estimation.
+
+### Step 3, Event Detection
+Event are determined by identifying large shifts in current level. By large shiftes it means the largest junp (most significant in t-test for RNA) between neighboure windows whose size have been optimized for DNA and RNA respectively. 
+
+### Step 4. Sequenci to signal assignment
+This step uses the DTW to match expected signal (from mapped genomic sequence) and normalised and segmented raw data.
+
+### Step 5, resolve skipped Bases.
+
+In the alignment in Step 4, the event informations are used and some bases by be skipped. Skepped bases must be resolved using the raw signal.  
+  + A window around each skipped base is identified (expended if there is not enough signal)
+  +Dynamic programming similar to Step 4 is applied but use raw signal instead of events.
+
+
+[^1]:MAD: median absolute deviation, $$MAD = median \left |X_{i} - median(X) \right |$$
