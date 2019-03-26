@@ -15,6 +15,7 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 #Reading
 ####[Real-time selective sequencing using nanopore technology](Matthew_2016.html)
+####[Using sequins with RNA sequencing](Using_sequins_with_RNA_sequencing.html)
 
 #Software
 ####[SquiggleKit](SquiggleKit.html)
