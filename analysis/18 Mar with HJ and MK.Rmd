@@ -26,6 +26,8 @@ Oxford Nanopore Technology (ONT) provides pore models for their sequencer, which
 
 **Problems: Currently, it seems that there isn't any RNA model. The available options are "raw_r94", "rgrgr_r94", "rgrgr_r941", "rgrgr_r10", "rnnrf_r94".**
 
+(4/8/2019 updated: RNA model is now available)
+
 ####2.2 Method 2: Get Model from spink-ins
 
 Spike-in provides ground truth of the underlying genomic sequence. Hopefully, the spike-ins contain the motifs in interest. The idea is to find the corresponding signal data to the candidate motifs. 
