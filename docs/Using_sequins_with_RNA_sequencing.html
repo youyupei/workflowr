@@ -76,9 +76,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -196,8 +194,6 @@ $(document).ready(function () {
   menuAnchor.closest('li.dropdown').addClass('active');
 });
 </script>
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -356,6 +352,16 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -415,8 +421,8 @@ div.section {
 
 
 <h1 class="title toc-ignore">Using sequins with RNA sequencing</h1>
-<h4 class="author"><em>youyupei</em></h4>
-<h4 class="date"><em>2019-03-26</em></h4>
+<h4 class="author">youyupei</h4>
+<h4 class="date">2019-03-26</h4>
 
 </div>
 
@@ -441,7 +447,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-03-26
+<strong>Last updated:</strong> 2019-04-08
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -472,30 +478,22 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeacb024e05c5bf5fa8988934830c99852a121f70ftargetblankacb024ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/acb024e05c5bf5fa8988934830c99852a121f70f" target="_blank">acb024e</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree6c754ffefa643e5d6505b5819b4b770628fc9ec9targetblank6c754ffa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/6c754ffefa643e5d6505b5819b4b770628fc9ec9" target="_blank">6c754ff</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeacb024e05c5bf5fa8988934830c99852a121f70ftargetblankacb024ea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree6c754ffefa643e5d6505b5819b4b770628fc9ec9targetblank6c754ffa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/.DS_Store
     Ignored:    analysis/.Rhistory
-    Ignored:    analysis/img/.DS_Store
-    Ignored:    docs/.DS_Store
-    Ignored:    docs/img/.DS_Store
 
 Untracked files:
     Untracked:  analysis/Using_sequins_with_RNA_sequencing.Rmd
-
-Unstaged changes:
-    Modified:   analysis/workflowr.R
 
 </code></pre>
 <p>
@@ -548,7 +546,7 @@ youyupei
 2019-03-26
 </td>
 <td>
-wflow_publish(“*.Rmd“)
+wflow_publish("*.Rmd")
 </td>
 </tr>
 </tbody>
@@ -560,7 +558,7 @@ wflow_publish(“*.Rmd“)
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This is a summary of lab protocol and data analyses of using spike-ins with RNA sequecing. Original pdf: <a href="https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf" class="uri">https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf</a> And the paper: <a href="https://www-nature-com.ezp.lib.unimelb.edu.au/articles/nmeth.3958.pdf">spliced synthetic genes as internal controls in rNA sequencing experiments</a></p>
+<p>This is a summary of lab protocol and data analyses of using spike-ins with RNA sequecing. Original pdf: <a href="https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf">https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf</a> And the paper: <a href="https://www-nature-com.ezp.lib.unimelb.edu.au/articles/nmeth.3958.pdf">spliced synthetic genes as internal controls in rNA sequencing experiments</a></p>
 </div>
 <div id="protocol" class="section level2">
 <h2>Protocol</h2>
