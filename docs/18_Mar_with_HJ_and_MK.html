@@ -447,7 +447,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-04-08
+<strong>Last updated:</strong> 2019-04-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -478,10 +478,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree6c754ffefa643e5d6505b5819b4b770628fc9ec9targetblank6c754ffa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/6c754ffefa643e5d6505b5819b4b770628fc9ec9" target="_blank">6c754ff</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeba8809848286e5c3d40e99e15d756fa32374426ftargetblankba88098a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/ba8809848286e5c3d40e99e15d756fa32374426f" target="_blank">ba88098</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree6c754ffefa643e5d6505b5819b4b770628fc9ec9targetblank6c754ffa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeba8809848286e5c3d40e99e15d756fa32374426ftargetblankba88098a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -537,6 +537,23 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/youyupei/workflowr/blob/ba8809848286e5c3d40e99e15d756fa32374426f/analysis/18 Mar with HJ and MK.Rmd" target="_blank">ba88098</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-10
+</td>
+<td>
+wflow_publish("*Rmd")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/youyupei/workflowr/blob/f49b4c19b3f2e67d72d881727ada0480b31b3be1/analysis/18 Mar with HJ and MK.Rmd" target="_blank">f49b4c1</a>
 </td>
 <td>
@@ -579,20 +596,29 @@ wflow_publish(c(“<em>.Rmd", "../docs/</em>”))
 <p>Oxford Nanopore Technology (ONT) provides pore models for their sequencer, which were trained by the company. The model describes the expected cureent signal for each k-mer with its variance. <code>Scrappie squiggle</code> is a possible program developed by ONT and does the squiggle simulation.</p>
 <p><strong>Problems: Currently, it seems that there isn’t any RNA model. The available options are “raw_r94”, “rgrgr_r94”, “rgrgr_r941”, “rgrgr_r10”, “rnnrf_r94”.</strong></p>
 <p>(4/8/2019 updated: RNA model is now available)</p>
-<p>####2.2 Method 2: Get Model from spink-ins</p>
+</div>
+<div id="method-2-get-model-from-spink-ins" class="section level4">
+<h4>2.2 Method 2: Get Model from spink-ins</h4>
 <p>Spike-in provides ground truth of the underlying genomic sequence. Hopefully, the spike-ins contain the motifs in interest. The idea is to find the corresponding signal data to the candidate motifs.</p>
-<p>#####2.2.1 There are two methods found to match/align the events of squiggle to the ref genome: <code>nanopolish eventalign</code> and <code>tombo resquiggle</code>. Both of them treat the raw data as a series of events.</p>
-<p>#####2.2.2 1. Use the method in 2.1, we can simulate squiggles for given motifs + However, the simulated squiggle may bia to the model provided by ONT.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Match the simulated squiggle to the spike-ins:</li>
-</ol>
+<div id="section" class="section level5">
+<h5>2.2.1</h5>
+<p>There are two methods found to match/align the events of squiggle to the ref genome: <code>nanopolish eventalign</code> and <code>tombo resquiggle</code>. Both of them treat the raw data as a series of events.</p>
+</div>
+<div id="section-1" class="section level5">
+<h5>2.2.2</h5>
+<ol style="list-style-type: decimal">
+<li>Use the method in 2.1, we can simulate squiggles for given motifs
+<ul>
+<li>However, the simulated squiggle may bia to the model provided by ONT.</li>
+</ul></li>
+<li>Match the simulated squiggle to the spike-ins:
 <ul>
 <li>We know the exactly sequences of spike-ins so the exactly number of occurances of each k-mer.</li>
 <li>We know the exon in spike-ins, so that we can narrow down the searching area to the splicing sites.</li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
+</ul></li>
 <li>Use the matched squiggles from spike-ins to construct a representative squiggle for a motif in interest.</li>
 </ol>
+</div>
 </div>
 </div>
 

@@ -9,10 +9,11 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="youyupei" />
 
-<meta name="date" content="2019-03-05" />
+<meta name="date" content="2019-04-10" />
 
-<title>Meeting Summary</title>
+<title>10 Apr Meeting Summary</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,6 +21,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -263,6 +267,92 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -270,6 +360,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -320,8 +420,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Meeting Summary</h1>
-<h4 class="date">2019-03-05</h4>
+<h1 class="title toc-ignore">10 Apr Meeting Summary</h1>
+<h4 class="author">youyupei</h4>
+<h4 class="date">2019-04-10</h4>
 
 </div>
 
@@ -392,7 +493,7 @@ Ignored files:
     Ignored:    analysis/.Rhistory
 
 Untracked files:
-    Untracked:  analysis/5_Mar__with_HJ_and_MK_.Rmd
+    Untracked:  analysis/10_Apr_Meeting_Summary.Rmd
 
 </code></pre>
 <p>
@@ -436,7 +537,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/youyupei/workflowr/blob/ba8809848286e5c3d40e99e15d756fa32374426f/analysis/5 Mar (with HJ and MK).Rmd" target="_blank">ba88098</a>
+<a href="https://github.com/youyupei/workflowr/blob/ba8809848286e5c3d40e99e15d756fa32374426f/analysis/10 Apr Meeting Summary.Rmd" target="_blank">ba88098</a>
 </td>
 <td>
 youyupei
@@ -448,23 +549,6 @@ youyupei
 wflow_publish("*Rmd")
 </td>
 </tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/a1f2a6045d732c7f5926928762b35a4daa7c2edc/analysis/5 Mar (with HJ and MK).Rmd" target="_blank">a1f2a60</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-06
-</td>
-<td>
-wflow_publish("*.Rmd")
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -472,34 +556,34 @@ wflow_publish("*.Rmd")
 </div>
 </div>
 </div>
-<div id="topic" class="section level3">
-<h3>Topic:</h3>
-<p>First step of PhD project</p>
+<div id="did" class="section level4">
+<h4>Did:</h4>
+<ol style="list-style-type: decimal">
+<li>All fastq reads were mapped by minimap2 to Sequins (Spike-in) isoforms and Spike-in reads were collected.</li>
+<li>All fast5 reads (raw data) were indexed from read IDs, so that fastq read and fast5 read can be paired.</li>
+<li>Squiggle can be assigned to each nucleotide base using Tombo, so that we can collect squiggles for a given motif, once it appears in the spike-in sequence.</li>
+</ol>
 </div>
-<div id="objective" class="section level3">
-<h3>Objective:</h3>
-<p>Find the exact splicing site using Oxford Nanopore data.</p>
-</div>
-<div id="motivation" class="section level3">
-<h3>Motivation:</h3>
-<p>The Oxford nanopore sequence data have advantages in analysing mRNA because of its nature of long read. However, the main limitation of this technology is its high error rate (mostly small deletion), which hindered the accurate identification of splicing site. Errors near the splicing will dramatically affect the functional analysis of the given mRNA. Therefore, an accurate method for identifying the exact splicing site is very desirable.</p>
-</div>
-<div id="approach" class="section level3">
-<h3>Approach:</h3>
-<p>We are not going to apply any base caller but the raw data (squiggle) since the high error rate of current base callers. The squiggle is believed to have more information and has been used in some current studies (e.g. identifying barcode). The potential sequences of splicing site could be inferred given the sequenced region we are interested in. We need to construct the squiggle patterns of those potential splicing sites and looking for a match within the region we interest in <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Note that a match allows horizontal or vertical scaling of the squiggle, which may be induced by the different speed that the sequenced molecule traverse through the pore. The speed is affected by the ATP concentration. An appropriate approach might be dynamic time warping (DTW). In the end, we need to output the probabilities of each potential splicing site is the correct one.</p>
-</div>
-<div id="things-to-do-next" class="section level3">
-<h3>Things to do next:</h3>
+<div id="going-to-do" class="section level4">
+<h4>Going to do:</h4>
 <ul>
-<li>Read paper about DTW and talk with Heejung on 1 pm next Thursday (13 Mar 2019)</li>
-<li>Reproduce some examples in SquiggleKit or use data from Mike.</li>
-<li>Mike’s talk (Friday 4 pm)</li>
+<li>Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel</li>
+<li>Play with the spike-in reads:
+<ol style="list-style-type: decimal">
+<li>Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).</li>
+<li>For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.</li>
+<li>Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences.</li>
+<li>Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.</li>
+<li>Try to use DTW to match the squiggles</li>
+</ol></li>
 </ul>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>How and how complete?<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<p>Other things talked today:</p>
+<ol style="list-style-type: decimal">
+<li>Perhaps Mike could add me and Heejung to his group in ONT community.</li>
+<li>Clarification about how to determine potential exon boundaries
+<ul>
+<li>Method : Regard all the splited read boundaries as the potential boundaries.</li>
+</ul></li>
 </ol>
 </div>
 
@@ -517,6 +601,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+</div>
+</div>
 
 </div>
 
