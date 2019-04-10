@@ -28,20 +28,20 @@ Oxford Nanopore Technology (ONT) provides pore models for their sequencer, which
 
 (4/8/2019 updated: RNA model is now available)
 
-####2.2 Method 2: Get Model from spink-ins
+#### 2.2 Method 2: Get Model from spink-ins
 
 Spike-in provides ground truth of the underlying genomic sequence. Hopefully, the spike-ins contain the motifs in interest. The idea is to find the corresponding signal data to the candidate motifs. 
 
-#####2.2.1
+##### 2.2.1
 There are two methods found to match/align the events of squiggle to the ref genome: `nanopolish eventalign` and `tombo resquiggle`. Both of them treat the raw data as a series of events.
 
-#####2.2.2
+##### 2.2.2
 1. Use the method in 2.1, we can simulate squiggles for given motifs
-  + However, the simulated squiggle may bia to the model provided by ONT. 
+      + However, the simulated squiggle may bia to the model provided by ONT. 
 
 2. Match the simulated squiggle to the spike-ins:
-  + We know the exactly sequences of spike-ins so the exactly number of occurances of each k-mer.
-  + We know the exon in spike-ins, so that we can narrow down the searching area to the splicing sites.
+      + We know the exactly sequences of spike-ins so the exactly number of occurances of each k-mer.
+      + We know the exon in spike-ins, so that we can narrow down the searching area to the splicing sites.
   
 3. Use the matched squiggles from spike-ins to construct a representative squiggle for a motif in interest.
 

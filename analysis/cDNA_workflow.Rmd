@@ -100,5 +100,27 @@ The row data are organized by HDF5. The file name of each .fast5 file contains t
 
 * There are two sequencing runs, so that two dictionaries are created
 
+## Squiggle alignment
+
+#### Tombo resquiggle:
+
+Function:<br/>
+The re-squiggle algorithm defines a new assignment from squiggle to reference sequence, hence a re-squiggle.
+
+Input:<br/>
+FAST5 files (contaioning raw signal and **associated base calls**.)
+
+Output:<br/>
+The resquiggle command will add the mapped reference loacation and the raw seqeunce assignment to the .fast5 read files provided, as well as index file for more efficient file access.
+![Example](../docs/img/Tombo_result.png)
+
+```{bash eval = F}
+# annotate raw FAST5s with FASTQ files produced from the same reads
+# skip this step if raw read files already contain basecalls
+tombo preprocess annotate_raw_with_fastqs --fast5-basedir <fast5s-base-directory> --fastq-filenames <reads.fastq>
+
+tombo resquiggle <fast5s-base-directory> <reference-fasta> --processes 4 --num-most-common-errors 5
+```
+
 
 

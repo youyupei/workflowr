@@ -1,0 +1,30 @@
+---
+title: "10 Apr Meeting Summary"
+author: "youyupei"
+date: "2019-04-10"
+output: workflowr::wflow_html
+---
+
+
+#### Did:
+
+1. All fastq reads were mapped by minimap2 to Sequins (Spike-in) isoforms and Spike-in reads were collected.
+2. All fast5 reads (raw data) were indexed from read IDs, so that fastq read and fast5 read can be paired.
+3. Squiggle can be assigned to each nucleotide base using Tombo, so that we can collect squiggles for a given motif, once it appears in the spike-in sequence.
+
+
+#### Going to do:
+
+* Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
+* Play with the spike-in reads: 
+	1. Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).
+	2. For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.
+	3. Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences. 
+	4. Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.
+	6. Try to use DTW to match the squiggles
+
+Other things talked today:  
+
+  1. Perhaps Mike could add me and Heejung to his group in ONT community.
+  2. Clarification about how to determine potential exon boundaries
+      + Method : Regard all the splited read boundaries as the potential boundaries.

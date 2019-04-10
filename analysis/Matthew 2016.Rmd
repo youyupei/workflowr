@@ -5,26 +5,26 @@ date: "2019-03-06"
 output: workflowr::wflow_html
 ---
 
-#Objective:
+# Objective:
 Select subset of DNA from a pool of molecules for sequencing with minimal specialized library preparation based on the identity of an initial set of sequenced bases.(Software: Read Until).
 
-#Motivation:
+# Motivation:
 * Current sequencing methods can result in unnecessary sequencing. 
 * The ratio of interested region can not be modified after library preparation is complete.
 * The problem of ratios cannot be detected during sequencing.
 
-#Advantage of Nanopore seq
+# Advantage of Nanopore seq
 * the voltage across the pore could be reversed so that reject the individual DNA molecules to be seqenced
 * Reads that are rejected are unlikely to be sequenced again [^1]
 
 [^1]: The motor protein will have already migrated along the DNA and will not be available to slow the translocation of DNA through the pore. 
 
-#Approach: matching squiggle 
+# Approach: matching squiggle 
 Compare bases to a reference may have problems that the real-time basecalling implimentations are currently to slow and need subsequent optimiztions th improve quaulity.
 
 The matching of two squiggles is complicated, including voltage changes, noise and interactions between channels. These behaviors are captured by shift, scale and drift.z-score normalization can be used to overcome shift and scale. However drift is insignificant in short nanopore traces, 
 
-##Generate squiggle from nucleotide sequence.
+## Generate squiggle from nucleotide sequence.
 
 To do squiggle matching, the reference sequences have to been converted to squiggles. For each k-mer in the reference, the expected mean current value from the model file is calculated as squiggle value.
 ![S Figure 2](img/Matthew 2016 S F2.png)
@@ -44,6 +44,6 @@ There are some points to be noted:
 
 * The complexity is O(m\*n)
 
-###An inportance variation of DTW for sub-sequence alignment is termed subsequence DTW (sDTW) 
+### An inportance variation of DTW for sub-sequence alignment is termed subsequence DTW (sDTW) 
 
 Variation: row C[0,1..n] is initialised the same as D[0,1..n].
