@@ -12,11 +12,11 @@ cDNA data analysis:
   * Select Spike-in reads from cDNA dataset
   * Pair each fastq read with its raw signal.
   * Successfully run tombo resquiggle
+  * (11/4/2019)Generate random motif in different lengths and check their occurrances within spike-in sequence.
 
 
 ## To Do (ordered by the priority)
 
-* Generate random motif in different lengths and check their occurrances within spike-in sequence.
 
 * Run Tombo resquiggle on spike-in reads the check the distribution of the squiggle assigned to each base.
 
