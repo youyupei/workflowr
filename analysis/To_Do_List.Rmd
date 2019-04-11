@@ -1,0 +1,41 @@
+---
+title: "To_Do_List"
+author: "youyupei"
+date: "2019-04-11"
+output: workflowr::wflow_html
+---
+
+## Done
+
+cDNA data analysis:
+
+  * Select Spike-in reads from cDNA dataset
+  * Pair each fastq read with its raw signal.
+  * Successfully run tombo resquiggle
+
+
+## To Do (ordered by the priority)
+
+* Generate random motif in different lengths and check their occurrances within spike-in sequence.
+
+* Run Tombo resquiggle on spike-in reads the check the distribution of the squiggle assigned to each base.
+
+* Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
+
+* Play with the spike-in reads: 
+
+	1. Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).
+	2. For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.
+	3. Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences. 
+	4. Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.
+	6. Try to use DTW to match the squiggles
+
+* Figure out best setting in minimap2
+
+* Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)
+
+# Questions
+
+* Is there currently any method can be use for splicing site identification?
+* Is there any recommondation of setting when using minimap2?
+
