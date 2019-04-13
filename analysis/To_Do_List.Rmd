@@ -1,7 +1,7 @@
 ---
-title: "To_Do_List"
+title: "To Do List"
 author: "youyupei"
-date: "2019-04-11"
+date: "Updated 2019-04-13"
 output: workflowr::wflow_html
 ---
 
@@ -17,6 +17,7 @@ cDNA data analysis:
 
 ## To Do (ordered by the priority)
 
+* Prepare a slides for Terry's group meeting
 
 * Run Tombo resquiggle on spike-in reads the check the distribution of the squiggle assigned to each base.
 
