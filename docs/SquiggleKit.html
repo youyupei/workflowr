@@ -17,7 +17,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -387,13 +387,25 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
 </li>
 <li>
-  <a href="about.html">About</a>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
 </li>
 <li>
-  <a href="license.html">License</a>
+  <a href="license.html">
+    <span class="fa fa-id-card-o"></span>
+     
+    License
+  </a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -402,6 +414,13 @@ div.tocify {
     <span class="fa fa-github"></span>
      
     Source code
+  </a>
+</li>
+<li>
+  <a href="To_Do_List.html">
+    <span class="fa fa-check-square-o"></span>
+     
+    TOdo list
   </a>
 </li>
       </ul>
@@ -438,7 +457,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#report"> Report <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -447,7 +466,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-04-10
+<strong>Last updated:</strong> 2019-05-13
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -457,11 +476,11 @@ div.section {
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.2.0). The <em>Report</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
-<div id="report" class="tab-pane fade">
+<div id="checks" class="tab-pane fade">
 <div id="workflowr-checks" class="panel-group">
 <div class="panel panel-default">
 <div class="panel-heading">
@@ -526,10 +545,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeba8809848286e5c3d40e99e15d756fa32374426ftargetblankba88098a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/ba8809848286e5c3d40e99e15d756fa32374426f" target="_blank">ba88098</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreecc71f847f1b2d010bc3d55235569a0ad712401e3targetblankcc71f84a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/cc71f847f1b2d010bc3d55235569a0ad712401e3" target="_blank">cc71f84</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeba8809848286e5c3d40e99e15d756fa32374426ftargetblankba88098a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreecc71f847f1b2d010bc3d55235569a0ad712401e3targetblankcc71f84a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -539,6 +558,17 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  bookdown/
+
+Unstaged changes:
+    Deleted:    analysis/5 Mar (with HJ and MK).Rmd
+    Deleted:    analysis/Matthew 2016.Rmd
+    Modified:   analysis/_site.yml
+    Modified:   analysis/workflowr.R
+    Deleted:    docs/.nojekyll
+    Modified:   workflowr.Rproj
 
 </code></pre>
 <p>
@@ -577,6 +607,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/7cf0f9d10a43835823496dbb39f0f5f4601bfec2/docs/SquiggleKit.html" target="_blank">7cf0f9d</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -772,7 +819,11 @@ gzip example/name.index</code></pre>
 <pre class="bash"><code>python segmenter.py -s example/signal.tsv.gz -ku -v &gt; example/signals_stall_segments.tsv</code></pre>
 <p><img src="../docs/img/SquiggleKit%20Stall.png" alt="Stall detection" /> Match the model from 3â€™ end of isoform A, which is converted into normalized signal space</p>
 <pre class="bash"><code>python MotifSeq.py -s example/signal.tsv.gz --segs example/signals_stall_segments.tsv -m example/CATCTATCCAGGGTTAAATT.model -v</code></pre>
-<img src="../docs/img/SquiggleKit%20Kmer.png" alt="Kmer Matching" /> <br> <br>
+<div class="figure">
+<img src="../docs/img/SquiggleKit%20Kmer.png" alt="Kmer Matching" />
+<p class="caption">Kmer Matching</p>
+</div>
+<br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
 <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
@@ -780,7 +831,7 @@ gzip example/name.index</code></pre>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.5.3 (2019-03-11)
+<pre><code>R version 3.6.0 (2019-04-26)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 17763)
 
@@ -797,11 +848,11 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
- [1] workflowr_1.2.0 Rcpp_1.0.1      digest_0.6.18   rprojroot_1.3-2
- [5] backports_1.1.3 git2r_0.24.0    magrittr_1.5    evaluate_0.13  
- [9] stringi_1.4.3   fs_1.2.6        whisker_0.3-2   rmarkdown_1.12 
-[13] tools_3.5.3     stringr_1.4.0   glue_1.3.1      xfun_0.5       
-[17] yaml_2.2.0      compiler_3.5.3  htmltools_0.3.6 knitr_1.22     </code></pre>
+ [1] workflowr_1.3.0 Rcpp_1.0.1      digest_0.6.18   rprojroot_1.3-2
+ [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.13  
+ [9] stringi_1.4.3   fs_1.3.0        whisker_0.3-2   rmarkdown_1.12 
+[13] tools_3.6.0     stringr_1.4.0   glue_1.3.1      xfun_0.6       
+[17] yaml_2.2.0      compiler_3.6.0  htmltools_0.3.6 knitr_1.22     </code></pre>
 </div>
 </div>
 </div>
