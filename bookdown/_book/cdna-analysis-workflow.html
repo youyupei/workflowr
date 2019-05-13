@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>cDNA analysis workflow | Workflow</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="cDNA analysis workflow | Workflow" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="cDNA analysis workflow | Workflow" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Yupei You">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="to-do-list.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a><ul>
+<li class="chapter" data-level="" data-path="last-update.html"><a href="last-update.html"><i class="fa fa-check"></i>last update</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="meeting.html"><a href="meeting.html"><i class="fa fa-check"></i>Meeting</a><ul>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><i class="fa fa-check"></i>Tue 5 Mar 2019: project description (with Heejung and Mike)</a><ul>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html#topic"><i class="fa fa-check"></i>Topic</a></li>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html#objective"><i class="fa fa-check"></i>Objective</a></li>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html#motivation"><i class="fa fa-check"></i>Motivation</a></li>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html#approach"><i class="fa fa-check"></i>Approach</a></li>
+<li class="chapter" data-level="" data-path="tue-5-mar-2019-project-description-with-heejung-and-mike.html"><a href="tue-5-mar-2019-project-description-with-heejung-and-mike.html#things-to-do-next"><i class="fa fa-check"></i>Things to do next</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html"><a href="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html"><i class="fa fa-check"></i>Mon 18 Mar 2019:Ideas about the direction at the start of the project</a><ul>
+<li class="chapter" data-level="" data-path="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html"><a href="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html#introduction-1"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html"><a href="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project.html#generate-representitive-squiggle-for-each-of-the-motifs"><i class="fa fa-check"></i>Generate representitive squiggle for each of the motifs</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="wed-10-apr-2019-progress-update.html"><a href="wed-10-apr-2019-progress-update.html"><i class="fa fa-check"></i>Wed 10 Apr 2019: Progress Update</a><ul>
+<li class="chapter" data-level="" data-path="wed-10-apr-2019-progress-update.html"><a href="wed-10-apr-2019-progress-update.html#did"><i class="fa fa-check"></i>Did</a></li>
+<li class="chapter" data-level="" data-path="wed-10-apr-2019-progress-update.html"><a href="wed-10-apr-2019-progress-update.html#going-to-do"><i class="fa fa-check"></i>Going to do</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="reading.html"><a href="reading.html"><i class="fa fa-check"></i>Reading</a><ul>
+<li class="chapter" data-level="" data-path="real-time-selective-sequencing-using-nanopore-technology.html"><a href="real-time-selective-sequencing-using-nanopore-technology.html"><i class="fa fa-check"></i>Real-time selective sequencing using nanopore technology</a><ul>
+<li class="chapter" data-level="" data-path="real-time-selective-sequencing-using-nanopore-technology.html"><a href="real-time-selective-sequencing-using-nanopore-technology.html#objective-1"><i class="fa fa-check"></i>Objective:</a></li>
+<li class="chapter" data-level="" data-path="real-time-selective-sequencing-using-nanopore-technology.html"><a href="real-time-selective-sequencing-using-nanopore-technology.html#motivation-1"><i class="fa fa-check"></i>Motivation:</a></li>
+<li class="chapter" data-level="" data-path="real-time-selective-sequencing-using-nanopore-technology.html"><a href="real-time-selective-sequencing-using-nanopore-technology.html#advantage-of-nanopore-seq"><i class="fa fa-check"></i>Advantage of Nanopore seq</a></li>
+<li class="chapter" data-level="" data-path="real-time-selective-sequencing-using-nanopore-technology.html"><a href="real-time-selective-sequencing-using-nanopore-technology.html#approach-matching-squiggle"><i class="fa fa-check"></i>Approach: matching squiggle</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="using-sequins-with-rna-sequencing.html"><a href="using-sequins-with-rna-sequencing.html"><i class="fa fa-check"></i>Using sequins with RNA sequencing</a><ul>
+<li class="chapter" data-level="" data-path="using-sequins-with-rna-sequencing.html"><a href="using-sequins-with-rna-sequencing.html#introduction-2"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="using-sequins-with-rna-sequencing.html"><a href="using-sequins-with-rna-sequencing.html#protocol"><i class="fa fa-check"></i>Protocol</a></li>
+<li class="chapter" data-level="" data-path="using-sequins-with-rna-sequencing.html"><a href="using-sequins-with-rna-sequencing.html#sequin-analysis"><i class="fa fa-check"></i>Sequin analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a><ul>
+<li class="chapter" data-level="" data-path="squigglekit.html"><a href="squigglekit.html"><i class="fa fa-check"></i>SquiggleKit</a><ul>
+<li class="chapter" data-level="" data-path="squigglekit.html"><a href="squigglekit.html#introduction-3"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="squigglekit.html"><a href="squigglekit.html#overview"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="" data-path="squigglekit.html"><a href="squigglekit.html#example-run-using-squigglekit"><i class="fa fa-check"></i>Example run using SquiggleKit</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tombo-resquiggle-algorithm.html"><a href="tombo-resquiggle-algorithm.html"><i class="fa fa-check"></i>Tombo resquiggle Algorithm</a><ul>
+<li class="chapter" data-level="" data-path="tombo-resquiggle-algorithm.html"><a href="tombo-resquiggle-algorithm.html#introduction-4"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="tombo-resquiggle-algorithm.html"><a href="tombo-resquiggle-algorithm.html#tombo-resquiggle-algorithm-1"><i class="fa fa-check"></i>Tombo resquiggle Algorithm:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i>Workflow</a><ul>
+<li class="chapter" data-level="" data-path="to-do-list.html"><a href="to-do-list.html"><i class="fa fa-check"></i>To do list</a><ul>
+<li class="chapter" data-level="" data-path="to-do-list.html"><a href="to-do-list.html#done"><i class="fa fa-check"></i>Done</a></li>
+<li class="chapter" data-level="" data-path="to-do-list.html"><a href="to-do-list.html#to-do-ordered-by-the-priority"><i class="fa fa-check"></i>To Do (ordered by the priority)</a></li>
+<li class="chapter" data-level="" data-path="to-do-list.html"><a href="to-do-list.html#questions"><i class="fa fa-check"></i>Questions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="cdna-analysis-workflow.html"><a href="cdna-analysis-workflow.html"><i class="fa fa-check"></i>cDNA analysis workflow</a><ul>
+<li class="chapter" data-level="" data-path="cdna-analysis-workflow.html"><a href="cdna-analysis-workflow.html#data-preprocessing"><i class="fa fa-check"></i>Data preprocessing</a></li>
+<li class="chapter" data-level="" data-path="cdna-analysis-workflow.html"><a href="cdna-analysis-workflow.html#squiggle-alignment"><i class="fa fa-check"></i>Squiggle alignment</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Workflow</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cdna-analysis-workflow" class="section level2">
+<h2>cDNA analysis workflow</h2>
+<div id="data-preprocessing" class="section level3">
+<h3>Data preprocessing</h3>
+<div id="data-description" class="section level4">
+<h4>Data description</h4>
+<div id="cdna-data" class="section level5">
+<h5>cDNA data</h5>
+<p>This is data shared by Mike and downloaded on 22 Mar 2019.
+The dataset contains raw data, fastq’s and sequencing summary files.</p>
+<p>It a Nanopore cDNA dataset with Sequin controls:</p>
+<p>It’s 4 technicals replicates of a differentiated SHSY5Y sample with Sequin spike-ins.</p>
+<ul>
+<li><p>2 samples have spike-in mix A, two mix B, which means there should be DE of the spike-ins. These are the V2 spike-ins.</p></li>
+<li><p>All libraries were made from a pool of polyA+ RNA. Starting from 1ug of total RNA each.</p></li>
+<li><p>Used cDNA-PCR kit (PCS108) with LWB001 barcodes 7-10</p></li>
+<li><p>Basecalling with Albacore 2.2.6. Pass is Q7</p></li>
+</ul>
+<p>Barcodes are:<br/>
+LWB07 GTGTTACCGTGGGAATGAATCCTT<br/>
+LWB08 TTCAGGGAACAAACCAAGTTACGT<br/>
+LWB09 AACTAGGCACAGCGAGTCTTGGTT<br/>
+LWB10 AAGCGTTGAAACCTTTGTCCTCTC<br/></p>
+<p>Note1: the Primer sequence around the barcode is unclear.<br/>
+Note2: The Nanopore base caller may not trims off adaptor and barcode sequencers, so they are likely still on each read.</p>
+</div>
+<div id="sequin-genome" class="section level5">
+<h5>Sequin Genome</h5>
+<p>Last update (30/3/2019)</p>
+<p>The resource bundle contains the following reference files:</p>
+<ul>
+<li><p>rnasequin_decoychr_2.2.fa.gz - decoy chromosome (chrIS) sequence the encodes all synthetic sequin gene loci (3Mb).</p></li>
+<li><p>rnasequin_annotation_2.2.gtf - annotation of sequin genes/isoforms on the decoy chromosome (120kb).</p></li>
+<li><p>rnasequin_genesmix_2.2.tsv - expected concentration (expression) of each sequin gene in mixture (2kb).</p></li>
+<li><p>rnasequin_isoforms_2.3.tsv - expected concentration (expression) of each sequin isoform in mixture (5kb).</p></li>
+<li><p><strong>rnasequin_sequences_2.2.fa(downloaded on 30/3/2019)</strong> - sequences of all sequin isoforms (213kb).</p></li>
+</ul>
+<p>NOTE | Users chould add the decoy chromsome to their reference genome assembly (e.g. hg38) prior to building an alignment index. Reads derived from sequins will then align to the decoy chromosome.</p>
+<p>NOTE | These resource files are used by anaquin by default, and are located internally (within the resources directory that should be located with the anaquin binary under a common parent directory). However, we provide them here for users that wish to modify these files for bespoke analysis. Users can then manually provide their own custom modified annotations and over-ride the default resource files.</p>
+</div>
+</div>
+<div id="reads-mapping" class="section level4">
+<h4>Reads Mapping</h4>
+<p>To decrease the running time, only reads form barcode 7 have been processed, which is about a quarter of the total number.</p>
+<p>The reads were mapped to <strong>rnasequin_sequences_2.2.fa</strong> using <code>minimap2</code>( version 2.11-r797) and bam file sorting using <code>samtools</code> (version samtools 1.9 Using htslib 1.9 Copyright (C) 2018 Genome Research Ltd.) Command:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">minimap2</span> -ax map-ont -t 8 <span class="va">$REF_PATH</span> <span class="va">$READS_PATH</span> <span class="kw">|</span> <span class="ex">samtools</span> sort -o
+<span class="ex">reads-ref.sorted.bam</span> -T reads.tmp
+<span class="ex">samtools</span> index reads-ref.sorted.bam</code></pre>
+</div>
+<div id="mapping-quality-selection" class="section level4">
+<h4>Mapping Quality Selection</h4>
+<p>The reference file I used is the collection of all isoforms from Sequins. To make sure the mapped reads come from the isoform they mapped to, I sellected the reads with highest Map qualities, which are 60 in the result from <code>minimap2</code>. The python script has been pushed to <a href="https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/Mapped_reads.py">github</a></p>
+</div>
+<div id="expected-sequencing" class="section level4">
+<h4>Expected Sequencing</h4>
+<p>The basecalled suqences are subjuet to sequencing errors, but the actual sequences should be identical to the reference. I substituted the aligned range on each read with the corresponding sequence on reference. The start and end of each read are soft maskings, I kept it for a better alignment between the raw signal and basecalled read sequence. A <code>.fasta</code> file along with a python dictionary were created.</p>
+<pre><code>Structure
+fasta:
+&gt; read ID
+Expected seq
+
+Dictionary:
+Key: read ID
+Value: Expected seq</code></pre>
+</div>
+<div id="locating-the-signal-file." class="section level4">
+<h4>Locating the signal file.</h4>
+<p>The row data are organized by HDF5. The file name of each .fast5 file contains the channel ID and the # of read from that channel. However, it is not very straightforword to link each basecalled read with raw signal. Therefore, I built two dictionaries in python <a href="https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/Squiggle_dict_generator.py">Source Code</a>:</p>
+<ul>
+<li><p>Structure: Key: <string> Read ID; Value: <string> Fast5 file path</p></li>
+<li><p>There are two sequencing runs, so that two dictionaries are created</p></li>
+</ul>
+</div>
+</div>
+<div id="squiggle-alignment" class="section level3">
+<h3>Squiggle alignment</h3>
+<div id="tombo-resquiggle" class="section level5">
+<h5>Tombo resquiggle:</h5>
+<p>Function:<br/>
+The re-squiggle algorithm defines a new assignment from squiggle to reference sequence, hence a re-squiggle.</p>
+<p>Input:<br/>
+FAST5 files (contaioning raw signal and <strong>associated base calls</strong>.)</p>
+<p>Output:<br/>
+The resquiggle command will add the mapped reference loacation and the raw seqeunce assignment to the .fast5 read files provided, as well as index file for more efficient file access.
+<img src="../docs/img/Tombo_result.png" alt="Example" /></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># annotate raw FAST5s with FASTQ files produced from the same reads</span>
+<span class="co"># skip this step if raw read files already contain basecalls</span>
+<span class="ex">tombo</span> preprocess annotate_raw_with_fastqs --fast5-basedir <span class="op">&lt;</span>fast5s-base-directory<span class="op">&gt;</span> --fastq-filenames <span class="op">&lt;</span>reads.fastq<span class="op">&gt;</span>
+
+<span class="ex">tombo</span> resquiggle <span class="op">&lt;</span>fast5s-base-directory<span class="op">&gt;</span> <span class="op">&lt;</span>reference-fasta<span class="op">&gt;</span> --processes 4 --num-most-common-errors 5</code></pre>
+
+</div>
+</div>
+</div>
+<!-- </div> -->
+
+
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="to-do-list.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
