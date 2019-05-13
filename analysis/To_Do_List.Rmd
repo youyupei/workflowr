@@ -1,8 +1,7 @@
 ---
-title: "To Do List"
-author: "youyupei"
-date: "last update: `r format(Sys.time(), "%d-%B-%Y  %H:%m")` "
-output: workflowr::wflow_html
+title: "workflow"
+author: "Yupei You"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 ---
 
 ## Done

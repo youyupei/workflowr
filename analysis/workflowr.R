@@ -12,3 +12,11 @@ for(i in list.files())
     try(wflow_build(i))
   }
 }
+
+## Publish all files
+for(i in list.files())
+{
+  if(grepl(".Rmd", i)){
+    try(wflow_publish(i))
+  }
+}

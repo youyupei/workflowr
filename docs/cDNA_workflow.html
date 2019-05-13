@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yupei You" />
+
+
+<title>workflow</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li>
+  <a href="license.html">
+    <span class="fa fa-id-card-o"></span>
+     
+    License
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/youyupei/workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+<li>
+  <a href="To_Do_List.html">
+    <span class="fa fa-check-square-o"></span>
+     
+    TOdo list
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">workflow</h1>
+<h4 class="author">Yupei You</h4>
+<h4 class="date">last updated: 13-May-2019 23:05</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-05-13
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190306code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190306)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190306code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190306)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee6137ef05d5dde438453246807c2f6e5fe71372btargetblanke6137efa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/e6137ef05d5dde438453246807c2f6e5fe71372b" target="_blank">e6137ef</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee6137ef05d5dde438453246807c2f6e5fe71372btargetblanke6137efa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  analysis/10_Apr_Meeting_Summary.Rmd
+    Untracked:  docs/figure/
+    Untracked:  docs/img/
+
+Unstaged changes:
+    Modified:   analysis/workflowr.R
+    Deleted:    bookdown/.gitignore
+    Deleted:    bookdown/LICENSE
+    Deleted:    bookdown/Meeting.Rmd
+    Deleted:    bookdown/README.md
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/fontawesome/fontawesome-webfont.ttf
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-bookdown.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-fontsettings.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-highlight.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-search.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-table.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/style.css
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/app.min.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/jquery.highlight.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/lunr.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-bookdown.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-fontsettings.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-search.js
+    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-sharing.js
+    Deleted:    bookdown/_book/libs/jquery-2.2.3/jquery.min.js
+    Deleted:    bookdown/_book/search_index.json
+    Deleted:    bookdown/bookdown-minimal.Rproj
+    Deleted:    bookdown/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/7cf0f9d10a43835823496dbb39f0f5f4601bfec2/docs/cDNA_workflow.html" target="_blank">7cf0f9d</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/ba8809848286e5c3d40e99e15d756fa32374426f/analysis/cDNA_workflow.Rmd" target="_blank">ba88098</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-10
+</td>
+<td>
+wflow_publish("*Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/2ac121e45dae4a2399fbfa9b518386d6f0dd9550/docs/cDNA_workflow.html" target="_blank">2ac121e</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/399a90a6ca9814b5563f7b2caae97adc42601623/docs/cDNA_workflow.html" target="_blank">399a90a</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-06
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/11a13c7b0000b29f69dd4681a4aa19a39daf23f9/analysis/cDNA_workflow.Rmd" target="_blank">11a13c7</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-04-06
+</td>
+<td>
+wflow_publish(“./”)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+</style>
+<div id="data-preprocessing" class="section level2">
+<h2>Data preprocessing</h2>
+<div id="data-description" class="section level3">
+<h3>Data description</h3>
+<div id="cdna-data" class="section level4">
+<h4>cDNA data</h4>
+<p>This is data shared by Mike and downloaded on 22 Mar 2019. The dataset contains raw data, fastq’s and sequencing summary files.</p>
+<p>It a Nanopore cDNA dataset with Sequin controls:</p>
+<p>It’s 4 technicals replicates of a differentiated SHSY5Y sample with Sequin spike-ins.</p>
+<ul>
+<li><p>2 samples have spike-in mix A, two mix B, which means there should be DE of the spike-ins. These are the V2 spike-ins.</p></li>
+<li><p>All libraries were made from a pool of polyA+ RNA. Starting from 1ug of total RNA each.</p></li>
+<li><p>Used cDNA-PCR kit (PCS108) with LWB001 barcodes 7-10</p></li>
+<li><p>Basecalling with Albacore 2.2.6. Pass is Q7</p></li>
+</ul>
+<p>Barcodes are:<br/> LWB07 GTGTTACCGTGGGAATGAATCCTT<br/> LWB08 TTCAGGGAACAAACCAAGTTACGT<br/> LWB09 AACTAGGCACAGCGAGTCTTGGTT<br/> LWB10 AAGCGTTGAAACCTTTGTCCTCTC<br/></p>
+<p>Note1: the Primer sequence around the barcode is unclear.<br/> Note2: The Nanopore base caller may not trims off adaptor and barcode sequencers, so they are likely still on each read.</p>
+</div>
+<div id="sequin-genome" class="section level4">
+<h4>Sequin Genome</h4>
+<p>Last update (30/3/2019)</p>
+<p>The resource bundle contains the following reference files:</p>
+<ul>
+<li><p>rnasequin_decoychr_2.2.fa.gz - decoy chromosome (chrIS) sequence the encodes all synthetic sequin gene loci (3Mb).</p></li>
+<li><p>rnasequin_annotation_2.2.gtf - annotation of sequin genes/isoforms on the decoy chromosome (120kb).</p></li>
+<li><p>rnasequin_genesmix_2.2.tsv - expected concentration (expression) of each sequin gene in mixture (2kb).</p></li>
+<li><p>rnasequin_isoforms_2.3.tsv - expected concentration (expression) of each sequin isoform in mixture (5kb).</p></li>
+<li><p><strong>rnasequin_sequences_2.2.fa(downloaded on 30/3/2019)</strong> - sequences of all sequin isoforms (213kb).</p></li>
+</ul>
+<p>NOTE | Users chould add the decoy chromsome to their reference genome assembly (e.g. hg38) prior to building an alignment index. Reads derived from sequins will then align to the decoy chromosome.</p>
+<p>NOTE | These resource files are used by anaquin by default, and are located internally (within the resources directory that should be located with the anaquin binary under a common parent directory). However, we provide them here for users that wish to modify these files for bespoke analysis. Users can then manually provide their own custom modified annotations and over-ride the default resource files.</p>
+</div>
+</div>
+<div id="reads-mapping" class="section level3">
+<h3>Reads Mapping</h3>
+<p>To decrease the running time, only reads form barcode 7 have been processed, which is about a quarter of the total number.</p>
+<p>The reads were mapped to the transcript sequences: <strong>rnasequin_sequences_2.2.fa</strong> using <code>minimap2</code>( version 2.11-r797) and bam file sorting using <code>samtools</code> (version samtools 1.9 Using htslib 1.9 Copyright (C) 2018 Genome Research Ltd.) Command:</p>
+<pre class="bash"><code>minimap2 -ax map-ont -t 8 $REF_PATH $READS_PATH | samtools sort -o
+reads-ref.sorted.bam -T reads.tmp
+samtools index reads-ref.sorted.bam</code></pre>
+</div>
+<div id="mapping-quality-selection" class="section level3">
+<h3>Mapping Quality Selection</h3>
+<p>The reference file I used is the collection of all isoforms from Sequins. To make sure the mapped reads come from the isoform they mapped to, I sellected the reads with highest Map qualities, which are 60 in the result from <code>minimap2</code>. The python script has been pushed to <a href="https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/Mapped_reads.py">github</a></p>
+</div>
+<div id="expected-sequencing" class="section level3">
+<h3>Expected Sequencing</h3>
+<p><strong>this step turns out to be automatically done when using Tombo. </strong></p>
+<p>The basecalled suqences are subjuet to sequencing errors, but the actual sequences should be identical to the reference. I substituted the aligned range on each read with the corresponding sequence on reference. The start and end of each read are soft maskings, I kept it for a better alignment between the raw signal and basecalled read sequence. A <code>.fasta</code> file along with a python dictionary were created.</p>
+<pre><code>Structure
+fasta:
+&gt; read ID
+Expected seq
+
+Dictionary:
+Key: read ID
+Value: Expected seq</code></pre>
+</div>
+<div id="locating-the-signal-file." class="section level3">
+<h3>Locating the signal file.</h3>
+<p>The row data are organized by HDF5. The file name of each .fast5 file contains the channel ID and the # of read from that channel. However, it is not very straightforword to link each basecalled read with raw signal. Therefore, I built two dictionaries in python <a href="https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/Squiggle_dict_generator.py">Source Code</a>:</p>
+<ul>
+<li><p>Structure: Key: <string> Read ID; Value: <string> Fast5 file path</p></li>
+<li><p>There are two sequencing runs, so that two dictionaries are created</p></li>
+</ul>
+</div>
+</div>
+<div id="squiggle-alignment" class="section level2">
+<h2>Squiggle alignment</h2>
+<div id="tombo-resquiggle" class="section level4">
+<h4>Tombo resquiggle:</h4>
+<p>Function:<br/> The re-squiggle algorithm defines a new assignment from squiggle to reference sequence, hence a re-squiggle.</p>
+<p>Input:<br/> FAST5 files (contaioning raw signal and <strong>associated base calls</strong>.)</p>
+<p>Output:<br/> The resquiggle command will add the mapped reference loacation and the raw seqeunce assignment to the .fast5 read files provided, as well as index file for more efficient file access.</p>
+<center>
+<img src="../docs/img/Tombo_result.png" alt="Example" style="width:60.0%" />
+</center>
+<pre class="bash"><code># annotate raw FAST5s with FASTQ files produced from the same reads
+# skip this step if raw read files already contain basecalls
+tombo preprocess annotate_raw_with_fastqs --fast5-basedir &lt;fast5s-base-directory&gt; --fastq-filenames &lt;reads.fastq&gt;
+
+tombo resquiggle &lt;fast5s-base-directory&gt; &lt;reference-fasta&gt; --processes 4 --num-most-common-errors 5</code></pre>
+</div>
+</div>
+<div id="play-with-a-single-splicing-site" class="section level2">
+<h2>Play with a single splicing site</h2>
+<p>I randomly selected a splicing site: R1_102_1 ref pos:6790296 transcript pos: 130</p>
+<div id="mapping-result" class="section level3">
+<h3>Mapping result</h3>
+<p>The reads were mapped to the reference genome in two different way about splicing sites:</p>
+<p>To decrease the running time, only reads form barcode 7 have been processed, which is about a quarter of the total number.</p>
+<p>The reads were mapped to the transcript sequences: <strong>rnasequin_sequences_2.2.fa</strong> using <code>minimap2</code>( version 2.11-r797) and bam file sorting using <code>samtools</code> (version samtools 1.9 Using htslib 1.9 Copyright (C) 2018 Genome Research Ltd.) Command:</p>
+<ol style="list-style-type: decimal">
+<li>do not match GT-AG:</li>
+</ol>
+<pre class="bash"><code>REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam</code></pre>
+<p>BAM file name: mapped.un.splice.sorted.bam <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<center>
+<img src="../docs/img/R1_102_2_dont_match_GTAG.PNG" />
+</center>
+<ol start="2" style="list-style-type: decimal">
+<li>match GT-AG (currently playing with):</li>
+</ol>
+<pre class="bash"><code>cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM
+
+REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 -uf $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam</code></pre>
+<p>BAM file name: mapped.splice.sorted.bam</p>
+<p><img src="../docs/img/R1_102_2_GTAG.png" /></p>
+</div>
+<div id="exon-junction-candidates" class="section level3">
+<h3>Exon junction Candidates</h3>
+<p>By looking at the mapping results, we proposed 2 potiential splicing site according to the supports from the mapped reads:</p>
+<div class="column-left">
+<p><strong>potential exon junction 1</strong>:</p>
+<p>……GGCCAGGAAT ……</p>
+</div>
+<div class="column-right">
+<p><strong>potential exon junction 2</strong>:</p>
+<p>…… GGCCAGTGGAAT……</p>
+</div>
+</div>
+<div id="queried-read" class="section level3">
+<h3>Queried read</h3>
+<p>After proposing the potential exon junction candidates, we query each read at a time. Currently, only one read, whose splicing site is consistent with annotated one, is queried: (Highlighted in the mapping figure)</p>
+<p><strong>Read name</strong> = 41bc625c-8ff9-400a-a32c-e647cb1ca97c <strong>Reference span</strong> = R1_102_1:1-1,490 (+)</p>
+<div id="normalisation" class="section level4">
+<h4>Normalisation</h4>
+<p>I followed Tombo<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and normalise the squiggle using following method: <span class="math display">\[ NormSignal = \frac{RawSignal-Shift}{Scale}\]</span></p>
+</div>
+<div id="raw-read-visualisation" class="section level4">
+<h4>Raw read visualisation:</h4>
+<p>The script for ploting the squiggle is <code>Python/visulisation/plot_squiggle.py</code>:</p>
+<p><strong>Usage</strong>:</p>
+<pre class="bash"><code>python plot_squiggle.py &lt;fast5 filename&gt; &lt;save fig as&gt; &lt;optianl: start&gt; &lt;optional: end&gt;</code></pre>
+<center>
+<img src="../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c.png" style="width:70.0%" />
+</center>
+<p><strong>The sequence near the queried exon junction:</strong></p>
+<p>…..CCTCCGGCCAGT||GGAATCTTG….. (|| is the true exon boundary.)</p>
+</div>
+<div id="locate-the-queried-exon-junction" class="section level4">
+<h4>Locate the queried exon junction</h4>
+<p>By running <code>tombo resquiggle</code> we can the the index of data points than belong to the junction region:</p>
+<p>For all the spike-in reads with barcode 7, we ran the following code:</p>
+<pre class="bash"><code>
+FAST5_DIR=/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7/fast5s
+FASTQ_PATH=/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7/test_fastq.fq
+REF=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_sequences_2.2.fa
+
+# annotate raw FAST5s with FASTQ files produced from the same reads
+# skip this step if raw read files already contain basecalls
+tombo preprocess annotate_raw_with_fastqs --fast5-basedir $FAST5_DIR --fastq-filenames $FASTQ_PATH
+
+tombo resquiggle $FAST5_DIR $REF --processes 8 --num-most-common-errors 5</code></pre>
+<p>Now the information in <code>.fq</code> file will be stored into the <code>.fast5</code> file. However, it tricky to find the corresponding <code>.fast5</code> file by look into the file and match the read id. I have generated two file (<code>test_fast5_file.txt</code>, <code>test_readid.txt</code>) in <code>/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7</code>. These two file list the fast5_filename and readid in the same order. We can get the fast5 filename from the read id using following command:</p>
+<pre class="bash"><code>file_dir=/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7
+# looking for read 41bc625c-8ff9-400a-a32c-e647cb1ca97c
+line=$(sed -n &#39;/41bc625c-8ff9-400a-a32c-e647cb1ca97c/=&#39; test_readid.txt)
+head -n $line test_fast5_file.txt | tail -n 1</code></pre>
+<p>The alignment results were written in the .fast5 file. The following figure shows the information of squiggle assigned to the exon boundary:</p>
+<center>
+<div class="figure">
+<img src="../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c_exon_junction_index.PNG" alt="Tombo resquiggle result of the exon boundary, read start point: 2108" id="boundary_region" />
+<p class="caption">Tombo resquiggle result of the exon boundary, <strong>read start point: 2108</strong></p>
+</div>
+</center>
+<p><strong>Note: The alignment of squiggle to the reference doesn’t start from the first data point, for example, here, 2108 points were skipped since they may come from the flanking region of the delay when sequencing begin.</strong></p>
+<p>Then we could plot the No.3792(1684+2108) to No.3909(1801+2108) data points which are assigned to the 8 bases of exon boundary (<strong>CAGTGGAA</strong>) by Tombo:</p>
+<pre class="bash"><code>cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read/queried_read_true
+
+python /home/youyupei/PhD_proj/Python/visulisation/plot_squiggle.py DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5 exon_junc.png 3792 3909</code></pre>
+<center>
+<div class="figure">
+<img src="../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c_exon_junc.png" alt="exon_junc.png" style="width:85.0%" />
+<p class="caption">exon_junc.png</p>
+</div>
+</center>
+</div>
+</div>
+<div id="generate-representative-squiggle" class="section level3">
+<h3>Generate representative squiggle</h3>
+<div id="scrappie-squiggle" class="section level4">
+<h4>scrappie squiggle</h4>
+<p>scrappie squiggle offers model that can take genomic seq as input and output a squiggle model.</p>
+<pre class="bash"><code>cat motif.fa
+
+&gt;motif1
+CCTCCGGCCAGGAATCTTGG
+&gt;motif2
+CCTCCGGCCAGTGGAATCTTGG
+
+scrappie squiggle motif.fa
+#motif1
+pos     base    current sd      dwell
+0       C       0.079393        0.246576        1.260316
+1       C       0.173283        0.279191        1.997539
+2       T       1.675771        0.265075        5.029190
+3       C       0.782815        0.115154        8.015615
+4       C       0.322376        0.117889        6.181633
+5       G       -0.939446       0.140061        7.694880
+6       G       -0.624462       0.149050        7.269218
+7       C       0.834250        0.127715        7.511081
+8       C       0.507823        0.101567        8.413451
+9       A       -0.185710       0.130177        8.313931
+10      G       -0.794095       0.113302        8.961154
+11      G       -1.342859       0.140990        8.430869
+12      A       -1.672500       0.131926        8.973479
+13      A       -1.104969       0.193693        8.682899
+14      T       1.865047        0.294928        10.313233
+15      C       -0.272842       0.169230        8.563330
+16      T       0.694751        0.148489        6.617270
+17      T       0.808682        0.181729        8.346174
+18      G       -0.865237       0.365732        12.009984
+19      G       -0.199032       0.567114        10.152534
+#motif2
+pos     base    current sd      dwell
+0       C       0.101065        0.239271        1.504468
+1       C       0.176557        0.290187        1.791338
+2       T       1.677020        0.259444        5.615876
+3       C       0.788714        0.126458        7.922444
+4       C       0.308722        0.115572        7.711353
+5       G       -0.954900       0.136572        8.255605
+6       G       -0.590207       0.153253        5.455171
+7       C       0.930568        0.126736        7.415801
+8       C       0.521894        0.126124        7.854805
+9       A       -0.799399       0.135139        7.927912
+10      G       -1.409017       0.140081        9.589546
+11      T       1.111312        0.198856        9.070815
+12      G       -0.209650       0.158067        8.972621
+13      G       -1.273490       0.143306        8.812642
+14      A       -1.772102       0.138298        9.380451
+15      A       -1.175741       0.191701        8.371544
+16      T       1.872593        0.304727        9.712858
+17      C       -0.266769       0.175313        8.087045
+18      T       0.727317        0.156353        6.242123
+19      T       0.814729        0.189654        7.836185
+20      G       -0.870297       0.362229        11.444877
+21      G       -0.204841       0.559124        10.015700
+</code></pre>
+<p>I emailed for the algorithm to the developer of scrappie and here is the reply:</p>
+<pre><code>The basic architecture is stacked convolutional network, implemented in squiggle_r94 (https://github.com/nanoporetech/scrappie/blob/master/src/networks.c#L397): 
+All convolution window lengths are 9 and have a tanh activation
+
+Embed the sequence into a 3 x sequence_length matrix, the coordinate of each base defined by the points of a tetrahedron.
+Convolution 3 -&gt;32
+Repeated four times:
+Residual wrapper x + f(x) around
+Convolution 32 -&gt; 32
+Convolution 32 -&gt; 3
+After transforming, the three outputs for each sequence position can be interpreted as the expected current level, variance and dwell of the samples matching that position. The network can be trained by Taiyaki, using a custom loss function that calculates the probability of each signal given its predicted squiggle.
+
+Hope this helps.
+</code></pre>
+<p><strong>Problems: We are worrying about that the signal may change across different sequencing run, the data for training used by scrappie group may differ from ours. But this method is still worth to be tried, because the results will be good if the signal level distributions from different sequecing run are consistent after nomalisation.</strong></p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>The steps are simpler</li>
+<li>Expected squiggle of motifs with whatever length can be generated quickly</li>
+</ul>
+</div>
+<div id="representative-squiggle-from-spike-in" class="section level4">
+<h4>representative squiggle from spike-in</h4>
+<div id="count-motif" class="section level5">
+<h5>Count motif</h5>
+<div class="figure">
+<img src="../docs/img/count_motif_example.png" alt="Figure: Illustration of motif counting" />
+<p class="caption"><strong>Figure: Illustration of motif counting</strong></p>
+</div>
+<p>For cDNA data, we could count signal from either forward strand or reverse strand. That means for a queried motif, we can also look for it’s reverse compliment.</p>
+<p><strong>Compared with the scrappie approach:</strong></p>
+<ul>
+<li>Pros:
+<ul>
+<li>Spikin reads are fro the same sequencing run of the other reads, which overcomes the limitation of the scrappie approach</li>
+</ul></li>
+<li>Cons:
+<ol style="list-style-type: decimal">
+<li>After finding the occurance of queried motifs, we need to extract corresponding signal data. We did it using tombo resquiggle. However this step may have same problem because tombo resquiggle also relies on the pre-trained pore model.</li>
+<li>We are not sure the tombo resquiggle result is accurate, because there is no way to test the correctness of the squiggle-to-base assignment. This step may also introduce some uncertainty.</li>
+<li>The length of the queried motifs are limited to a gread extent, since we can hardly find occurances in spikein transcripts when querying motif longer than 10. This will affect the results a lot because the signal assigned to the start and end bases are depend on the based coming before or after the queried motif.</li>
+<li>This method is much more tedious than the scrappie squiggle method.</li>
+</ol></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="dtw-using-based-on-scrappie-model" class="section level3">
+<h3>DTW using based on scrappie model</h3>
+<p>Do this by using SquiggleKit MotifSeq.py<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>:</p>
+<p><strong>Input:</strong> scrappie model signal.tsv</p>
+<p><strong>output:</strong> best local match of the motif model in the singal</p>
+<div id="transform-data-to-suit-the-squigglekit-input" class="section level4">
+<h4>Transform data to suit the SquiggleKit input</h4>
+<p>SquiggleKit require the signal data to be presented as .tsv file with following format:</p>
+<pre class="bash"><code>GXB01170_20180329_FAH60584_GA50000_sequencing_run_LLAAB035083_26949_read_15463_ch_199_strand.fast5  12611   all 589 564 554 566 540 548 570 566 596 660 683 588 601 629 639 610 607 594 599 543 573 596 593 624 613 614 637 606 618 617 548 537 564 549 565 556 514 541 537 535 559 528 573 555 546 627 552 547 558 569 553 577 621 615 627 600 607 586 562 435 439 457 448 462 462 494 581 577 536 557 529 571 597 555 540 550 520 552 541 526 531 545 536 592 614 614 605 597 610 594 599 612 615 597 586 592 583 592 582 588 588 579 604 579 596 595 600 594 590 589 584 582 584 573 582 577 605 639 641 653 651 762 817 807 824 842 842 805 826 827 815 810 808 819 816 809 818 823 793 778 787 801 781 801 806 822 823 802 807 808 801 794 818 775 761 745 734 714 721 704 686 693 671 649 630 628 645 686 677 701 634 617 617 545 562 548 553 553 552 </code></pre>
+<p>I selected the region in the previous <a href="#boundary_region">table: tombo output</a></p>
+<p>The raw data start from 3694(1586+2108) to 3945(1817+20+2108):</p>
+<pre class="bash"><code>cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read
+
+SCRIPT_PATH=/home/youyupei/PhD_proj/Python/
+fast5_file=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read/queried_read_false/fast5s/DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5
+
+
+python $SCRIPT_PATH/fast5_to_tsv.py $fast5_file boundary_signal.tsv 3694 3945</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.0 (2019-04-26)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17763)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] workflowr_1.3.0 Rcpp_1.0.1      digest_0.6.18   rprojroot_1.3-2
+ [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.13  
+ [9] stringi_1.4.3   fs_1.3.0        whisker_0.3-2   rmarkdown_1.12 
+[13] tools_3.6.0     stringr_1.4.0   glue_1.3.1      xfun_0.6       
+[17] yaml_2.2.0      compiler_3.6.0  htmltools_0.3.6 knitr_1.22     </code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>BAM file path: /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://nanoporetech.github.io/tombo/resquiggle.html#signal-normalization" class="uri">https://nanoporetech.github.io/tombo/resquiggle.html#signal-normalization</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p><a href="https://github.com/Psy-Fer/SquiggleKit" class="uri">https://github.com/Psy-Fer/SquiggleKit</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
