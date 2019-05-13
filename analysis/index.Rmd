@@ -1,34 +1,17 @@
 ---
 title: "Home"
 site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: True
+
 ---
 
 Welcome! This is a website for organizing the summaries of my meetings and readings.
 
-<style>
-.column-left{
-  float: left;
-  width: 100%;
-  text-align: left;
-}
-.column-center{
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-}
-.column-right{
-  float: right;
-  width: 20%;
-  text-align: right;
-}
-</style>
-
-
-
-<div class="column-left">
 # Meeting
 
-#### [Tue 5 Mar 2019: project description](5_Mar_with_HJ_and_MK_.html) (with Heejung and Mike)
+#### [Tue 5 Mar 2019: project description](5_Mar__with_HJ_and_MK_.html) (with Heejung and Mike)
 
 #### [Mon 18 Mar 2019:Ideas about the direction at the start of the project](18_Mar_with_HJ_and_MK.html) (with Heejung and Mike)
 
@@ -40,10 +23,6 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 #### [Using sequins with RNA sequencing](Using_sequins_with_RNA_sequencing.html)
 
-
-
-
-
 # Software
 
 #### [SquiggleKit](SquiggleKit.html)
@@ -52,7 +31,6 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 # Workflow
 
+#### [To do list](To_Do_List.html)
+
 #### [cDNA analysis workflow](cDNA_workflow.html)
-</div>
-
-

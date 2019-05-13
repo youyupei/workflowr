@@ -1,7 +1,7 @@
 ---
 title: "To Do List"
 author: "youyupei"
-date: "last update: `r format(Sys.time(), "%d-%B-%Y  %H:%m")` "
+date: "Updated 2019-04-13"
 output: workflowr::wflow_html
 ---
 
@@ -13,19 +13,15 @@ cDNA data analysis:
   * Pair each fastq read with its raw signal.
   * Successfully run tombo resquiggle
   * (11/4/2019)Generate random motif in different lengths and check their occurrances within spike-in sequence.
-  * (23/4/2019)Prepare a slides for Terry's group meeting 
-  * Figure out setting in minimap2
 
 
 ## To Do (ordered by the priority)
 
-* Figure out how does FLAIR work.
-
+* Prepare a slides for Terry's group meeting
 
 * Run Tombo resquiggle on spike-in reads the check the distribution of the squiggle assigned to each base.
 
 * Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
-
 
 * Play with the spike-in reads: 
 
@@ -33,22 +29,14 @@ cDNA data analysis:
 	2. For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.
 	3. Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences. 
 	4. Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.
-	5. Try to use DTW to match the squiggles
+	6. Try to use DTW to match the squiggles
 
+* Figure out best setting in minimap2
 
 * Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)
-
-
 
 # Questions
 
 * Is there currently any method can be use for splicing site identification?
-  
-  FLAIR uses short reads and annotation for splice junction correction.
-  
 * Is there any recommondation of setting when using minimap2?
-  minimap2 support long-read mapping (-x map-ont/map-ont) for transcripts, -x splice is a good option for long-read spliced alignment. There are different options for mapping at the exon junctions:
-  1. force the reads map to GT-AG
-  2. don't match GT-AG (default)
-  
 

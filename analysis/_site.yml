@@ -1,28 +1,21 @@
 name: myproject
 output_dir: ../docs
 navbar:
-  icon: fa-code-fork
   title: workflowr
   left:
-  - icon: fa-home
-    text: Home
+  - text: Home
     href: index.html
-  - icon: fa-info
-    text: About
+  - text: About
     href: about.html
-  - icon: fa-id-card-o
-    text: License
+  - text: License
     href: license.html
   right:
   - icon: fa-github
     text: Source code
     href: https://github.com/youyupei/workflowr
-  - icon: fa-check-square-o
-    text: TOdo list
-    href: To_Do_List.html
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: lumen
+    theme: cosmo
     highlight: textmate
