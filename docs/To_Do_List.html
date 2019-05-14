@@ -440,14 +440,14 @@ div.section {
 
 <h1 class="title toc-ignore">workflow</h1>
 <h4 class="author">Yupei You</h4>
-<h4 class="date">last updated: 13-May-2019 23:05</h4>
+<h4 class="date">last updated: 14-May-2019 19:05</h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -456,7 +456,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -465,10 +465,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-05-13
+<strong>Last updated:</strong> 2019-05-14
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -484,12 +484,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -544,10 +544,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee6137ef05d5dde438453246807c2f6e5fe71372btargetblanke6137efa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/e6137ef05d5dde438453246807c2f6e5fe71372b" target="_blank">e6137ef</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreed957833fd0a6a15e5e57e0221ef8ca1b55fae2e5targetblankd957833a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/d957833fd0a6a15e5e57e0221ef8ca1b55fae2e5" target="_blank">d957833</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee6137ef05d5dde438453246807c2f6e5fe71372btargetblanke6137efa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreed957833fd0a6a15e5e57e0221ef8ca1b55fae2e5targetblankd957833a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -557,37 +557,6 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
-
-Untracked files:
-    Untracked:  analysis/10_Apr_Meeting_Summary.Rmd
-    Untracked:  docs/figure/
-    Untracked:  docs/img/
-
-Unstaged changes:
-    Modified:   analysis/To_Do_List.Rmd
-    Modified:   analysis/workflowr.R
-    Deleted:    bookdown/.gitignore
-    Deleted:    bookdown/LICENSE
-    Deleted:    bookdown/Meeting.Rmd
-    Deleted:    bookdown/README.md
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/fontawesome/fontawesome-webfont.ttf
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-bookdown.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-fontsettings.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-highlight.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-search.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/plugin-table.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/css/style.css
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/app.min.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/jquery.highlight.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/lunr.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-bookdown.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-fontsettings.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-search.js
-    Deleted:    bookdown/_book/libs/gitbook-2.6.7/js/plugin-sharing.js
-    Deleted:    bookdown/_book/libs/jquery-2.2.3/jquery.min.js
-    Deleted:    bookdown/_book/search_index.json
-    Deleted:    bookdown/bookdown-minimal.Rproj
-    Deleted:    bookdown/index.Rmd
 
 </code></pre>
 <p>
@@ -626,6 +595,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/d957833fd0a6a15e5e57e0221ef8ca1b55fae2e5/analysis/To_Do_List.Rmd" target="_blank">d957833</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-14
+</td>
+<td>
+wflow_publish(“To_Do_List.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/d2cbdfc484355cc0b1d187099ecd92c50936048e/analysis/To_Do_List.Rmd" target="_blank">d2cbdfc</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-13
+</td>
+<td>
+update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/d2cbdfc484355cc0b1d187099ecd92c50936048e/docs/To_Do_List.html" target="_blank">d2cbdfc</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-13
+</td>
+<td>
+update
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -735,6 +755,17 @@ wflow_publish(“../”)
 </div>
 </div>
 </div>
+<div id="problems-and-possible-solutions" class="section level2">
+<h2>Problems and possible solutions</h2>
+<div id="tombo-resquiggle-problem-talked-with-hj-and-mk-1352019" class="section level3">
+<h3>Tombo resquiggle problem (talked with HJ and MK, 13/5/2019)</h3>
+<p>In Tombo resquiggle, the accuracy of the squiggle to sequence alignment largely depends on the correctness of the provided reference sequence. However, for the queried reads, we do not know what is the proper input sequence to extract the signal that is from the exon junction.</p>
+<p><strong>possible solutions</strong>:</p>
+<p>It is okay if we can not get an accuracy base-to-base assingment near the exon boundary. We can input base-called seq or annotated reference and extract signal from a wider window as long as we are sure the exon boundary is inside the window. Then we can search the best match inside.</p>
+<p><strong>Note</strong>:</p>
+<p>Mike has mentioned that in many cases the exons could be similar in a gene (because of duplication).</p>
+</div>
+</div>
 <div id="done" class="section level2">
 <h2>Done</h2>
 <p>cDNA data analysis:</p>
@@ -745,22 +776,24 @@ wflow_publish(“../”)
 <li>(11/4/2019)Generate random motif in different lengths and check their occurrances within spike-in sequence.</li>
 <li>(23/4/2019)Prepare a slides for Terry’s group meeting</li>
 <li>Figure out setting in minimap2</li>
+<li>able to extract signal from .fast5 file</li>
+<li>able to extract squiggle from Tombo resquiggle output</li>
+<li>Learn about the scappie squiggle (10/5/2019)</li>
 </ul>
 </div>
 <div id="to-do-ordered-by-the-priority" class="section level2">
 <h2>To Do (ordered by the priority)</h2>
 <ul>
-<li><p>Figure out how does FLAIR work.</p></li>
-<li><p>Run Tombo resquiggle on spike-in reads the check the distribution of the squiggle assigned to each base.</p></li>
-<li><p>Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel</p></li>
 <li><p>Play with the spike-in reads:</p>
 <ol style="list-style-type: decimal">
 <li>Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).</li>
 <li>For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.</li>
 <li>Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences.</li>
 <li>Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.</li>
-<li>Try to use DTW to match the squiggles</li>
+<li>Try to use DTW to match the squiggles (Doing now)</li>
 </ol></li>
+<li><p>Figure out how does FLAIR work.</p></li>
+<li><p>Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel</p></li>
 <li><p>Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)</p></li>
 </ul>
 </div>
