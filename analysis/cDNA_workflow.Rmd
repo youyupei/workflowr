@@ -444,7 +444,7 @@ GXB01170_20180329_FAH60584_GA50000_sequencing_run_LLAAB035083_26949_read_15463_c
 
 I selected the region in the previous [table: tombo output](#boundary_region)
 
-The raw data start from 3694(1586+2108) to 3945(1817+20+2108):
+The raw data start from **3694(1586+2108) to 3945(1817+20+2108)**:
 ```{bash eval = F}
 cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read
 
@@ -454,6 +454,71 @@ fast5_file=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read/qu
 
 python $SCRIPT_PATH/fast5_to_tsv.py $fast5_file boundary_signal.tsv 3694 3945
 ```
+
+Before applying the DTW, I plotted out the expected signal as well as the observed signal:
+
+```{bash eval = F}
+cd /opt/shared/PhD_project/Nanopore-Splicing-Site/example
+python3 ../visulisation/plot_scrappie_model.py motif_true.model model_plot
+
+python /visulisation/plot_squiggle.py DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5 exon_junc_20_bases.png 3694 3945
+
+```
+
+<center>
+
+![Raw data](../docs/img/exon_junc_20_bases.png){width=75%}
+![Expected squiggle](../docs/img/model_plot_ture.png){width=75%}
+
+
+</center>
+
+
+#### DTW using SquiggleKit: MotifSeq.py
+
+
+
+In SquiggleKit, DTW is applied using `[mlpy.dtw_subsequence](http://mlpy.sourceforge.net/docs/3.5/dtw.html#subsequence-dtw)` in [mlpy](http://mlpy.sourceforge.net/docs/3.5/) package：
+
+  mlpy.dtw_subsequence:
+
+  * It's a local alignment
+  * Use Manhattan distance
+  
+  MotifSeq.py:
+
+  * Input: .tsv file, signal start from the 4th element in each row
+  * dtw_subsequence in MotifSeq.py compares the raw signal with the scrappie model (Doesn't use the variance).
+
+Input of MotifSeq.py is saved in `Nanopore-Splicing-Site/example`:
+
+Bash command (ran locally):
+```{bash eval=F}
+cd /opt/shared/PhD_project/Nanopore-Splicing-Site/example
+
+
+echo "false model:"
+python $shared/SquiggleKit/MotifSeq.py -s boundary_signal.tsv -m motif_false.model
+echo "true model:"
+python $shared/SquiggleKit/MotifSeq.py -s boundary_signal.tsv -m motif_true.model
+
+```
+Here is the result
+```{bash eval=F}
+false model:
+
+/home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read/queried_read_false/fast5s/DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5 Dist: 48.871340492238865 pos: 50 , 166 Dist from Start 50 Length: 116
+
+
+true model:
+
+/home/youyupei/PhD_proj/cDNA_dataset_Analyses/tiny_set/quried_read/queried_read_false/fast5s/DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5 Dist: 58.51271588303034 pos: 33 , 233 Dist from Start 33 Length: 200
+```
+
+
+
+
+
 
 
 
