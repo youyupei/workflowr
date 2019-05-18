@@ -309,10 +309,6 @@ python /home/youyupei/PhD_proj/Python/visulisation/plot_squiggle.py DESKTOP_4SQH
 
 
 
-
-
-
-
 ### Generate representative squiggle
 #### scrappie squiggle
 
@@ -464,7 +460,6 @@ python3 ../visulisation/plot_scrappie_model.py motif_true.model model_plot
 python /visulisation/plot_squiggle.py DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_sequencing_run_SHSY5Y_cDNA_bcode_test_35833_read_48338_ch_43_strand.fast5 exon_junc_20_bases.png 3694 3945
 
 ```
-
 <center>
 
 ![Raw data](../docs/img/exon_junc_20_bases.png){width=75%}
@@ -478,7 +473,7 @@ python /visulisation/plot_squiggle.py DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_
 
 
 
-In SquiggleKit, DTW is applied using `[mlpy.dtw_subsequence](http://mlpy.sourceforge.net/docs/3.5/dtw.html#subsequence-dtw)` in [mlpy](http://mlpy.sourceforge.net/docs/3.5/) package：
+In SquiggleKit, DTW is applied using `[mlpy.dtw_subsequence](http://mlpy.sourceforge.net/docs/3.5/dtw.html#subsequence-dtw)` in [mlpy](http://mlpy.sourceforge.net/docs/3.5/) package:
 
   mlpy.dtw_subsequence:
 
