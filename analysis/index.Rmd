@@ -50,6 +50,8 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 #### [Tombo resquiggle Algorithm](Tombo_resquiggle.html)
 
+#### [FLAIR (exon junction correction)](FLAIR.html)
+
 # Workflow
 
 #### [cDNA analysis workflow](cDNA_workflow.html)
