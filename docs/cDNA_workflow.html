@@ -440,7 +440,7 @@ div.section {
 
 <h1 class="title toc-ignore">workflow</h1>
 <h4 class="author">Yupei You</h4>
-<h4 class="date">last updated: 14-May-2019 19:05</h4>
+<h4 class="date">last updated: 18-May-2019 17:05</h4>
 
 </div>
 
@@ -465,7 +465,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-05-14
+<strong>Last updated:</strong> 2019-05-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -544,10 +544,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeccf99fbadacb1a5d30195f38c9520c77feaed1c4targetblankccf99fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/ccf99fbadacb1a5d30195f38c9520c77feaed1c4" target="_blank">ccf99fb</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee9ffdc982e5360d7ef7282a1aed465e2adf39e05targetblanke9ffdc9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/e9ffdc982e5360d7ef7282a1aed465e2adf39e05" target="_blank">e9ffdc9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeccf99fbadacb1a5d30195f38c9520c77feaed1c4targetblankccf99fba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee9ffdc982e5360d7ef7282a1aed465e2adf39e05targetblanke9ffdc9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -558,8 +558,9 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
 
-Unstaged changes:
-    Modified:   analysis/To_Do_List.Rmd
+Untracked files:
+    Untracked:  10_Apr_Meeting_Summary.Rmd
+    Untracked:  docs/img/FLAIR_workflow.PNG
 
 </code></pre>
 <p>
@@ -598,6 +599,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/e9ffdc982e5360d7ef7282a1aed465e2adf39e05/analysis/cDNA_workflow.Rmd" target="_blank">e9ffdc9</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-18
+</td>
+<td>
+wflow_publish(c(“cDNA_workflow.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/8edf88621fc1d5d75c121905bc7a11bff6f9415a/docs/cDNA_workflow.html" target="_blank">8edf886</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1067,7 +1102,7 @@ python /visulisation/plot_squiggle.py DESKTOP_4SQHSSK_20180117_FAH31144_MN18871_
 </div>
 <div id="dtw-using-squigglekit-motifseq.py" class="section level4">
 <h4>DTW using SquiggleKit: MotifSeq.py</h4>
-<p>In SquiggleKit, DTW is applied using <code>[mlpy.dtw_subsequence](http://mlpy.sourceforge.net/docs/3.5/dtw.html#subsequence-dtw)</code> in <a href="http://mlpy.sourceforge.net/docs/3.5/">mlpy</a> packageï¼š</p>
+<p>In SquiggleKit, DTW is applied using <code>[mlpy.dtw_subsequence](http://mlpy.sourceforge.net/docs/3.5/dtw.html#subsequence-dtw)</code> in <a href="http://mlpy.sourceforge.net/docs/3.5/">mlpy</a> package:</p>
 <p>mlpy.dtw_subsequence:</p>
 <ul>
 <li>It’s a local alignment</li>
