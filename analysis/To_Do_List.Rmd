@@ -31,19 +31,24 @@ cDNA data analysis:
   * able to extract squiggle from Tombo resquiggle output
   * Learn about the scappie squiggle (10/5/2019)
   * Figure out how does FLAIR work. 
-
-
-## To Do (ordered by the priority)
-
-* Play with the spike-in reads: 
+  
+  * Play with the spike-in reads: 
 
 	1. Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).
 	2. For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.
 	3. Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences. 
 	4. Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.
-	5. Try to use DTW to match the squiggles (Doing now)
+	5. Try to use DTW to match the squiggles 
+	  
+	  * use subsequence_dtw in python package mlpy
+	  * use mean and dwell time from scrappie squiggle model as input
 
 
+
+## To Do (ordered by the priority)
+
+
+* Generate presentitave model using spike-in data.
 
 * Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
 
