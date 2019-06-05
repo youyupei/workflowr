@@ -1,0 +1,198 @@
+---
+title: "Single splicing site and tested reads"
+author: "Yupei You"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+---
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+</style>
+
+## Splicing site information
+
+I randomly selected a splicing site from spike-in transcripts
+
+Here is the related information provided in `Sequins` annotation file:
+
+```{}
+
+<seqname> <source> <feature> <start> <end> <score> <strand> <frame> [attributes] [comments]
+
+chrIS	Sequin	gene	6790136	6829759	.	+	.	gene_id "R1_102"; gene_type "synthetic";
+
+chrIS	Sequin	exon	6790171	6790296	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6794368	6794699	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6798856	6798958	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6799685	6799856	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6802314	6802437	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6822106	6822297	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+chrIS	Sequin	exon	6829319	6829759	.	+	.	gene_id "R1_102"; transcript_id "R1_102_1";
+```
+
+For the early stage of this project, we are only looking at a single splicing site:
+
+**Transcript: R1_102_1**
+
+**Splicing site DNA position: 6829759, 6790171**
+
+**Transcript related position: 127**
+
+
+
+## Exon junction Candidates (from mapped reads)
+
+There are several ways to generate exon junction candidates, such as from mapped reads or/and annotation.
+
+Here, we present two candidates supported by the mapping results.
+
+
+
+
+
+### Mapping result visualisation (IGV)
+
+The reads were mapped to the reference genome in two different way about splicing sites:
+
+To decrease the running time, only reads form barcode 7 have been processed, which is about a quarter of the total number. 
+
+The reads were mapped to the transcript sequences: **rnasequin_sequences_2.2.fa** using `minimap2`( version 2.11-r797) and bam file sorting using `samtools` (version samtools 1.9 Using htslib 1.9 Copyright (C) 2018 Genome Research Ltd.) Command: 
+
+#### Option 1: Do not match GT-AG:
+  
+```{bash, eval=FALSE}
+REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam
+```
+  
+  
+BAM file name: mapped.un.splice.sorted.bam [^1]
+  
+<center>
+  
+![](../docs/img/R1_102_2_dont_match_GTAG.PNG)
+  
+</center>
+  
+  
+#### Option 2: Force to match GT-AG **(currently playing with)**:  
+
+```{bash, eval=FALSE}
+cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM
+
+REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 -uf $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam
+```
+
+BAM file name: mapped.splice.sorted.bam
+  
+![](../docs/img/R1_102_2_GTAG.png){#IGV_mapping}
+  
+[^1]: BAM file path: /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM
+
+
+#### Candidates:
+
+**By looking at the mapping results, we proposed 2 potiential splicing site according to the supports from the mapped reads:**
+
+
+<div class=column-left>
+**potential exon junction 1**:
+
+  ......GGCCA||GGAAT ......
+</div>
+
+<div class = column-right>
+**potential exon junction 2**:
+
+  ...... GGCCAGT||GGAAT......
+</div>
+
+**This is the true transcript sequence with larger window size:**
+
+AGGGGCGGGGGATGGGCGTCAAGTGTTGGCCCCGCAGGGGGTTGCCCCCACGGGGGGGCCCCCACGAACAGAGGGGTGACGGGGCCGGAACTCCGGCCGCCACTAAGGCGCGGGCCTCC**GGCCAGTGGAAT**CTTGGTTAACTATTGTACTTGCCGCGGTGAGAGGGTCTGAGAGGGATTCGATGCTAGGATAAAAATGATCAAAATGAAGTGACTGAAATGTACCTCTGTGCGGATGGGATCCTAAGCCAGTC
+
+## Queried read
+
+In our previously proposed workflow, we will query each read at a time to . Currently, only two read:
+
+### True read
+
+One correct mapped read (Highlighted in **red** on the [mapping figure](#IGV_mapping)), whose splicing site is consistent as annotated 
+
+**Read id**: 41bc625c-8ff9-400a-a32c-e647cb1ca97c
+**Reference span**: R1_102_1:2-1,487 (+)
+
+#### True read visulisation{#True_read_visulisation}
+
+I followed Tombo[^2] and normalise the squiggle using following method:
+  
+  $$ NormSignal = \frac{RawSignal-Shift}{Scale}$$
+
+[^2]: https://nanoporetech.github.io/tombo/resquiggle.html#signal-normalization
+
+The script for ploting the squiggle is `Python/visulisation/plot_squiggle.py`:
+
+**Usage**:
+```{bash eval = F}
+python plot_squiggle.py <fast5 filename> <save fig as> <optianl: position on transcripts> <optional: window size>
+```
+
+
+<center>
+
+![True Read whole length plot](../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c.png){width=70%}
+
+
+</center>
+
+
+![True Read pos 127 win 20](img/true_pos_127_win_20.png){width=70%}
+
+**The sequence near the queried exon junction:**
+.....CCTCCGGCCAGT||GGAATCTTG..... (|| is the true exon boundary.)
+
+
+
+
+
+
+### False read
+
+One wrongly mapped read (Highlighted in **black**)
+
+**Read id**: 24eb6092-56b2-432e-8f7c-a8c1b64a8f87
+**Reference span**: R1_102_1:16-1,488 (-)
+
+#### False read visulisation
+<center>
+
+![False Read whole length plot](img/cDNA_R1_102_1.png){width=70%}
+
+
+![False Read plot pos 127 win 20](img/false_read_pos_127.png){width=70%}
+
+</center>
+
+
+Details refer to [True read visulisation](#True_read_visulisation)
