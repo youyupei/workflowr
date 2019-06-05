@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Yupei You" />
+
+
+<title>Single splicing site and tested reads</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="about.html">
+    <span class="fa fa-info"></span>
+     
+    About
+  </a>
+</li>
+<li>
+  <a href="license.html">
+    <span class="fa fa-id-card-o"></span>
+     
+    License
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/youyupei/workflowr">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+<li>
+  <a href="To_Do_List.html">
+    <span class="fa fa-check-square-o"></span>
+     
+    TOdo list
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Single splicing site and tested reads</h1>
+<h4 class="author">Yupei You</h4>
+<h4 class="date">last updated: 05-June-2019 12:06</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-06-05
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190306code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190306)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190306code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190306)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeb6746d77cee1471c515bcd419875e026f3a50e63targetblankb6746d7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/b6746d77cee1471c515bcd419875e026f3a50e63" target="_blank">b6746d7</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeb6746d77cee1471c515bcd419875e026f3a50e63targetblankb6746d7a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+
+Untracked files:
+    Untracked:  10_Apr_Meeting_Summary.Rmd
+    Untracked:  analysis/18_Ma_ with_HJ_and_MK.Rmd
+    Untracked:  analysis/Journal_club.Rmd
+    Untracked:  analysis/Squiggle_alignment.Rmd
+    Untracked:  analysis/cDNA_data_preprocessing.Rmd
+    Untracked:  analysis/fetch_single_from_tombo.Rmd
+    Untracked:  docs/img/FLAIR_workflow.PNG
+
+Unstaged changes:
+    Deleted:    analysis/10 Apr Meeting Summary.Rmd
+    Deleted:    analysis/18 Mar with HJ and MK.Rmd
+    Modified:   analysis/To_Do_List.Rmd
+    Modified:   analysis/cDNA_workflow.Rmd
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/b6746d77cee1471c515bcd419875e026f3a50e63/analysis/cDNA_R1_102_1.Rmd" target="_blank">b6746d7</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-06-05
+</td>
+<td>
+wflow_publish(files = file)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+</style>
+<div id="splicing-site-information" class="section level2">
+<h2>Splicing site information</h2>
+<p>I randomly selected a splicing site from spike-in transcripts</p>
+<p>Here is the related information provided in <code>Sequins</code> annotation file:</p>
+<pre><code>
+&lt;seqname&gt; &lt;source&gt; &lt;feature&gt; &lt;start&gt; &lt;end&gt; &lt;score&gt; &lt;strand&gt; &lt;frame&gt; [attributes] [comments]
+
+chrIS   Sequin  gene    6790136 6829759 .   +   .   gene_id &quot;R1_102&quot;; gene_type &quot;synthetic&quot;;
+
+chrIS   Sequin  exon    6790171 6790296 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6794368 6794699 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6798856 6798958 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6799685 6799856 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6802314 6802437 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6822106 6822297 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;
+chrIS   Sequin  exon    6829319 6829759 .   +   .   gene_id &quot;R1_102&quot;; transcript_id &quot;R1_102_1&quot;;</code></pre>
+<p>For the early stage of this project, we are only looking at a single splicing site:</p>
+<p><strong>Transcript: R1_102_1</strong></p>
+<p><strong>Splicing site DNA position: 6829759, 6790171</strong></p>
+<p><strong>Transcript related position: 127</strong></p>
+</div>
+<div id="exon-junction-candidates-from-mapped-reads" class="section level2">
+<h2>Exon junction Candidates (from mapped reads)</h2>
+<p>There are several ways to generate exon junction candidates, such as from mapped reads or/and annotation.</p>
+<p>Here, we present two candidates supported by the mapping results.</p>
+<div id="mapping-result-visualisation-igv" class="section level3">
+<h3>Mapping result visualisation (IGV)</h3>
+<p>The reads were mapped to the reference genome in two different way about splicing sites:</p>
+<p>To decrease the running time, only reads form barcode 7 have been processed, which is about a quarter of the total number.</p>
+<p>The reads were mapped to the transcript sequences: <strong>rnasequin_sequences_2.2.fa</strong> using <code>minimap2</code>( version 2.11-r797) and bam file sorting using <code>samtools</code> (version samtools 1.9 Using htslib 1.9 Copyright (C) 2018 Genome Research Ltd.) Command:</p>
+<div id="option-1-do-not-match-gt-ag" class="section level4">
+<h4>Option 1: Do not match GT-AG:</h4>
+<pre class="bash"><code>REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam</code></pre>
+<p>BAM file name: mapped.un.splice.sorted.bam <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<center>
+<p><img src="../docs/img/R1_102_2_dont_match_GTAG.PNG" /></p>
+</center>
+</div>
+<div id="option-2-force-to-match-gt-ag-currently-playing-with" class="section level4">
+<h4>Option 2: Force to match GT-AG <strong>(currently playing with)</strong>:</h4>
+<pre class="bash"><code>cd /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM
+
+REF_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/Sequin_resources/rnasequin_decoychr_2.2.fa
+
+READS_PATH=/home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/Mapped_qlt58.sorted.fq
+
+minimap2 -ax splice -t 8 -uf $REF_PATH $READS_PATH | samtools sort -o mapped.un.splice.sorted.bam -T reads.tmp
+samtools index mapped.un.splice.sorted.bam</code></pre>
+<p>BAM file name: mapped.splice.sorted.bam</p>
+<p><img src="../docs/img/R1_102_2_GTAG.png" id="IGV_mapping" /></p>
+</div>
+<div id="candidates" class="section level4">
+<h4>Candidates:</h4>
+<p><strong>By looking at the mapping results, we proposed 2 potiential splicing site according to the supports from the mapped reads:</strong></p>
+<div class="column-left">
+<p><strong>potential exon junction 1</strong>:</p>
+<p>……GGCCA||GGAAT ……</p>
+</div>
+<div class="column-right">
+<p><strong>potential exon junction 2</strong>:</p>
+<p>…… GGCCAGT||GGAAT……</p>
+</div>
+<p><strong>This is the true transcript sequence with larger window size:</strong></p>
+<p>AGGGGCGGGGGATGGGCGTCAAGTGTTGGCCCCGCAGGGGGTTGCCCCCACGGGGGGGCCCCCACGAACAGAGGGGTGACGGGGCCGGAACTCCGGCCGCCACTAAGGCGCGGGCCTCC<strong>GGCCAGTGGAAT</strong>CTTGGTTAACTATTGTACTTGCCGCGGTGAGAGGGTCTGAGAGGGATTCGATGCTAGGATAAAAATGATCAAAATGAAGTGACTGAAATGTACCTCTGTGCGGATGGGATCCTAAGCCAGTC</p>
+</div>
+</div>
+</div>
+<div id="queried-read" class="section level2">
+<h2>Queried read</h2>
+<p>In our previously proposed workflow, we will query each read at a time to . Currently, only two read:</p>
+<div id="true-read" class="section level3">
+<h3>True read</h3>
+<p>One correct mapped read (Highlighted in <strong>red</strong> on the <a href="#IGV_mapping">mapping figure</a>), whose splicing site is consistent as annotated</p>
+<p><strong>Read id</strong>: 41bc625c-8ff9-400a-a32c-e647cb1ca97c <strong>Reference span</strong>: R1_102_1:2-1,487 (+)</p>
+<div id="True_read_visulisation" class="section level4">
+<h4>True read visulisation</h4>
+<p>I followed Tombo<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and normalise the squiggle using following method:</p>
+<p><span class="math display">\[ NormSignal = \frac{RawSignal-Shift}{Scale}\]</span></p>
+<p>The script for ploting the squiggle is <code>Python/visulisation/plot_squiggle.py</code>:</p>
+<p><strong>Usage</strong>:</p>
+<pre class="bash"><code>python plot_squiggle.py &lt;fast5 filename&gt; &lt;save fig as&gt; &lt;optianl: position on transcripts&gt; &lt;optional: window size&gt;</code></pre>
+<center>
+<div class="figure">
+<img src="../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c.png" alt="True Read whole length plot" style="width:70.0%" />
+<p class="caption">True Read whole length plot</p>
+</div>
+</center>
+<div class="figure">
+<img src="img/true_pos_127_win_20.png" alt="True Read pos 127 win 20" style="width:70.0%" />
+<p class="caption">True Read pos 127 win 20</p>
+</div>
+<p><strong>The sequence near the queried exon junction:</strong> …..CCTCCGGCCAGT||GGAATCTTG….. (|| is the true exon boundary.)</p>
+</div>
+</div>
+<div id="false-read" class="section level3">
+<h3>False read</h3>
+<p>One wrongly mapped read (Highlighted in <strong>black</strong>)</p>
+<p><strong>Read id</strong>: 24eb6092-56b2-432e-8f7c-a8c1b64a8f87 <strong>Reference span</strong>: R1_102_1:16-1,488 (-)</p>
+<div id="false-read-visulisation" class="section level4">
+<h4>False read visulisation</h4>
+<center>
+<div class="figure">
+<img src="img/cDNA_R1_102_1.png" alt="False Read whole length plot" style="width:70.0%" />
+<p class="caption">False Read whole length plot</p>
+</div>
+<div class="figure">
+<img src="img/false_read_pos_127.png" alt="False Read plot pos 127 win 20" style="width:70.0%" />
+<p class="caption">False Read plot pos 127 win 20</p>
+</div>
+</center>
+<p>Details refer to <a href="#True_read_visulisation">True read visulisation</a></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.0 (2019-04-26)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17763)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] workflowr_1.3.0 Rcpp_1.0.1      digest_0.6.18   rprojroot_1.3-2
+ [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.13  
+ [9] stringi_1.4.3   fs_1.3.0        whisker_0.3-2   rmarkdown_1.12 
+[13] tools_3.6.0     stringr_1.4.0   glue_1.3.1      xfun_0.6       
+[17] yaml_2.2.0      compiler_3.6.0  htmltools_0.3.6 knitr_1.22     </code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>BAM file path: /home/youyupei/PhD_proj/cDNA_dataset_Analyses/intermedia_data/BAM<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p><a href="https://nanoporetech.github.io/tombo/resquiggle.html#signal-normalization" class="uri">https://nanoporetech.github.io/tombo/resquiggle.html#signal-normalization</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
