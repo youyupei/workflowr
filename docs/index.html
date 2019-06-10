@@ -462,7 +462,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-05-18
+<strong>Last updated:</strong> 2019-06-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -493,10 +493,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree993eec67364e497a76f2534be1fc904f9664e222targetblank993eec6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/993eec67364e497a76f2534be1fc904f9664e222" target="_blank">993eec6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee884958f646318c2a3cf5b3bcc9c9efd5f554906targetblanke884958a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/e884958f646318c2a3cf5b3bcc9c9efd5f554906" target="_blank">e884958</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree993eec67364e497a76f2534be1fc904f9664e222targetblank993eec6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreee884958f646318c2a3cf5b3bcc9c9efd5f554906targetblanke884958a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -509,11 +509,12 @@ Ignored files:
 
 Untracked files:
     Untracked:  10_Apr_Meeting_Summary.Rmd
+    Untracked:  docs/img/DTW_implement.jpg
     Untracked:  docs/img/FLAIR_workflow.PNG
 
 Unstaged changes:
-    Modified:   analysis/To_Do_List.Rmd
-    Modified:   analysis/cDNA_workflow.Rmd
+    Deleted:    analysis/10 Apr Meeting Summary.Rmd
+    Deleted:    analysis/18 Mar with HJ and MK.Rmd
 
 </code></pre>
 <p>
@@ -552,6 +553,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/e884958f646318c2a3cf5b3bcc9c9efd5f554906/analysis/index.Rmd" target="_blank">e884958</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-06-10
+</td>
+<td>
+wflow_publish("*Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/2a2be90aeafdd0b93a5b07246bc34b0f4e406f26/docs/index.html" target="_blank">2a2be90</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-05-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1089,18 +1124,24 @@ Start workflowr project.
 </style>
 <div class="column-left">
 <h1 id="meeting">Meeting</h1>
-<h4 id="tue-5-mar-2019-project-description-with-heejung-and-mike"><a href="5_Mar_with_HJ_and_MK_.html">Tue 5 Mar 2019: project description</a> (with Heejung and Mike)</h4>
-<h4 id="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project-with-heejung-and-mike"><a href="18_Mar_with_HJ_and_MK.html">Mon 18 Mar 2019:Ideas about the direction at the start of the project</a> (with Heejung and Mike)</h4>
-<h4 id="wed-10-apr-2019-progress-update-with-heejung-and-mike"><a href="10_Apr_Meeting_Summary.html">Wed 10 Apr 2019: Progress Update</a> (with Heejung and Mike)</h4>
+<h2 id="tue-5-mar-2019-project-description-with-heejung-and-mike"><a href="5_Mar_with_HJ_and_MK_.html">Tue 5 Mar 2019: project description</a> (with Heejung and Mike)</h2>
+<h2 id="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project-with-heejung-and-mike"><a href="18_Mar_with_HJ_and_MK.html">Mon 18 Mar 2019:Ideas about the direction at the start of the project</a> (with Heejung and Mike)</h2>
+<h2 id="wed-10-apr-2019-progress-update-with-heejung-and-mike"><a href="10_Apr_Meeting_Summary.html">Wed 10 Apr 2019: Progress Update</a> (with Heejung and Mike)</h2>
 <h1 id="reading">Reading</h1>
-<h4 id="real-time-selective-sequencing-using-nanopore-technology"><a href="Matthew_2016.html">Real-time selective sequencing using nanopore technology</a></h4>
-<h4 id="using-sequins-with-rna-sequencing"><a href="Using_sequins_with_RNA_sequencing.html">Using sequins with RNA sequencing</a></h4>
+<h2 id="real-time-selective-sequencing-using-nanopore-technology"><a href="Matthew_2016.html">Real-time selective sequencing using nanopore technology</a></h2>
+<h2 id="using-sequins-with-rna-sequencing"><a href="Using_sequins_with_RNA_sequencing.html">Using sequins with RNA sequencing</a></h2>
 <h1 id="software">Software</h1>
-<h4 id="squigglekit"><a href="SquiggleKit.html">SquiggleKit</a></h4>
-<h4 id="tombo-resquiggle-algorithm"><a href="Tombo_resquiggle.html">Tombo resquiggle Algorithm</a></h4>
-<h4 id="flair-exon-junction-correction"><a href="FLAIR.html">FLAIR (exon junction correction)</a></h4>
+<h2 id="squigglekit"><a href="SquiggleKit.html">SquiggleKit</a></h2>
+<h2 id="tombo-resquiggle-algorithm"><a href="Tombo_resquiggle.html">Tombo resquiggle Algorithm</a></h2>
+<h2 id="flair-exon-junction-correction"><a href="FLAIR.html">FLAIR (exon junction correction)</a></h2>
 <h1 id="workflow">Workflow</h1>
-<h4 id="cdna-analysis-workflow"><a href="cDNA_workflow.html">cDNA analysis workflow</a></h4>
+<h2 id="cdna-dataset-preprocessing"><a href="cDNA_data_preprocessing.html">cDNA dataset preprocessing</a></h2>
+<h2 id="squiggle-to-reference-alignment-tombo"><a href="Squiggle_alignment.html">Squiggle to reference alignment (Tombo)</a></h2>
+<h2 id="fetch-signal-from-tombo-output"><a href="fetch_single_from_tombo.html">Fetch signal from tombo output</a></h2>
+<h2 id="single-splicing-site-test">Single Splicing site test</h2>
+<h3 id="single-splicing-site-and-tested-reads"><a href="cDNA_R1_102_1.html">Single splicing site and tested reads</a></h3>
+<h3 id="generate-representative-squiggle-for-candidates"><a href="get_representative_squiggle.html">Generate representative squiggle for candidates</a></h3>
+<h3 id="run-self-developed-dtw"><a href="self_developed_DTW.html">Run self-developed DTW</a></h3>
 </div>
 
 
