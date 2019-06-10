@@ -1,0 +1,53 @@
+---
+title: "fetch_single_from_tombo"
+author: "Yupei You"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+editor_options:
+  chunk_output_type: console
+---
+
+## How to fetch signal of subsequence in interest from tombo resquiggle output?
+
+This is my workflow of fetch signal from tombo resquiggle output. The **python code** is available on [github](https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/helper.py)
+
+
+Here, I will explain the steps using an exampel:
+
+queried read id: 41bc625c-8ff9-400a-a32c-e647cb1ca97c
+queried position: 124-131 on transcript reference
+
+### Prepare the fast5 processed by tombo
+
+**We can get the fast5 filename from the read id using following command**:
+
+```{bash eval=F}
+file_dir=/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7
+# looking for read 41bc625c-8ff9-400a-a32c-e647cb1ca97c
+line=$(sed -n '/41bc625c-8ff9-400a-a32c-e647cb1ca97c/=' test_readid.txt)
+head -n $line test_fast5_file.txt | tail -n 1
+```
+
+
+### Tombo output
+
+The alignment results were written in the .fast5 file. The following figure shows the information of squiggle assigned to the exon boundary:
+
+<center>
+
+![Tombo resquiggle result of the exon boundary, **read start point: 2108**](../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c_exon_junction_index.png){width=60; #boundary_region}
+
+</center>
+
+
+**Note 1: The alignment of squiggle to the reference doesn't start from the first data point, for example, here, 2108 points were skipped since they may come from the flanking region of the delay when sequencing begin.**
+
+**Note 2: The read does not nesseccarily start from the begining of the transcript, by check the alignment information (contained in tombo output), we can know that this read started at the 4th base of the transcript. That means, if we wanted to query pos 124-131 on transcript reference, what we need to do is looking at pos 120-127 on the table.**
+
+### Get index of signal point
+
+Then we could plot the No.3792(1684+2108) to No.3909(1801+2108) data points which are assigned to the 8 bases of exon boundary (**CAGTGGAA**) by Tombo:
+
+
+<center>
+
+![exon_junc.png](../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c_exon_junc.png){width=85%}

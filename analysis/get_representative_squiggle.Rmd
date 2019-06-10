@@ -1,0 +1,146 @@
+---
+title: "Get representative squiggle"
+author: "youyupei"
+date: "2019-06-05"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Generate representative squiggle
+### scrappie squiggle
+
+scrappie squiggle offers model that can take genomic seq as input and output a squiggle model[^1].
+[^1]: The same function is available within python package `scrappy`, correspoding code can be found on [githb](https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/helper.py)
+
+```{bash eval = F}
+cat motif.fa
+
+>motif1
+CCTCCGGCCAGGAATCTTGG
+>motif2
+CCTCCGGCCAGTGGAATCTTGG
+
+scrappie squiggle motif.fa
+#motif1
+pos     base    current sd      dwell
+0       C       0.079393        0.246576        1.260316
+1       C       0.173283        0.279191        1.997539
+2       T       1.675771        0.265075        5.029190
+3       C       0.782815        0.115154        8.015615
+4       C       0.322376        0.117889        6.181633
+5       G       -0.939446       0.140061        7.694880
+6       G       -0.624462       0.149050        7.269218
+7       C       0.834250        0.127715        7.511081
+8       C       0.507823        0.101567        8.413451
+9       A       -0.185710       0.130177        8.313931
+10      G       -0.794095       0.113302        8.961154
+11      G       -1.342859       0.140990        8.430869
+12      A       -1.672500       0.131926        8.973479
+13      A       -1.104969       0.193693        8.682899
+14      T       1.865047        0.294928        10.313233
+15      C       -0.272842       0.169230        8.563330
+16      T       0.694751        0.148489        6.617270
+17      T       0.808682        0.181729        8.346174
+18      G       -0.865237       0.365732        12.009984
+19      G       -0.199032       0.567114        10.152534
+#motif2
+pos     base    current sd      dwell
+0       C       0.101065        0.239271        1.504468
+1       C       0.176557        0.290187        1.791338
+2       T       1.677020        0.259444        5.615876
+3       C       0.788714        0.126458        7.922444
+4       C       0.308722        0.115572        7.711353
+5       G       -0.954900       0.136572        8.255605
+6       G       -0.590207       0.153253        5.455171
+7       C       0.930568        0.126736        7.415801
+8       C       0.521894        0.126124        7.854805
+9       A       -0.799399       0.135139        7.927912
+10      G       -1.409017       0.140081        9.589546
+11      T       1.111312        0.198856        9.070815
+12      G       -0.209650       0.158067        8.972621
+13      G       -1.273490       0.143306        8.812642
+14      A       -1.772102       0.138298        9.380451
+15      A       -1.175741       0.191701        8.371544
+16      T       1.872593        0.304727        9.712858
+17      C       -0.266769       0.175313        8.087045
+18      T       0.727317        0.156353        6.242123
+19      T       0.814729        0.189654        7.836185
+20      G       -0.870297       0.362229        11.444877
+21      G       -0.204841       0.559124        10.015700
+
+```
+
+
+I emailed for the algorithm to the developer of scrappie and here is the reply:
+
+```{}
+The basic architecture is stacked convolutional network, implemented in squiggle_r94 (https://github.com/nanoporetech/scrappie/blob/master/src/networks.c#L397): 
+All convolution window lengths are 9 and have a tanh activation
+
+Embed the sequence into a 3 x sequence_length matrix, the coordinate of each base defined by the points of a tetrahedron.
+Convolution 3 ->32
+Repeated four times:
+Residual wrapper x + f(x) around
+Convolution 32 -> 32
+Convolution 32 -> 3
+After transforming, the three outputs for each sequence position can be interpreted as the expected current level, variance and dwell of the samples matching that position. The network can be trained by Taiyaki, using a custom loss function that calculates the probability of each signal given its predicted squiggle.
+
+Hope this helps.
+
+```
+
+**Problems: We are worrying about that the signal may change across different sequencing run, the data for training used by scrappie group may differ from ours. But this method is still worth to be tried, because the results will be good if the signal level distributions from different sequecing run are consistent after nomalisation.**
+
+**Advantages:**
+
+* The steps are simpler
+* Expected squiggle of motifs with whatever length can be generated quickly
+
+### representative squiggle from spike-in
+#### Count motif
+
+![**Figure: Illustration of motif counting**](../docs/img/count_motif_example.png)
+
+For cDNA data, we could count signal from either forward strand or reverse strand. That means for a queried motif, we can also look for it's reverse compliment.
+
+**Compared with the scrappie approach:**
+
+* Pros:
+  + Spikin reads are fro the same sequencing run of the other reads, which overcomes the limitation of the scrappie approach
+
+* Cons:
+  1. After finding the occurance of queried motifs, we need to extract corresponding signal data. We did it using tombo resquiggle. However this step may have same problem because tombo resquiggle also relies on the pre-trained pore model.
+  2. We are not sure the tombo resquiggle result is accurate, because there is no way to test the correctness of the squiggle-to-base assignment. This step may also introduce some uncertainty.
+  3. The length of the queried motifs are limited to a gread extent, since we can hardly find occurances in spikein transcripts when querying motif longer than 10. This will affect the results a lot because the signal assigned to the start and end bases are depend on the based coming before or after the queried motif. 
+  4. This method is much more tedious than the scrappie squiggle method.
+  
+### Get mean and std per base
+
+```{}
+'''
+Get base signal given the genome location from the tombo resquiggle result
+'''
+
+from tombo import tombo_helper as th
+import numpy as np
+
+
+# load index file
+reads_index = th.TomboReads([
+    "/data/cephfs/punim0614/yupei/dataset/cDNA/test_subset_seq_run_1213_barcode_7/fast5s"])
+
+# set genome region:(0-based)
+test = th.intervalData(chrm="R2_72_2",\
+             start=1160, end = 1175,strand = '-')
+
+# get Data from the given interval
+all_reg_data = tesallt.copy().add_reads(reads_index)
+
+# base_levels
+base_levels = all_reg_data.get_base_levels()
+
+[(np.mean(i),np.std(i)) for i in base_levels]
+
+```
+

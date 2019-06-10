@@ -1,7 +1,7 @@
 ---
 title: "Single splicing site and tested reads"
 author: "Yupei You"
-date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+date: "`r format(Sys.time(), 'create date: 6/5 2019 last updated: %d-%B-%Y  %H:%m')`"
 ---
 <style>
 .column-left{
@@ -164,15 +164,15 @@ python plot_squiggle.py <fast5 filename> <save fig as> <optianl: position on tra
 ![True Read whole length plot](../docs/img/41bc625c-8ff9-400a-a32c-e647cb1ca97c.png){width=70%}
 
 
-</center>
 
 
-![True Read pos 127 win 20](img/true_pos_127_win_20.png){width=70%}
+
+![True Read pos 127 win 20](../docs/img/true_pos_127_win_20.png){width=70%}
 
 **The sequence near the queried exon junction:**
 .....CCTCCGGCCAGT||GGAATCTTG..... (|| is the true exon boundary.)
 
-
+</center>
 
 
 
@@ -187,10 +187,10 @@ One wrongly mapped read (Highlighted in **black**)
 #### False read visulisation
 <center>
 
-![False Read whole length plot](img/cDNA_R1_102_1.png){width=70%}
+![False Read whole length plot](../docs/img/cDNA_R1_102_1.png){width=70%}
 
 
-![False Read plot pos 127 win 20](img/false_read_pos_127.png){width=70%}
+![False Read plot pos 127 win 20](../docs/img/false_read_pos_127.png){width=70%}
 
 </center>
 

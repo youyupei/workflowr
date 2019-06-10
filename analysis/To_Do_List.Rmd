@@ -47,6 +47,7 @@ cDNA data analysis:
 
 ## To Do (ordered by the priority)
 
+* Modify the DTW I used so that it can take into account the variance.
 
 * Generate presentitave model using spike-in data.
 

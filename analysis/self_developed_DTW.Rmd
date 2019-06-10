@@ -1,0 +1,154 @@
+---
+title: "Self developed DTW"
+author: "Yupei You'"
+date: "`r format(Sys.time(), 'create date: 6/5 2019 last updated: %d-%B-%Y  %H:%m')`"
+---
+
+<style>
+.column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+</style>
+
+
+In order to modify the algorithm flexibly, I developed the DTW by my self. The code is on [http://github.com/youyupei/Nanopore-Splicing-Site](http://github.com/youyupei/Nanopore-Splicing-Site)
+
+
+## Normalisation
+
+I have tried two nomalization methods:
+
+*z-score
+*median shift(default)
+
+I can not tell the different by just looking at the visualised alignment
+
+## Distance metrics
+
+I have tried different score in DTW:
+
+* Manhattan
+* z-score
+* -log(dnorm(mean, std))
+
+By visual checking, **Manhattan, loglikelihood** returned reasonable result. Intuitively, the loglikelihood is the best one since it is easier to be interpreted.
+
+## Implementation 
+
+<center>
+
+![](../docs/img/DTW_implement.jpg){width=60%}
+
+
+<center/>
+
+## Alignment output
+
+Code for ploting the alignment: [plot_dtw_alignment.py](https://github.com/youyupei/Nanopore-Splicing-Site/blob/master/visulisation/plot_dtw_alignment.py)
+
+
+### Queried Reads and Candidate models
+
+
+The queried reads and splicing site have been described in [Single splicing site and tested reads](cDNA_R1_102_1.html) In the following figure, the true or simulated signals are expected to come from the 20 bases around the queried splicing site **(TCCGGCCAGTGGAATCTTGG)** [^1].
+
+[^1]: For the queried reads, we locate the corresponding signal by referring to the tombo output. The models were directly generated from the candidates exon junction sequence.
+
+
+#### True read
+
+<center>
+
+![True Read pos 127 win 20](../docs/img/true_pos_127_win_20.png){width=70%}
+
+<center/>
+
+
+<div class="column-left">
+
+<center>
+
+![model: TCCGGCCA**GT**GGAATCTTGG (true)](../docs/img/true_modelseq.png){width=99%}
+
+
+<center/>
+
+
+</div>
+
+<div class="column-right">
+
+<center>
+
+
+![model: TCCGGCCAGGAATCTTGG (false)](../docs/img/false_modelseq.png){width=99%}
+
+
+
+<center/>
+
+</div>
+
+
+<br>
+
+<br>
+
+
+#### False read
+
+<center>
+
+![False Read plot pos 127 win 20](../docs/img/false_read_pos_127.png){width=70%}
+
+<center/>
+
+
+<div class="column-left">
+
+<center>
+
+![model: CCAAGATTCC**AC**TGGCCGGA (true)](../docs/img/true_model_rcseq.png){width=99%}
+
+<center/>
+
+
+</div>
+
+<div class="column-right">
+
+
+<center>
+
+
+![model: CCAAGATTCCTGGCCGGA (false)](../docs/img/false_model_rcseq.png){width=99%}
+
+<center/>
+
+
+</div>
+
+### Alignment
+
+#### True read result:
+
+![](../docs/img/true_read_dtw.png)
+
+
+
+#### False read result:
+
+![](../docs/img/false_read_dtw.png)
+
