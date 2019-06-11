@@ -9,11 +9,11 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="youyupei" />
+<meta name="author" content="yupei" />
 
-<meta name="date" content="2019-03-26" />
+<meta name="date" content="2019-03-18" />
 
-<title>Using sequins with RNA sequencing</title>
+<title>Ideas about the direction at the start of the project</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -439,9 +439,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Using sequins with RNA sequencing</h1>
-<h4 class="author">youyupei</h4>
-<h4 class="date">2019-03-26</h4>
+<h1 class="title toc-ignore">Ideas about the direction at the start of the project</h1>
+<h4 class="author">yupei</h4>
+<h4 class="date">2019-03-18</h4>
 
 </div>
 
@@ -513,7 +513,7 @@ Ignored files:
 
 Untracked files:
     Untracked:  10_Apr_Meeting_Summary.Rmd
-    Untracked:  analysis/Using_sequins_with_RNA_sequencing.Rmd
+    Untracked:  analysis/18_Ma__with_HJ_and_MK.Rmd
     Untracked:  docs/img/DTW_implement.jpg
     Untracked:  docs/img/FLAIR_workflow.PNG
 
@@ -563,16 +563,16 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/youyupei/workflowr/blob/acb024e05c5bf5fa8988934830c99852a121f70f/analysis/Using sequins with RNA sequencing.Rmd" target="_blank">acb024e</a>
+<a href="https://github.com/youyupei/workflowr/blob/e884958f646318c2a3cf5b3bcc9c9efd5f554906/analysis/18_Ma_ with_HJ_and_MK.Rmd" target="_blank">e884958</a>
 </td>
 <td>
 youyupei
 </td>
 <td>
-2019-03-26
+2019-06-10
 </td>
 <td>
-wflow_publish("*.Rmd")
+wflow_publish("*Rmd")
 </td>
 </tr>
 </tbody>
@@ -583,45 +583,51 @@ wflow_publish("*.Rmd")
 </div>
 </div>
 <div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>This is a summary of lab protocol and data analyses of using spike-ins with RNA sequecing. Original pdf: <a href="https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf">https://s3.amazonaws.com/sequins/website/rna_resources/Sequin_Protocol_RNAseq_4.3.pdf</a> And the paper: <a href="https://www-nature-com.ezp.lib.unimelb.edu.au/articles/nmeth.3958.pdf">spliced synthetic genes as internal controls in rNA sequencing experiments</a></p>
-</div>
-<div id="protocol" class="section level2">
-<h2>Protocol</h2>
-<div id="dilute-to-target-concentration" class="section level3">
-<h3>Dilute to target concentration</h3>
-<p><img src="../docs/img/Guide%20for%20diluting%20RNA.png" alt="Guide for diluting RNA sequins" /> ### Spike into RNA sample + Added prior to processing steps (e.g. poly-A enrichment or rRNA depletion). + Two mixture formulations-Mix A and B (same transcripts but different molar ratios) thereby emulating fold-change differences in gene expression and alternative splicing between the two mixtures. + A and B are alternatively added but do not add both in a single sample</p>
-</div>
-<div id="library-preparation-and-sequencing-not-relavant" class="section level3">
-<h3>Library preparation and sequencing (Not relavant)</h3>
-</div>
-</div>
-<div id="sequin-analysis" class="section level2">
-<h2>Sequin analysis</h2>
+<h2>1.Introduction</h2>
+<p>After talked with Heejung and Mike, there are a couple ideas that worth to be tried. The project is going to follow the steps listed below:</p>
+<ol style="list-style-type: decimal">
+<li>Determine the candidate spicing sites and motifs.</li>
+</ol>
 <ul>
-<li>Sequins repsent full-length apliced mRNA isoforms.</li>
-<li>Entirely artificial with no homology to natural reference genomes.</li>
-<li>Combination of multiple sequins across concentrations emulates alternative splicing differential gene expression.</li>
-<li>Provides scaling factors for noirmalization betwwen samples</li>
+<li>We will firstly focus on the canonical splicing site. Because most of the splicing happen at those sites.</li>
+<li>For all the combinations of potential splicing sites in concern, list all the motifs that could be the joints between exons.</li>
 </ul>
-<div id="motivation" class="section level3">
-<h3>Motivation:</h3>
-<ul>
-<li>Accurate resolution of gene expression is confounded by the sheer size complexity of the transcriptome.</li>
-<li>Technical variables during library preparation, sequencing and bioinformatic analysis.</li>
-</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Generate representitive squiggle for each of the motifs.</strong></li>
+<li>Squiggle matching. (DTW)</li>
+</ol>
 </div>
-<div id="analyses" class="section level3">
-<h3>Analyses:</h3>
-<div class="figure">
-<img src="../docs/img/spike-ins-paper.png" alt="Figure in the original paper" />
-<p class="caption">Figure in the original paper</p>
+<div id="generate-representitive-squiggle-for-each-of-the-motifs" class="section level2">
+<h2>2. Generate representitive squiggle for each of the motifs</h2>
+<p>The main discussion of the meeting were on how to generate a representitive squiggle for a given genomic sequence. Some ideas have come out and worth to be tried:</p>
+<div id="method-1-generate-the-squiggle-directly-from-the-pore-model." class="section level4">
+<h4>2.1 Method 1: Generate the squiggle directly from the pore model.</h4>
+<p>Oxford Nanopore Technology (ONT) provides pore models for their sequencer, which were trained by the company. The model describes the expected cureent signal for each k-mer with its variance. <code>Scrappie squiggle</code> is a possible program developed by ONT and does the squiggle simulation.</p>
+<p><strong>Problems: Currently, it seems that there isn’t any RNA model. The available options are “raw_r94”, “rgrgr_r94”, “rgrgr_r941”, “rgrgr_r10”, “rnnrf_r94”.</strong></p>
+<p>(4/8/2019 updated: RNA model is now available)</p>
 </div>
+<div id="method-2-get-model-from-spink-ins" class="section level4">
+<h4>2.2 Method 2: Get Model from spink-ins</h4>
+<p>Spike-in provides ground truth of the underlying genomic sequence. Hopefully, the spike-ins contain the motifs in interest. The idea is to find the corresponding signal data to the candidate motifs.</p>
+<div id="section" class="section level5">
+<h5>2.2.1</h5>
+<p>There are two methods found to match/align the events of squiggle to the ref genome: <code>nanopolish eventalign</code> and <code>tombo resquiggle</code>. Both of them treat the raw data as a series of events.</p>
+</div>
+<div id="section-1" class="section level5">
+<h5>2.2.2</h5>
+<ol style="list-style-type: decimal">
+<li>Use the method in 2.1, we can simulate squiggles for given motifs
 <ul>
-<li>Entirely exogenous RNA modelcule</li>
-<li>the spike-ins undergo identical procedure so that the error distributions and normalized coverages are similar. (Assess isoform assembly)</li>
-<li>Compare the expected fold-change between Mix A and B with the observation(scaler for DE)</li>
-</ul>
+<li>However, the simulated squiggle may bia to the model provided by ONT.</li>
+</ul></li>
+<li>Match the simulated squiggle to the spike-ins:
+<ul>
+<li>We know the exactly sequences of spike-ins so the exactly number of occurances of each k-mer.</li>
+<li>We know the exon in spike-ins, so that we can narrow down the searching area to the splicing sites.</li>
+</ul></li>
+<li>Use the matched squiggles from spike-ins to construct a representative squiggle for a motif in interest.</li>
+</ol>
+</div>
 </div>
 </div>
 
