@@ -152,3 +152,7 @@ The queried reads and splicing site have been described in [Single splicing site
 
 ![](../docs/img/false_read_dtw.png)
 
+
+**The spike in the signal seems to affect the alignment result, I tried to remove the spike and redo the alignment:**
+
+![](../docs/img/false_read_spike_removed_dtw.png){width=120%}
