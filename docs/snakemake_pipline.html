@@ -12,7 +12,7 @@
 <meta name="author" content="Yupei You" />
 
 
-<title>workflow</title>
+<title>Pipeline</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -436,9 +436,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">workflow</h1>
+<h1 class="title toc-ignore">Pipeline</h1>
 <h4 class="author">Yupei You</h4>
-<h4 class="date">last updated: 08-August-2019 04:08</h4>
+<h4 class="date">last updated: 08-August-2019 07:08</h4>
 
 </div>
 
@@ -487,7 +487,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -563,6 +563,11 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
+Untracked files:
+    Untracked:  analysis/candidate_generator.Rmd
+    Untracked:  analysis/snakemake_pipline.Rmd
+    Untracked:  docs/img/method_of_generate_candidate_v1.jpg
+
 Unstaged changes:
     Modified:   analysis/To_Do_List.Rmd
     Modified:   analysis/index.Rmd
@@ -578,401 +583,73 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/036278d4da75fdcb63466df466ea376d0d7bb989/docs/To_Do_List.html" target="_blank">036278d</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-06-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/e884958f646318c2a3cf5b3bcc9c9efd5f554906/analysis/To_Do_List.Rmd" target="_blank">e884958</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-06-10
-</td>
-<td>
-wflow_publish(&quot;*Rmd&quot;)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/144a058568d0dff23dddc8cd37767e9a407ff786/docs/To_Do_List.html" target="_blank">144a058</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/152014550af1b2b37ebad228e836c364d3626968/analysis/To_Do_List.Rmd" target="_blank">1520145</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-wflow_publish(c(“To_Do_List.Rmd”))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/ef5945c9f53084bdbc43b4ee1451fd1a48db173b/docs/To_Do_List.html" target="_blank">ef5945c</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/a642eb4a325f0e4565135f11b51d13e703fcd4ed/analysis/To_Do_List.Rmd" target="_blank">a642eb4</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-wflow_publish(c(“To_Do_List.Rmd”, “FLAIR.Rmd”,
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/a301f7bd0b43700f602add64b1241315625076e6/docs/To_Do_List.html" target="_blank">a301f7b</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-14
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/d957833fd0a6a15e5e57e0221ef8ca1b55fae2e5/analysis/To_Do_List.Rmd" target="_blank">d957833</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-14
-</td>
-<td>
-wflow_publish(“To_Do_List.Rmd”)
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/d2cbdfc484355cc0b1d187099ecd92c50936048e/analysis/To_Do_List.Rmd" target="_blank">d2cbdfc</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-13
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/d2cbdfc484355cc0b1d187099ecd92c50936048e/docs/To_Do_List.html" target="_blank">d2cbdfc</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-13
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/82c7df32885775ffc2ad29f57746e66ce132c52d/analysis/To_Do_List.Rmd" target="_blank">82c7df3</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-13
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/ca4289d16a6f1654149aa7f74cd5ade2f86bc667/docs/To_Do_List.html" target="_blank">ca4289d</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/db390cd51b62fe16081ce83272f81a2bca68106c/analysis/To_Do_List.Rmd" target="_blank">db390cd</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-13
-</td>
-<td>
-wflow_publish(“../”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/aefd1f193ce8fb69a163ed12c0206ad5f4ba85a8/docs/To_Do_List.html" target="_blank">aefd1f1</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/700972c979598ffef014c504d56046c636e2c1f6/analysis/To_Do_List.Rmd" target="_blank">700972c</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-wflow_publish(“../”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/081f9e08089f3f7ce1c37ceac45f18418efc89ad/docs/To_Do_List.html" target="_blank">081f9e0</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/938eaf3895251626a68ef8b276934b7a2fb0f1df/analysis/To_Do_List.Rmd" target="_blank">938eaf3</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-wflow_publish(“../”)
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="to-do-ordered-by-the-priority" class="section level2">
-<h2>To Do (ordered by the priority)</h2>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>To test the accuracy of the Squiggle match method, and make the further investigation more convenient, I wrote a snakemake pipeline to run the test across whole sequins genome. <strong>Currently the pipeline can only handle the spike-ins with known splicing site and transcript reference.</strong></p>
+</div>
+<div id="pipeline" class="section level2">
+<h2>Pipeline</h2>
+<div class="figure">
+<img src="../docs/img/snakemake_dag.png" alt="DAG from snakemake" style="width:60.0%" />
+<p class="caption">DAG from snakemake</p>
+</div>
+<div id="input-data-and-software" class="section level3">
+<h3>Input data and software</h3>
+<p>This pipeline can only deal with Nanopore cDNA data. <strong>Some modification needed if the dataset comes from directRNA <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</strong></p>
 <ul>
-<li><p>Investigate some specific cases in the following situations:</p>
+<li>Data:
 <ol style="list-style-type: decimal">
-<li>The site with very low accuraccy when running dtw</li>
-<li>The site with large discrepency of the support from dtw or minimap2</li>
-<li><strong>Tips:</strong> Ignore confusing junctions for which we are not sure the exact transcript the reads come from.</li>
+<li>basecalled fastq files</li>
+<li>sequence summary file</li>
+<li>raw fast5 file</li>
+<li>spike-in genome reference</li>
+<li>spike-in transcript referece</li>
+<li>spike-in transcript gtf file</li>
 </ol></li>
-<li><p>Think about penalty for shrink in DTW</p></li>
-<li><p>Test the speed variation in a single read.</p></li>
-<li><p>Investigate the frequency of the <strong>current spike</strong> (Terry mentioned <em>robust statistics</em>).</p></li>
-<li><p>Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel</p></li>
-<li><p>Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)</p></li>
-<li><p>Generate presentitave model using spike-in data.</p></li>
+<li>Software: All the require the software is in a container (use singualrity 2.5.2-dist):
+<ol style="list-style-type: decimal">
+<li>snakemake 5.5.2</li>
+<li>minimap2 2.17-r943-dirty (with paftools.js)</li>
+<li>Tombo v1.5</li>
+<li>scrappie (python package scrappy v1.4.1)</li>
+</ol></li>
 </ul>
 </div>
-<div id="problems-and-possible-solutions" class="section level2">
-<h2>Problems and possible solutions</h2>
-<div id="tombo-resquiggle-problem-talked-with-hj-and-mk-1352019" class="section level3">
-<h3>Tombo resquiggle problem (talked with HJ and MK, 13/5/2019)</h3>
-<p>In Tombo resquiggle, the accuracy of the squiggle to sequence alignment largely depends on the correctness of the provided reference sequence. However, for the queried reads, we do not know what is the proper input sequence to extract the signal that is from the exon junction.</p>
-<p><strong>possible solutions</strong>:</p>
-<p>It is okay if we can not get an accuracy base-to-base assingment near the exon boundary. We can input base-called seq or annotated reference and extract signal from a wider window as long as we are sure the exon boundary is inside the window. Then we can search the best match inside.</p>
-<p><strong>Note</strong>:</p>
-<p>Mike has mentioned that in many cases the exons could be similar in a gene (because of duplication).</p>
-</div>
-</div>
-<div id="done" class="section level2">
-<h2>Done</h2>
-<p>cDNA data analysis:</p>
+<div id="pipeline-steps-explaination" class="section level3">
+<h3>Pipeline steps explaination</h3>
 <ul>
-<li>Select Spike-in reads from cDNA dataset</li>
-<li>Pair each fastq read with its raw signal.</li>
-<li>Successfully run tombo resquiggle</li>
-<li>(11/4/2019)Generate random motif in different lengths and check their occurrances within spike-in sequence.</li>
-<li>(23/4/2019)Prepare a slides for Terry’s group meeting</li>
-<li>Figure out setting in minimap2</li>
-<li>able to extract signal from .fast5 file</li>
-<li>able to extract squiggle from Tombo resquiggle output</li>
-<li>Learn about the scappie squiggle (10/5/2019)</li>
-<li><p>Figure out how does FLAIR work.</p></li>
-<li><p>Play with the spike-in reads:</p>
-<ol style="list-style-type: decimal">
-<li>Separate spike-in reads into training set and validation set (validation set comes from the different isoform with the training set).</li>
-<li>For validation set, randomly pick some exon boundary and infer the potential motifs from mapped spike-in reads.</li>
-<li>Check the number of occurrences of the motifs in the training set, tune the length of motifs to guarantee enough number of occurrences.</li>
-<li>Clip out squiggles from motifs as well as the squiggles from corresponding exon boundary in validation set by using Tombo.</li>
-<li>Try to use DTW to match the squiggles</li>
-</ol>
+<li>#1 and #2:
 <ul>
-<li>use subsequence_dtw in python package mlpy</li>
-<li>use mean and dwell time from scrappie squiggle model as input</li>
+<li><strong>map fastq to spike-in genome reference (#1) and spike-in transcript referece (#2)</strong></li>
+<li>output: bam files for each reference</li>
 </ul></li>
-<li><p>Modify the <a href="self_developed_DTW.html">DTW</a> I used so that it can take into account the variance.</p></li>
-<li><p>Test single site R1_102_1</p></li>
-<li><p>Snakemake the <a href="snakemake_pipline.html">pipeline</a>.</p></li>
-</ul>
-</div>
-<div id="questions" class="section level2">
-<h2>Questions</h2>
+<li>#3: <strong>filter out unmapped and low mapping quality (&lt;60<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>) reads.</strong> (output: filtered bam)</li>
+<li>#4: <strong>generate bed file for each transcript</strong>
 <ul>
-<li><p>Is there currently any method can be use for splicing site identification?</p>
-<p>FLAIR uses short reads and annotation for splice junction correction.</p></li>
-<li>Is there any recommondation of setting when using minimap2? minimap2 support long-read mapping (-x map-ont/map-ont) for transcripts, -x splice is a good option for long-read spliced alignment. There are different options for mapping at the exon junctions:
+<li>input1: genome_map.bam, for getting the junctions’ genome location for each read</li>
+<li>input2: transcript_map.bam, for grouping the reads by transcripts</li>
+</ul></li>
+<li>#5: <strong>convert gtf file to bed file</strong></li>
+<li>#6: <a href="candidate_generator.html"><strong>Generate candidate files</strong></a></li>
+<li>#7: <strong>Data proprocessing for tombo</strong>
+<ul>
+<li>Tombo requires fastq information, this step put fastq inside the fast5 file.</li>
+</ul></li>
+<li>#8: <strong>Tombo resquiggle</strong>: assign raw signal in fast5 to the spike-in transcript referece.</li>
+<li>#9: <strong>Get a score for each candidate</strong>
 <ol style="list-style-type: decimal">
-<li>force the reads map to GT-AG</li>
-<li>don’t match GT-AG (default)</li>
+<li>get candidates for each splicing site from #6</li>
+<li>simulate squiggle using scrappie for each candidates</li>
+<li>get junction signal from #8</li>
+<li>run dtw between junction signal and simulated signal. Get a score for each candidate.</li>
 </ol></li>
-<li><p>Do we compare our method to the number of support from mapping results?</p>
-<ul>
-<li>For nanopore reads mapping, it is hard to say the splicing site is consistently support by mapped reads, since the mapper normally force the reads split at GT-AG with cost of introduce mismatches. That is what our method trying to deal with: assess the level of support from the data themselves. Thus, even if the mapping result get more accurate assignment for the splicing site, it is not as convicing as using data themselves rather than arbitrarily choose a cannonical site near by.</li>
-</ul></li>
 </ul>
 <br>
 <p>
@@ -1004,10 +681,18 @@ attached base packages:
 loaded via a namespace (and not attached):
  [1] workflowr_1.4.0 Rcpp_1.0.1      digest_0.6.19   rprojroot_1.3-2
  [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.14  
- [9] stringi_1.4.3   fs_1.3.1        whisker_0.3-2   rmarkdown_1.13 
-[13] tools_3.4.4     stringr_1.4.0   glue_1.3.1      xfun_0.7       
-[17] yaml_2.2.0      compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
+ [9] stringi_1.4.3   fs_1.3.1        rmarkdown_1.13  tools_3.4.4    
+[13] stringr_1.4.0   glue_1.3.1      xfun_0.7        yaml_2.2.0     
+[17] compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
 </div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The raw signal direct is 3’ to 5’ for directRNA Nanopore sequencing (which is 5’ to 3’ for DNA/cDNA).<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>60 is the max mapping quality in minimap2 which indicates unique map.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 

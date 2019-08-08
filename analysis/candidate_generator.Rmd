@@ -1,0 +1,10 @@
+---
+title: "Generate Candidate"
+author: "Yupei You"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+---
+
+**Note:** There are multiple ways to generate candidates, what I did here is just a draft method to get my pipeline to run. The way of generating candidate should be discussed and improved later.
+
+![Generate Candidates](../docs/img/method_of_generate_candidate_v1.jpg)
+
