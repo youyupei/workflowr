@@ -27,29 +27,29 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 <div class="column-left">
 # Meeting
->## [Tue 5 Mar 2019: project description](5_Mar_with_HJ_and_MK_.html) (with Heejung and Mike)
->## [Mon 18 Mar 2019:Ideas about the direction at the start of the project](18_Mar_with_HJ_and_MK.html) (with Heejung and Mike)
->## [Wed 10 Apr 2019: Progress Update](10_Apr_Meeting_Summary.html) (with Heejung and Mike)
+* ### [Tue 5 Mar 2019: project description](5_Mar_with_HJ_and_MK_.html) (with Heejung and Mike)
+* ### [Mon 18 Mar 2019:Ideas about the direction at the start of the project](18_Mar_with_HJ_and_MK.html) (with Heejung and Mike)
+* ### [Wed 10 Apr 2019: Progress Update](10_Apr_Meeting_Summary.html) (with Heejung and Mike)
 
 # Reading
->## [Real-time selective sequencing using nanopore technology](Matthew_2016.html)
->## [Using sequins with RNA sequencing](Using_sequins_with_RNA_sequencing.html)
+* ### [Real-time selective sequencing using nanopore technology](Matthew_2016.html)
+* ### [Using sequins with RNA sequencing](Using_sequins_with_RNA_sequencing.html)
 
 # Software
->## [SquiggleKit](SquiggleKit.html)
->## [Tombo resquiggle Algorithm](Tombo_resquiggle.html)
->## [FLAIR (exon junction correction)](FLAIR.html)
+* ### [SquiggleKit](SquiggleKit.html)
+* ### [Tombo resquiggle Algorithm](Tombo_resquiggle.html)
+* ### [FLAIR (exon junction correction)](FLAIR.html)
 
 # Workflow
->## [cDNA dataset preprocessing](cDNA_data_preprocessing.html)
->## [Fetch signal from tombo output](fetch_single_from_tombo.html)
->## Single Splicing site test
->>### [Single splicing site and tested reads](cDNA_R1_102_1.html)
->>### [Generate candidates](candidate_generator.html)
->>### [Generate representative squiggle for candidates](get_representative_squiggle.html)
->>### [Run self-developed DTW](self_developed_DTW.html)
+* ### [cDNA dataset preprocessing](cDNA_data_preprocessing.html)
+* ### [Fetch signal from tombo output](fetch_single_from_tombo.html)
+* ### Single Splicing site test
+  * #### [Single splicing site and tested reads](cDNA_R1_102_1.html)
+  * #### [Generate candidates](candidate_generator.html)
+  * #### [Generate representative squiggle for candidates](get_representative_squiggle.html)
+  * #### [Run self-developed DTW](self_developed_DTW.html)
+* ### [snakemake pipeline](snakemake_pipline.html)
 
->## [snakemake pipeline](snakemake_pipline.html)
 
 
 </div>
