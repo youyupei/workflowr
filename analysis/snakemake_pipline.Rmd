@@ -40,20 +40,22 @@ To test the accuracy of the Squiggle match method, and make the further investig
   * \#1 and \#2: 
     * **map fastq to spike-in genome reference (\#1) and spike-in transcript referece (\#2)**
     * output: bam files for each reference
-  * \#3: **filter out unmapped and low mapping quality (<60[^2]) reads.** (output: filtered bam)
-  * \#4: **generate bed file for each transcript**
+  * \#3 and \#4: **filter out unmapped and low mapping quality (<60[^2]) reads.** (output: filtered bam)
+  * \#5: **generate bed file for each transcript**
     * input1: genome_map.bam, for getting the junctions' genome location for each read
     * input2: transcript_map.bam, for grouping the reads by transcripts
-  * \#5: **convert gtf file to bed file**
-  * \#6: [**Generate candidate files**](candidate_generator.html)
-  * \#7: **Data proprocessing for tombo**
-    * Tombo requires fastq information, this step put fastq inside the fast5 file.
-  * \#8: **Tombo resquiggle**: assign raw signal in fast5 to the spike-in transcript referece.
+  * \#6: **convert gtf file to bed file**
+  * \#7: [**Generate candidate files**](candidate_generator.html)
+  * \#8: 
+    * **Data proprocessing for tombo**: Tombo requires fastq information, this step put fastq inside the fast5 file.
+    * **Tombo resquiggle**: assign raw signal in fast5 to the spike-in transcript referece.
   * \#9: **Get a score for each candidate**
     1. get candidates for each splicing site from \#6
     2. simulate squiggle using scrappie for each candidates
     3. get junction signal from \#8
     4. run dtw between junction signal and simulated signal. Get a score for each candidate.
+  * \#10:
+    Output the candidate with lowest matching distance. Calculate accuracy for each splicing site.
 
   
 
