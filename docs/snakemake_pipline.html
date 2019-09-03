@@ -24,6 +24,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -263,6 +264,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
 
 
@@ -434,18 +443,26 @@ div.section {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Pipeline</h1>
 <h4 class="author">Yupei You</h4>
-<h4 class="date">last updated: 08-August-2019 07:08</h4>
+<h4 class="date">last updated: 03-September-2019 05:09</h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -454,7 +471,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -463,10 +480,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-08-08
+<strong>Last updated:</strong> 2019-09-03
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -482,12 +499,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -554,22 +571,22 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreec51d29b1da25dbd5885753e804606a47cb5ceaeetargetblankc51d29ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/c51d29b1da25dbd5885753e804606a47cb5ceaee" target="_blank">c51d29b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeabf965d450385251ca4591e57515e07479492f23targetblankabf965da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/abf965d450385251ca4591e57515e07479492f23" target="_blank">abf965d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreec51d29b1da25dbd5885753e804606a47cb5ceaeetargetblankc51d29ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreeabf965d450385251ca4591e57515e07479492f23targetblankabf965da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Untracked files:
-    Untracked:  analysis/candidate_generator.Rmd
-    Untracked:  analysis/snakemake_pipline.Rmd
-    Untracked:  docs/img/method_of_generate_candidate_v1.jpg
+    Untracked:  analysis/inaccurate_transcript_checking.Rmd
+    Untracked:  docs/figure/inaccurate_transcript_checking.Rmd/
+    Untracked:  docs/img/Poor_Performance/
 
 Unstaged changes:
-    Modified:   analysis/To_Do_List.Rmd
+    Modified:   analysis/_site.yml
     Modified:   analysis/index.Rmd
 
 </code></pre>
@@ -583,9 +600,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/abf965d450385251ca4591e57515e07479492f23/analysis/snakemake_pipline.Rmd" target="_blank">abf965d</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-09-03
+</td>
+<td>
+wflow_publish(“analysis/snakemake_pipline.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/df1e1c159b48ba4047c0f7e8f05cb28a96322c3c/docs/snakemake_pipline.html" target="_blank">df1e1c1</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-08-08
+</td>
+<td>
+update
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -630,19 +707,19 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <li><strong>map fastq to spike-in genome reference (#1) and spike-in transcript referece (#2)</strong></li>
 <li>output: bam files for each reference</li>
 </ul></li>
-<li>#3: <strong>filter out unmapped and low mapping quality (&lt;60<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>) reads.</strong> (output: filtered bam)</li>
-<li>#4: <strong>generate bed file for each transcript</strong>
+<li>#3 and #4: <strong>filter out unmapped and low mapping quality (&lt;60<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>) reads.</strong> (output: filtered bam)</li>
+<li>#5: <strong>generate bed file for each transcript</strong>
 <ul>
 <li>input1: genome_map.bam, for getting the junctions’ genome location for each read</li>
 <li>input2: transcript_map.bam, for grouping the reads by transcripts</li>
 </ul></li>
-<li>#5: <strong>convert gtf file to bed file</strong></li>
-<li>#6: <a href="candidate_generator.html"><strong>Generate candidate files</strong></a></li>
-<li>#7: <strong>Data proprocessing for tombo</strong>
+<li>#6: <strong>convert gtf file to bed file</strong></li>
+<li>#7: <a href="candidate_generator.html"><strong>Generate candidate files</strong></a></li>
+<li>#8:
 <ul>
-<li>Tombo requires fastq information, this step put fastq inside the fast5 file.</li>
+<li><strong>Data proprocessing for tombo</strong>: Tombo requires fastq information, this step put fastq inside the fast5 file.</li>
+<li><strong>Tombo resquiggle</strong>: assign raw signal in fast5 to the spike-in transcript referece.</li>
 </ul></li>
-<li>#8: <strong>Tombo resquiggle</strong>: assign raw signal in fast5 to the spike-in transcript referece.</li>
 <li>#9: <strong>Get a score for each candidate</strong>
 <ol style="list-style-type: decimal">
 <li>get candidates for each splicing site from #6</li>
@@ -650,6 +727,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <li>get junction signal from #8</li>
 <li>run dtw between junction signal and simulated signal. Get a score for each candidate.</li>
 </ol></li>
+<li>#10: Output the candidate with lowest matching distance. Calculate accuracy for each splicing site.</li>
 </ul>
 <br>
 <p>
@@ -681,9 +759,9 @@ attached base packages:
 loaded via a namespace (and not attached):
  [1] workflowr_1.4.0 Rcpp_1.0.1      digest_0.6.19   rprojroot_1.3-2
  [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.14  
- [9] stringi_1.4.3   fs_1.3.1        rmarkdown_1.13  tools_3.4.4    
-[13] stringr_1.4.0   glue_1.3.1      xfun_0.7        yaml_2.2.0     
-[17] compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
+ [9] stringi_1.4.3   fs_1.3.1        whisker_0.3-2   rmarkdown_1.13 
+[13] tools_3.4.4     stringr_1.4.0   glue_1.3.1      xfun_0.7       
+[17] yaml_2.2.0      compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
 </div>
 </div>
 </div>
