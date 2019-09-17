@@ -9,9 +9,10 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Yupei You" />
 
 
-<title>Home</title>
+<title>Poor performance diagnosis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -452,7 +453,9 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Poor performance diagnosis</h1>
+<h4 class="author">Yupei You</h4>
+<h4 class="date">Created: 14 AUg 2019, last updated: 03-September-2019 06:09</h4>
 
 </div>
 
@@ -477,7 +480,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-09-17
+<strong>Last updated:</strong> 2019-09-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -501,7 +504,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -578,9 +581,9 @@ Great! You are using Git for version control. Tracking code development and conn
 </p>
 <pre><code>
 Untracked files:
-    Untracked:  analysis/f15_t4_mad_norm.Rmd
     Untracked:  analysis/inaccurate_transcript_checking.Rmd
-    Untracked:  docs/figure/f15_t4_mad_norm.Rmd/
+    Untracked:  analysis/inaccurate_transcript_checking.knit.md
+    Untracked:  analysis/inaccurate_transcript_checking.utf8.md
     Untracked:  docs/figure/inaccurate_transcript_checking.Rmd/
     Untracked:  docs/img/Poor_Performance/
 
@@ -599,673 +602,17 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/e8004850f4a51bc7c391876a3d272b715a08db64/docs/index.html" target="_blank">e800485</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/609a7d104f495c1b10d56a9caf21feeb05e9fadc/analysis/index.Rmd" target="_blank">609a7d1</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-08-13
-</td>
-<td>
-wflow_publish(“analysis/index.Rmd”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/261f4512a71b8e6d2a848a6d8b8040c09f4c8939/docs/index.html" target="_blank">261f451</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-08-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/036278d4da75fdcb63466df466ea376d0d7bb989/docs/index.html" target="_blank">036278d</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-06-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/e884958f646318c2a3cf5b3bcc9c9efd5f554906/analysis/index.Rmd" target="_blank">e884958</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-06-10
-</td>
-<td>
-wflow_publish(&quot;*Rmd&quot;)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/2a2be90aeafdd0b93a5b07246bc34b0f4e406f26/docs/index.html" target="_blank">2a2be90</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/993eec67364e497a76f2534be1fc904f9664e222/docs/index.html" target="_blank">993eec6</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/ef5945c9f53084bdbc43b4ee1451fd1a48db173b/docs/index.html" target="_blank">ef5945c</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/a642eb4a325f0e4565135f11b51d13e703fcd4ed/analysis/index.Rmd" target="_blank">a642eb4</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-18
-</td>
-<td>
-wflow_publish(c(“To_Do_List.Rmd”, “FLAIR.Rmd”,
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/d2cbdfc484355cc0b1d187099ecd92c50936048e/docs/index.html" target="_blank">d2cbdfc</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-13
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/82c7df32885775ffc2ad29f57746e66ce132c52d/analysis/index.Rmd" target="_blank">82c7df3</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-05-13
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/081f9e08089f3f7ce1c37ceac45f18418efc89ad/docs/index.html" target="_blank">081f9e0</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/938eaf3895251626a68ef8b276934b7a2fb0f1df/analysis/index.Rmd" target="_blank">938eaf3</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-11
-</td>
-<td>
-wflow_publish(“../”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/bf0dfc479b4974bc1f05a1b7c4442c2f591a62ad/docs/index.html" target="_blank">bf0dfc4</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/08acf731c333e5d985df1e5ed5d4373e93ee3eb2/analysis/index.Rmd" target="_blank">08acf73</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-10
-</td>
-<td>
-wflow_publish(“index.Rmd”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/7cf0f9d10a43835823496dbb39f0f5f4601bfec2/docs/index.html" target="_blank">7cf0f9d</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/2ac121e45dae4a2399fbfa9b518386d6f0dd9550/docs/index.html" target="_blank">2ac121e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/399a90a6ca9814b5563f7b2caae97adc42601623/docs/index.html" target="_blank">399a90a</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-06
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/11a13c7b0000b29f69dd4681a4aa19a39daf23f9/analysis/index.Rmd" target="_blank">11a13c7</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-04-06
-</td>
-<td>
-wflow_publish(“./”)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/967f788971e232e6b8132485cda80128aae747ba/docs/index.html" target="_blank">967f788</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-26
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/acb024e05c5bf5fa8988934830c99852a121f70f/analysis/index.Rmd" target="_blank">acb024e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-26
-</td>
-<td>
-wflow_publish(&quot;*.Rmd&quot;)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/3ea3e9647c0f337950dcd9c56e468f80b1e55856/docs/index.html" target="_blank">3ea3e96</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/4c94d8efbf863514e928e792ca9ae7957c6764f2/analysis/index.Rmd" target="_blank">4c94d8e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-wflow_publish(c(“index.Rmd”, &quot;Tombo
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/4c94d8efbf863514e928e792ca9ae7957c6764f2/docs/index.html" target="_blank">4c94d8e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-wflow_publish(c(“index.Rmd”, &quot;Tombo
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/a64ec9044929fb415d0dc6ac731cb3590f2b5cc6/docs/index.html" target="_blank">a64ec90</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/04d6d1e4bd3abfbac088d54153a0846be01efcc7/analysis/index.Rmd" target="_blank">04d6d1e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-wflow_publish(c(“<em>.Rmd&quot;, &quot;../docs/</em>”))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/04d6d1e4bd3abfbac088d54153a0846be01efcc7/docs/index.html" target="_blank">04d6d1e</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-wflow_publish(c(“<em>.Rmd&quot;, &quot;../docs/</em>”))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/221dc28d70f73b701dfd25622138f8a427edd4d4/docs/index.html" target="_blank">221dc28</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/28f979860382ac0599c260e059734c3602c3b337/docs/index.html" target="_blank">28f9798</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-14
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/c55f9c7bf52687a810361cd162f2f972785d71ee/analysis/index.Rmd" target="_blank">c55f9c7</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-13
-</td>
-<td>
-SquiggleKit
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/c55f9c7bf52687a810361cd162f2f972785d71ee/docs/index.html" target="_blank">c55f9c7</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-13
-</td>
-<td>
-SquiggleKit
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/c1c457a13f90c3fc615eacc758e624388cbcd8cb/docs/index.html" target="_blank">c1c457a</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-DWT paper
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/1385dfe73a6df697f747eb06e4fb6fb89e2d8fa2/docs/index.html" target="_blank">1385dfe</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/7099769e95bdf3f747920541156c881e2f16d3bc/analysis/index.Rmd" target="_blank">7099769</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-08
-</td>
-<td>
-wflow_publish(&quot;*.Rmd&quot;)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/youyupei/workflowr/cdcbcb6a1c0e86d9eee8ba185dc2e9c60766e43a/docs/index.html" target="_blank">cdcbcb6</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-06
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/a1f2a6045d732c7f5926928762b35a4daa7c2edc/analysis/index.Rmd" target="_blank">a1f2a60</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-06
-</td>
-<td>
-wflow_publish(&quot;*.Rmd&quot;)
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/youyupei/workflowr/blob/1740f7842665bafdf5a9d63450e0398ea890826a/analysis/index.Rmd" target="_blank">1740f78</a>
-</td>
-<td>
-youyupei
-</td>
-<td>
-2019-03-06
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<p>Welcome! This is a website for organizing the summaries of my meetings and readings.</p>
 <style>
 .column-left{
   float: left;
-  width: 100%;
+  width: 50%;
   text-align: left;
 }
 .column-center{
@@ -1275,50 +622,211 @@ Start workflowr project.
 }
 .column-right{
   float: right;
-  width: 20%;
-  text-align: right;
+  width: 50%;
+  text-align: left;
 }
 </style>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>I selected 25 transcripts with depth between 30 ~ 300<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p><strong>There are 25 transcripts and 128 splicing sites in total, the splicing site with bottom 10 accuracy were listed below: </strong></p>
+</div>
+<div id="forward-strand-reads-transcript-related" class="section level2">
+<h2>Forward strand Reads (transcript related)</h2>
+</div>
+<div id="reverse-strand-reads" class="section level2">
+<h2>Reverse strand Reads</h2>
+</div>
+<div id="site-position-correlation" class="section level2">
+<h2>Site position correlation</h2>
+</div>
+<div id="mean-method" class="section level2">
+<h2>Mean method</h2>
+</div>
+<div id="mean-vs-max" class="section level2">
+<h2>mean vs max</h2>
+</div>
+<div id="new-vs-old" class="section level2">
+<h2>new vs old</h2>
+</div>
+<div id="distance-distribution" class="section level2">
+<h2>Distance distribution</h2>
+<pre class="r"><code>library(ggplot2)
+library(reshape2)
+
+
+score_f15_t4 = read.csv(file = &quot;~/PhD_proj/pipeline/Validation/score_f15_t4_merge.csv&quot;,header = F)
+ncol = dim(score_f15_t4)[2]
+likelihood_score = score_f15_t4[,seq(5,ncol,3)]
+likelihood_score = likelihood_score[!is.na(likelihood_score$V5),]
+has_multi_candidates = apply(likelihood_score,1,function(x) sum(!is.na(x)) &gt; 1)
+likelihood_score = likelihood_score[has_multi_candidates,]
+
+min_dist = apply(likelihood_score,1,function(x) min(x, na.rm=T))
+correctness = apply(likelihood_score,1,which.min) == 1
+
+data &lt;- data.frame(min_dist = min_dist, correctness = correctness)
+ggplot(data,aes(y=min_dist, fill=correctness)) + geom_boxplot(alpha=0.25) </code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data,aes(x=min_dist, fill=correctness)) + geom_histogram(aes(y=..count../sum(..count..)),alpha = 1,position=&quot;dodge&quot;) + geom_density(alpha=0.1)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>l=c()
+y=c()
+x=seq(0,10,0.01)
+for (i in x){
+  correctness_filtered = correctness[min_dist&lt;i]
+  y = c(y,sum(correctness_filtered==1)/length(correctness_filtered))
+  l=c(l, length(correctness_filtered)/length(correctness))
+}
+
+ggplot() + geom_line(aes(x,l)) + geom_line(aes(x,y))</code></pre>
+<pre><code>Warning: Removed 137 rows containing missing values (geom_path).</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>y[length(y)]</code></pre>
+<pre><code>[1] 0.7889364</code></pre>
+<pre class="r"><code>length(correctness)</code></pre>
+<pre><code>[1] 10318</code></pre>
+<pre class="r"><code>true_reads = likelihood_score[correctness == T,]
+false_reads = likelihood_score[correctness == F,]
+
+true_reads_dist = apply(true_reads,1,function(x) min(x, na.rm = T))
+#false_reads_dist = apply(false_reads,1,function(x) x[1])
+false_reads_dist = apply(false_reads,1,function(x) min(x, na.rm = T))
+
+
+false_diff = apply(false_reads,1,function(x) abs(min(x, na.rm=T) - x[1]))
+true_diff = apply(true_reads,1,function(x) abs(x[1] - x[order(x)[2]]))
+
+ggplot() + geom_density_2d(aes(x=true_reads_dist,y=true_diff,fill = &quot;true&quot;,color = &quot;true&quot;)) + geom_density_2d(aes(x=false_reads_dist,y=false_diff,fill = &quot;false&quot;,color = &quot;false&quot;)) + xlab(&quot;hardness of matching (distance)&quot;) + ylab(&quot;confidence (difference of distance)&quot;)+scale_color_manual(&quot;Legend&quot;,values = c(&quot;blue&quot;,&quot;red&quot;))</code></pre>
+<pre><code>Warning: Ignoring unknown aesthetics: fill</code></pre>
+<pre><code>Warning: Ignoring unknown aesthetics: fill</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-7-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot() + geom_density(aes(x = false_diff,fill = &quot;false&quot;), alpha = 0.3)  + geom_density(aes(x = true_diff, fill = &quot;true&quot;), alpha = 0.3) + xlab(&quot;Difference of distance&quot;) + scale_color_manual(&quot;Legend&quot;,values = c(&quot;red&quot;,&quot;blue&quot;),aesthetics = &quot;fill&quot;)</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-7-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  #stat_density_2d(geom = &quot;polygon&quot;, aes(x=true_reads_dist,y=true_diff,alpha = ..level.., fill = &quot;true&quot;)) + 
+  #stat_density_2d(geom = &quot;polygon&quot;, aes(x=false_reads_dist,y=false_diff,alpha = 3/10*..level.., fill = &quot;false&quot;))</code></pre>
+</div>
+<div id="distance-distribution-mean" class="section level2">
+<h2>Distance distribution (mean)</h2>
+<pre class="r"><code>library(ggplot2)
+library(reshape2)
+
+
+score_f15_t4_mean = read.csv(file = &quot;~/PhD_proj/pipeline/Validation/score_f15_t4_mean_merge.csv&quot;,header = F)
+
+ncol = dim(score_f15_t4_mean)[2]
+likelihood_score_mean = score_f15_t4_mean[,seq(5,ncol,3)]
+likelihood_score_mean = likelihood_score_mean[!is.na(likelihood_score_mean$V5),]
+has_multi_candidates = apply(likelihood_score_mean,1,function(x) sum(!is.na(x)) &gt; 1)
+likelihood_score_mean = likelihood_score_mean[has_multi_candidates,]
+
+min_dist = apply(likelihood_score_mean,1,function(x) min(x, na.rm=T))
+correctness_mean = apply(likelihood_score_mean,1,which.min) == 1
+
+data &lt;- data.frame(min_dist = min_dist, correctness_mean = correctness_mean)
+ggplot(data,aes(y=min_dist, fill=correctness_mean)) + geom_boxplot(alpha=0.25) </code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(data,aes(x=min_dist, fill=correctness_mean)) + geom_histogram(aes(y=..count../sum(..count..)),alpha = 1,position=&quot;dodge&quot;) + geom_density(alpha=0.1)</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>l=c()
+y=c()
+x=seq(0,10,0.01)
+for (i in x){
+  correctness_filtered = correctness_mean[min_dist&lt;i]
+  y = c(y,sum(correctness_filtered==1)/length(correctness_filtered))
+  l=c(l, length(correctness_filtered)/length(correctness_mean))
+}
+
+ggplot() + geom_line(aes(x,l)) + geom_line(aes(x,y))</code></pre>
+<pre><code>Warning: Removed 125 rows containing missing values (geom_path).</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>y[length(y)]</code></pre>
+<pre><code>[1] 0.8286324</code></pre>
+<pre class="r"><code>length(correctness_mean)</code></pre>
+<pre><code>[1] 10318</code></pre>
+<pre class="r"><code>true_reads = likelihood_score_mean[correctness_mean == T,]
+false_reads = likelihood_score_mean[correctness_mean == F,]
+
+true_reads_dist = apply(true_reads,1,function(x) min(x, na.rm = T))
+false_reads_dist = apply(false_reads,1,function(x) min(x, na.rm = T))
+
+
+false_diff = apply(false_reads,1,function(x) abs(min(x, na.rm=T) - x[1]))
+true_diff = apply(true_reads,1,function(x) abs(x[1] - x[order(x)[2]]))
+
+ggplot() + geom_density_2d(aes(x=true_reads_dist,y=true_diff)) + geom_density_2d(aes(x=false_reads_dist,y=false_diff), color = &quot;red&quot;)</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-8-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot() + geom_density(aes(x = false_diff), fill = &quot;red&quot;, alpha = 0.3)  + geom_density(aes(x = true_diff), fill = &quot;blue&quot;, alpha = 0.3) + xlab(&quot;hardness of matching&quot;) + ylab(&quot;confidence&quot;)</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-8-5.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="distance-distribution-mean-vs-sum" class="section level2">
+<h2>Distance distribution (mean vs sum)</h2>
+<pre class="r"><code>color = c()
+for (i in 1:length(correctness_mean)){
+  if ( correctness_mean[i] == T &amp;&amp; correctness[i] == F) {color = c(color,&#39;red&#39;)}
+  else{color = c(color,&#39;black&#39;)}
+}
+
+b = correctness == F
+a = correctness_mean == T
+plot(likelihood_score[a*b==1,1],likelihood_score_mean[a*b==1,1],col = &quot;red&quot;)
+b = correctness == T
+a = correctness_mean == F
+points(likelihood_score[a*b==1,1],likelihood_score_mean[a*b==1,1],col = &quot;blue&quot;)
+abline(1,1)</code></pre>
+<p><img src="figure/inaccurate_transcript_checking.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#test_index = apply(likelihood_score_mean,1,which.min) == apply(likelihood_score,1,which.min)
+
+#test = likelihood_score[test_index,]
+
+#correctness_test = apply(test,1,which.min) == 1</code></pre>
+</div>
+<div id="single-site-inspection" class="section level2">
+<h2>Single site inspection</h2>
+<p>R2_26_1 junction 6 has lowest accuracy, but it has 9 candidates. The correlation between the number of accracy and the accuraccy will be investigated <strong>later</strong>. I will start with <strong>R1_22_2 junction 2</strong> , which has only 2 candidates but perform really bad in characterisation.</p>
+<div id="r1_22_2-junction-2" class="section level3">
+<h3>R1_22_2 junction 2</h3>
+<div id="splicing-site-information" class="section level4">
+<h4><strong>splicing site information</strong></h4>
+<pre class="bash"><code>pipeline_dir=/home/ubuntu/PhD_proj/pipeline/
+echo Candidate Information:
+cat $pipeline_dir/Candidates/README.txt
+sed -n &#39;2p&#39; $pipeline_dir/Candidates/R1_22_2_candidate.txt
+echo transcript BED format
+grep R1_22_2 $pipeline_dir/BED/annotation.bed</code></pre>
+<pre><code>Candidate Information:
+format:
+Candidate_motif1, Candidate_motif2 ..., start_transcript_position, end_transcript_position, number_of_support_by_mapper 
+(end of REANDME.txt).
+TGAGGTATCGCAAGCATCAGTTGGAAATCCCGCCC,TGAGGTATCGCAAGCTTGGAAATCCCGCCC,478,513,66
+transcript BED format
+chrIS   6412428 6437487 R1_22_2||R1_22  1000    -   6412428 6437487 196,196,196 6   499,49,103,149,146,95,  0,1110,7527,16532,20907,24964,</code></pre>
+<p>The transcript is in <strong>reverse</strong> strand with length 1037, the corresponding location in transcript is 479~504<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+</div>
+<div id="plot-reads-and-candidates" class="section level4">
+<h4><strong>Plot reads and Candidates</strong></h4>
+<center>
+<p>Tombo plot <strong>The highlighted part is the difference between candidates</strong> <conter/> <img src="../docs/img/Poor_Performance/tombo_R1_22_2.PNG" /></p>
 <div class="column-left">
-<h1 id="meeting">Meeting</h1>
-<ul>
-<li><h3 id="tue-5-mar-2019-project-description-with-heejung-and-mike"><a href="5_Mar_with_HJ_and_MK_.html">Tue 5 Mar 2019: project description</a> (with Heejung and Mike)</h3></li>
-<li><h3 id="mon-18-mar-2019ideas-about-the-direction-at-the-start-of-the-project-with-heejung-and-mike"><a href="18_Mar_with_HJ_and_MK.html">Mon 18 Mar 2019:Ideas about the direction at the start of the project</a> (with Heejung and Mike)</h3></li>
-<li><h3 id="wed-10-apr-2019-progress-update-with-heejung-and-mike"><a href="10_Apr_Meeting_Summary.html">Wed 10 Apr 2019: Progress Update</a> (with Heejung and Mike)</h3></li>
-</ul>
-<h1 id="reading">Reading</h1>
-<ul>
-<li><h3 id="real-time-selective-sequencing-using-nanopore-technology"><a href="Matthew_2016.html">Real-time selective sequencing using nanopore technology</a></h3></li>
-<li><h3 id="using-sequins-with-rna-sequencing"><a href="Using_sequins_with_RNA_sequencing.html">Using sequins with RNA sequencing</a></h3></li>
-</ul>
-<h1 id="software">Software</h1>
-<ul>
-<li><h3 id="squigglekit"><a href="SquiggleKit.html">SquiggleKit</a></h3></li>
-<li><h3 id="tombo-resquiggle-algorithm"><a href="Tombo_resquiggle.html">Tombo resquiggle Algorithm</a></h3></li>
-<li><h3 id="flair-exon-junction-correction"><a href="FLAIR.html">FLAIR (exon junction correction)</a></h3></li>
-</ul>
-<h1 id="workflow">Workflow</h1>
-<ul>
-<li><h3 id="cdna-dataset-preprocessing"><a href="cDNA_data_preprocessing.html">cDNA dataset preprocessing</a></h3></li>
-<li><h3 id="fetch-signal-from-tombo-output"><a href="fetch_single_from_tombo.html">Fetch signal from tombo output</a></h3></li>
-<li><h3 id="single-splicing-site-test">Single Splicing site test</h3>
-<ul>
-<li><h4 id="single-splicing-site-and-tested-reads"><a href="cDNA_R1_102_1.html">Single splicing site and tested reads</a></h4></li>
-<li><h4 id="generate-candidates"><a href="candidate_generator.html">Generate candidates</a></h4></li>
-<li><h4 id="generate-representative-squiggle-for-candidates"><a href="get_representative_squiggle.html">Generate representative squiggle for candidates</a></h4></li>
-<li><h4 id="run-self-developed-dtw"><a href="self_developed_DTW.html">Run self-developed DTW</a></h4></li>
-</ul></li>
-<li><h3 id="snakemake-pipeline"><a href="snakemake_pipline.html">snakemake pipeline</a></h3>
-<ul>
-<li><h4 id="test-1"><a href="f15_t4_mad_norm.html">Test 1</a></h4>
-settings:
-<ol style="list-style-type: decimal">
-<li>exon junction flank: 15 bases in each side</li>
-<li>scrappie model trim: 4 bases in each side</li>
-<li>normalisation: global mad normalisation for real signal</li>
-</ol></li>
-</ul></li>
-</ul>
+
+<center>
+<div class="figure">
+<img src="../docs/img/Poor_Performance/R1_22_2_2_True_C.png" alt="model: TATCGCAAGCATCAGTTGGAAATCC (true)" style="width:99.0%" />
+<p class="caption">model: TATCGCAAGC<strong>ATCAG</strong>TTGGAAATCC (true)</p>
+</div>
+<center/>
+</div>
+<div class="column-right">
+
+
+<center>
+<div class="figure">
+<img src="../docs/img/Poor_Performance/R1_22_2_2_false_C.png" alt="model: TATCGCAAGCTTGGAAATCC (false)" style="width:99.0%" />
+<p class="caption">model: TATCGCAAGCTTGGAAATCC (false)</p>
+</div>
+<center/>
 </div>
 <br>
 <p>
@@ -1347,12 +855,29 @@ locale:
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
+other attached packages:
+[1] reshape2_1.4.3 ggplot2_3.2.1 
+
 loaded via a namespace (and not attached):
- [1] workflowr_1.4.0 Rcpp_1.0.1      digest_0.6.19   rprojroot_1.3-2
- [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.14  
- [9] stringi_1.4.3   fs_1.3.1        whisker_0.3-2   rmarkdown_1.13 
-[13] tools_3.4.4     stringr_1.4.0   glue_1.3.1      xfun_0.7       
-[17] yaml_2.2.0      compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
+ [1] Rcpp_1.0.1       knitr_1.23       magrittr_1.5     workflowr_1.4.0 
+ [5] MASS_7.3-49      munsell_0.5.0    colorspace_1.4-1 rlang_0.4.0     
+ [9] plyr_1.8.4       stringr_1.4.0    tools_3.4.4      grid_3.4.4      
+[13] gtable_0.3.0     xfun_0.7         withr_2.1.2      git2r_0.25.2    
+[17] htmltools_0.3.6  yaml_2.2.0       lazyeval_0.2.2   rprojroot_1.3-2 
+[21] digest_0.6.19    tibble_2.1.3     crayon_1.3.4     fs_1.3.1        
+[25] glue_1.3.1       evaluate_0.14    rmarkdown_1.13   labeling_0.3    
+[29] stringi_1.4.3    compiler_3.4.4   pillar_1.4.2     scales_1.0.0    
+[33] backports_1.1.4  pkgconfig_2.0.2 </code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>The upperbound was set in order to reduce the run time.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>1037 - 558, 1037 - 533<a href="#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 

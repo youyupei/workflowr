@@ -26,3 +26,4 @@ output:
     toc_float: yes
     theme: lumen
     highlight: textmate
+    code_folding: show

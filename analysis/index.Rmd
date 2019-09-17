@@ -49,9 +49,18 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
   * #### [Generate representative squiggle for candidates](get_representative_squiggle.html)
   * #### [Run self-developed DTW](self_developed_DTW.html)
 * ### [snakemake pipeline](snakemake_pipline.html)
-
+  * #### [Test 1](f15_t4_mad_norm.html)
+    settings:
+      1. exon junction flank: 15 bases in each side
+      2. scrappie model trim: 4 bases in each side
+      3. normalisation: global mad normalisation for real signal
+      
 
 
 </div>
 
+```{r eval=FALSE, include=FALSE}
+* #### [Inaccurate transcript checking](inaccurate_transcript_checking.html)
+  
+```
 
