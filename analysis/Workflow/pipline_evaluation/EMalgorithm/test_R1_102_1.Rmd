@@ -1,0 +1,68 @@
+---
+title: "f15_t4_mad_norm_EM Algorithm"
+author: "Yupei You"
+date: "Created: 17 Sep 2019, `r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+---
+
+```{r}
+# bash command
+# Rscript validation.R $tranID $(cat ../Candidates/${tranID}_candidate.txt | sed s/.*,//)
+
+#path <- dirname(sub('--file=','',grep('--file',commandArgs(F),value = T)))
+
+# transcript_ID(command line input)
+transcript_ID = "R1_102_1"
+
+# output file
+out_filename = "R1_102_1_EM.csv"
+
+# get DTW result
+files = paste("/home/ubuntu/PhD_proj/pipeline/Validation/score_f15_t4_mad_norm",list.files("/home/ubuntu/PhD_proj/pipeline/Validation/score_f15_t4_mad_norm"),sep = "/")
+files = files[grepl(transcript_ID, files)]
+
+# number of junctions
+num_junction = 6
+
+# merge all the results from reads mapped to transcript_ID
+result = data.frame()
+
+for (file in files) {
+  tryCatch({
+    x = read.csv(file,header = F, sep = ",",stringsAsFactors=FALSE)
+    if (dim(x)[1] == num_junction){
+      result = rbind(result, x)
+    }
+  }, error = function(x) {
+    print("error:")  
+    print(file)
+  }, warning = function(x) {
+    print("warning:")
+    print(file)}
+    )
+}
+for (i in 4:4){
+result_temp = result[seq(i,dim(result)[1],6),seq(5,dim(result)[2],3)]
+result_temp = result_temp[!is.na(result_temp[,1]),]
+result_temp = result_temp[,!is.na(result_temp[1,])]
+result_temp = t(exp(-result_temp))
+  
+pi = c(0.5,0.5)
+M_new = result_temp^4 * pi
+M_new = apply(M_new,2,function(x) x/sum(x))
+M_last_iter = M_new+1
+
+while(!identical(round(M_last_iter,3),round(M_new,3))){
+M_last_iter = M_new
+pi = apply(M_new,1,sum)
+pi = pi/sum(pi)
+M_new = result_temp * pi
+M_new = apply(M_new,2,function(x) x/sum(x))
+}
+prediction = apply(M_new, 2, which.max)
+#print((M_new[1,]))
+print(pi)
+print(sum(prediction == 1)/length(prediction))
+}
+
+```
+

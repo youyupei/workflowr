@@ -1,0 +1,252 @@
+---
+title: "f15_t4_mad_norm"
+author: "Yupei You"
+date: "Created: 17 Sep 2019, `r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+editor_options:
+  chunk_output_type: inline
+---
+
+# Introduction
+
+I selected **32** transcripts with depth between 30 ~ 300[^1]. 
+
+[^1]: The upperbound was set in order to reduce the run time. There are totally 34 transcripts have 30 ~ 300 mapped reads, I removed R1_92_1 and R2_60_2 from the list because it runs too slowly (large number of reads and exon junctions)
+
+
+```{r loadfile}
+library(ggplot2)
+library(reshape2)
+datapath = "/home/ubuntu/PhD_proj/pipeline/Validation/"
+tested_tranID = read.table(paste0(datapath,"tested_transID.txt"),header = F)[,1] 
+print(tested_tranID)
+```
+# per site accuracy
+
+Firstly, the performance has been evaluated per splicing site.
+```{r load accuracy Per site accuracy, include=FALSE}
+#load file
+prediction_dir = "~/PhD_proj/pipeline/Validation/correct_prodiction_f15_t4_mad_norm/"
+
+# merge all the tables in folder
+
+prediction = data.frame()
+
+for (file in list.files(prediction_dir)) {
+  file = paste(prediction_dir, file ,sep = '/')
+  tryCatch({
+    x = read.csv(file,header = T, sep = ",",stringsAsFactors=FALSE)
+    prediction = rbind(prediction, x)
+  }, error = function(x) {
+    print("error:")  
+    print(file)
+  }, warning = function(x) {
+    print("warning:")
+    print(file)}
+    )
+}
+```
+
+The overall accruacy across tested splicing sites (splicing sites with only one candidate have been filtered out): 
+
+```{r accuracy, message=FALSE}
+prediction = prediction[which(prediction$num_of_candidates > 1),]
+
+prediction$accuracy_manhattan = prediction$manhattan_correct/prediction$mapped_reads
+prediction$accuracy_z_score = prediction$z_score_correct/prediction$mapped_reads
+prediction$accuracy_loglik_score = prediction$log_correct/prediction$mapped_reads
+
+prediction$accuracy_mapper_support   = prediction$num_of_support/prediction$mapped_reads
+############temp!!!! caused by incorrect count of mapper supports####
+prediction$accuracy_mapper_support[prediction$accuracy_mapper_support >1] = 1
+
+
+print(paste0("Manhattan accuracy: ", mean(prediction$accuracy_manhattan)))
+print(paste0("z_score accuracy: ", mean(prediction$accuracy_z_score)))
+print(paste0("log likelihood (normal distribution) accuracy: ", mean(prediction$accuracy_loglik_score)))
+print(paste0("mapper accuracy: ", mean(prediction$accuracy_mapper_support)))
+
+```
+
+**The overall accuracy per site is not bad, however it is still lower than the minimap2. This is acceptable because minimap2 pushes the reads aligning to the canonical sites nearby, which may also introduce some indels around the splicing site. Our method could hopefully find better support if a minor splicing site exists. Using log likelihood (under normal assumption) seems the best metrics to calculate the distance.**
+
+### Accuracy Density plot
+```{r}
+data <- melt(prediction[c("accuracy_loglik_score", "accuracy_manhattan", "accuracy_z_score","accuracy_mapper_support")])
+ggplot(data,aes(x=value, fill=variable)) + geom_density(alpha=0.25) + ggtitle("Accuracy density plot") +xlab("Accuracy per splicing site")  + theme(plot.title = element_text(hjust = 0.5, size = 15))
+
+########histogram + density##############
+#data <- melt(prediction[c("accuracy_loglik_score","accuracy_manhattan", "accuracy_z_score", "accuracy_mapper_support")])#"accuracy_manhattan", "accuracy_z_score",
+#ggplot(data,aes(x=value, fill=variable)) + geom_histogram(alpha = 0.25,position="dodge")   +  theme(plot.title = element_text(hjust = 0.5)) + geom_density(alpha=0.25) # + ggtitle("Accuracy Density ")
+```
+**Accuracy Density plot:** the densities using different distance metrics do not differ greatly from each other. The most interesting part is that we could observe a minor peak for the mapper accuracy, which might be interesting cases for out method.
+
+### Boxplot, DTW vs Minimap2 in terms of splicing site selection.
+```{r message=FALSE}
+data <- melt(data.frame(
+  manhattan = (prediction$manhattan_correct-prediction$num_of_support)/prediction$mapped_reads,
+  zscore = (prediction$z_score_correct-prediction$num_of_support)/prediction$mapped_reads,
+  log_likelihood = (prediction$log_correct-prediction$num_of_support)/prediction$mapped_reads))
+
+ggplot(data,aes(y=value, x=variable, fill = variable)) +  
+  geom_boxplot(alpha=0.4) + labs(y = '',x = '') +
+  ggtitle("DTW vs minimap2 in splicing site characterisition") +
+  xlab("Distance metrics")  + 
+  ylab("Percentage") + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15)) + 
+  scale_y_continuous(labels=scales::percent)
+```
+**DTW vs minimap2 in splicing site characterisition: ** In this boxplot, the y axis is calculated by $$ \frac{\#\ of\ correctly \ assign\ squiggles\ by\ DTW - \#\ of\ reads\ correctly\ mapped\ to\ the\ same\ splicing\ site\ by\ minimap2}{\#\ of\ reads\ mapped\ to\ the\ splicing\ site}$$. Positive value means out method correctly assigns more junction reads than minimap2. The plot shows that they are very similar, some outliers are observed **and need further investigation.**
+
+
+```{r accuracy vs num of candidates, eval=FALSE, include=FALSE}
+########PLOT3##############
+ggplot(prediction, aes(y = accuracy_loglik_score, x = num_of_candidates)) + geom_point() +  geom_smooth(method=lm,  se = F,linetype="dashed",color="darkred",fill="blue") + ggtitle("Accuracy VS # of candidates") +  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+# Per squiggle accuracy
+In this section, the performance is evaluated over each squiggle assignment. Since the overall accuracy is better when using **log likelihood** as the distance metrics, I show here its results only.
+```{r Load File}
+library(ggplot2)
+library(reshape2)
+
+#load file
+ncol = 50
+#score_f15_t4 = read.csv(file = "~/PhD_proj/pipeline/Validation/score_f15_t4_merge.csv",header = F,col.names = seq(1, ncol))
+
+score_f15_t4 = read.csv(file = "~/PhD_proj/pipeline/Validation/merge_f15_t4_mad.csv",header = F,col.names = seq(1, ncol))
+while(sum(is.numeric(score_f15_t4$X1)) > 0 || sum(is.na(score_f15_t4$X1))) {
+  ncol = ncol + 10
+  score_f15_t4 = read.csv(file = "~/PhD_proj/pipeline/Validation/score_f15_t4_merge.csv",header = F,col.names = seq(1, ncol))
+}
+
+
+# fast5 filenames
+  filenames = score_f15_t4$X1
+  #junctionID = c(1)
+  #for (i in 8900:length(filenames)){
+  #  if (filenames[i] == filenames[i-1]){
+  #    junctionID[i] = junctionID[i-1] + 1
+  #  }else{
+  #    junctionID[i] = 1
+  #  }
+  #}
+
+# likelihood_score (single candidate junctions removed)
+likelihood_score = cbind(filenames, score_f15_t4[,seq(5,ncol,3)])
+likelihood_score = likelihood_score[!is.na(likelihood_score$X5),]
+has_multi_candidates = apply(likelihood_score[,-1],1,function(x) sum(!is.na(x)) > 1)
+likelihood_score = likelihood_score[has_multi_candidates,]
+
+# distance of best matched candidate
+min_dist = apply(likelihood_score[,-1],1,function(x) min(x, na.rm=T))
+# bool that the corresponding prodiction is correct or not
+correctness = apply(likelihood_score[,-1],1,which.min) == 1
+```
+
+The overall accruacy across tested squiggles (squiggles with only only candidates have been filtered out): 
+```{r}
+print(sum(correctness)/length(correctness))
+```
+
+### Best DTW distance distribution
+```{r distribution plot}
+data <- data.frame(likelihood_score,min_dist = min_dist, correctness = correctness)
+
+# distribution of min dist (density plot)
+ggplot(data,aes(x=min_dist, fill=correctness)) + 
+  scale_fill_manual(labels = c("False positives", "True Positives"), values = c("blue", "red"))  +
+  guides(fill=guide_legend(title=NULL,reverse = T)) +
+  geom_histogram(aes(y=3*..count../sum(..count..)),alpha = 0.7,position="dodge") + 
+  geom_density(alpha=0.3) +
+  ggtitle("Distribution of best match distance") +
+  xlab("Smallest distance metrics")  + 
+  ylab("Density") + 
+  scale_y_continuous(sec.axis = sec_axis(~./3, name = "Persentage (histgram)")) + 
+  xlim(0,6) +
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+```
+**Plot Distribution of best match distance:** This plot shows the distribution of the best (smallest) distance across all the candidates for each junction squiggle.The squiggles are grouped by whether or not it is correctly assigned to the correct candidate. 
+
+
+```{r difference density (true vs best false), message=FALSE, warning=FALSE}
+true_reads = likelihood_score[correctness == T,]
+false_reads = likelihood_score[correctness == F,]
+
+true_reads_dist = apply(true_reads[,-1],1,function(x) min(x, na.rm = T))
+false_reads_dist = apply(false_reads[,-1],1,function(x) min(x, na.rm = T))
+
+
+false_diff = apply(false_reads[,-1],1,function(x) abs(min(x, na.rm=T) - x[1]))
+#false_diff = apply(false_reads[,-1],1,function(x) abs(min(x, na.rm=T) - x[order(x)[2]]))
+true_diff = apply(true_reads[,-1],1,function(x) abs(x[1] - x[order(x)[2]]))
+
+ggplot() + 
+  geom_density(aes(x = false_diff,fill = "false positive"), alpha = 0.3)  + 
+  geom_density(aes(x = true_diff, fill = "true positive"), alpha = 0.3) + 
+  scale_color_manual("Legend",values = c("red","blue"),aesthetics = "fill") +
+  xlab("Difference of distance") +
+  ggtitle("Distribution of difference between true candidate \n and best aligned false candidate") +
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+```
+**For the squiggles that assigned to false candidates, the difference between the chosen one and the true one is relatively smaller, which is expected.**
+
+
+### 2d density plot:
+```{r 2d density (true vs best false), message=FALSE, warning=FALSE}
+ggplot() + 
+  geom_point(aes(x=true_reads_dist,y=true_diff,color = "true positive"),size = 0.01,alpha = 0.2) + 
+  geom_point(aes(x=false_reads_dist,y=false_diff,color = "false positive"),size = 0.01,alpha = 0.8) + 
+  geom_density_2d(aes(x=true_reads_dist,y=true_diff,fill = "true positive",color = "true positive")) + 
+  geom_density_2d(aes(x=false_reads_dist,y=false_diff,fill = "false positive",color = "false positive")) + 
+  xlab("hardness of matching (distance)")+ 
+  ylab("confidence (difference of distance)")+
+  scale_color_manual("Legend",values = c("blue","red")) + 
+  ylim(0,4) + 
+  xlim(1,6)
+```
+**y-axis**: match score difference (true vs best false)
+**x-axis**: score of best matched candidate
+
+
+
+```{r difference density (best vs second best false), message=FALSE, warning=FALSE}
+true_reads = likelihood_score[correctness == T,]
+false_reads = likelihood_score[correctness == F,]
+
+true_reads_dist = apply(true_reads[,-1],1,function(x) min(x, na.rm = T))
+false_reads_dist = apply(false_reads[,-1],1,function(x) min(x, na.rm = T))
+
+
+#false_diff = apply(false_reads[,-1],1,function(x) abs(min(x, na.rm=T) - x[1]))
+false_diff = apply(false_reads[,-1],1,function(x) abs(min(x, na.rm=T) - x[order(x)[2]]))
+true_diff = apply(true_reads[,-1],1,function(x) abs(x[1] - x[order(x)[2]]))
+
+ggplot() + 
+  geom_density(aes(x = false_diff,fill = "false positive"), alpha = 0.3)  + 
+  geom_density(aes(x = true_diff, fill = "true positive"), alpha = 0.3) + 
+  scale_color_manual("Legend",values = c("red","blue"),aesthetics = "fill") +
+  xlab("Difference of distance") +
+  ggtitle("Distribution of difference between best aligned candidate \n and second best aligned false candidate") +
+  theme(plot.title = element_text(hjust = 0.5, size = 15))
+```
+**In real data analysis, alignment score of true candidate is unknown. But we can calculate the difference between the best and second best score. Compare this plot to the previous one, the density peak for the false postives are much higher, which means the true candidate can not always get the second best score in false positives. the true positive score density should remain the some to the previous one.**
+
+### 2d density plot:
+```{r 2d density (best vs second best false), message=FALSE, warning=FALSE}
+ggplot() + 
+  geom_point(aes(x=true_reads_dist,y=true_diff,color = "true positive"),size = 0.01,alpha = 0.2) + 
+  geom_point(aes(x=false_reads_dist,y=false_diff,color = "false positive"),size = 0.01,alpha = 0.8) + 
+  geom_density_2d(aes(x=true_reads_dist,y=true_diff,fill = "true positive",color = "true positive")) + 
+  geom_density_2d(aes(x=false_reads_dist,y=false_diff,fill = "false positive",color = "false positive")) + 
+  xlab("hardness of matching (distance)")+ 
+  ylab("confidence (difference of distance)")+
+  scale_color_manual("Legend",values = c("blue","red")) + 
+  ylim(0,4) + 
+  xlim(1,6)
+```
+
+**y-axis**: match score difference $$|best\ score - second\ best\ score|$$
+
+**x-axis**: score of best matched candidate
+

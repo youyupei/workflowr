@@ -1,0 +1,41 @@
+---
+title: "Long read transcriptomes pipeline-TALON"
+author: "youyupei"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`" 
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+Link:[https://www.biorxiv.org/content/10.1101/672931v1](https://www.biorxiv.org/content/10.1101/672931v1)
+
+
+## Intuoduction
+
+1. humans have around 20,000 protein coding genes, these are thought to produce over 100,000 splice isoforms through alternative splicing, and potentially many more[^1] 
+
+
+2. Isoforms can have vastly different functions and may be very specific to a particular tissue or temporal stage[^2][^3][^4].
+
+
+History:
+
+  1. **In early studies**, the preferred methods for characterizing and measuring isoforms were RT-PCR, Sanger sequencing of expressed sequence tags (ESTs), and isoform-specific microarrays[^8].
+  2. **NGS (short read) revolutionized genomics in a high-throughput manner.** ENCODE consortium has been a leader in this field along with other projects(e.g. GTEx and FANTOM, or TCGA in cancer community)
+  
+Challenge in short reads:
+
+  1. read length << transcript length
+  2. Computational model to quantify their aboundance is required
+  3. Can not tell the exact combination of exons
+
+  
+  Quantification Approach 1.Bioinformatics software packages such as Kallisto use expectation-maximization to pseudo-align short reads to a transcriptome reference, generating abundance estimates for transcript and gene models[^16].
+  
+      + broadly identifying which transcripts the reads are compatible with
+      - Depend heavily on the choice on annotation (cannot identify transcript).
+      
+  Quantification Approach 2. compite short read coverage of specific splice junctions or exons
+      
+      + Can detect novel exon
+      - Can still not tell the combination.
+  
