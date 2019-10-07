@@ -64,5 +64,7 @@ print(pi)
 print(sum(prediction == 1)/length(prediction))
 }
 
+plot(result_temp[1,],result_temp[2,],xlab = "likelihood for true module",ylab = "likelihood for false module")
+abline(0,1)
 ```
 

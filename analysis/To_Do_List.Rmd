@@ -6,36 +6,27 @@ date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 
 ## To Do (ordered by the priority)
 
+* Check the k-mer distribution in the condidates (is there any k-mer bias to junction/squins)
+
 * Investigate some specific cases in the following situations:
   
-  1. The site with very low accuraccy when running dtw
-  2. The site with large discrepency of the support from dtw or minimap2
-  3. **Tips:** Ignore confusing junctions for which we are not sure the exact transcript the reads come from.
+  1. Check signal alignment of site in which a false candidate get very good score and much better than the true one.
+  2. The site with very low accuraccy when running dtw
+  3. The site with large discrepency of the support from dtw or minimap2
+  4. **Tips:** Ignore confusing junctions for which we are not sure the exact transcript the reads come from.
   
 * Think about penalty for shrink in DTW
 
-* Test the speed variation in a single read.
-
 * Investigate the frequency of the **current spike** (Terry mentioned *robust statistics*).
 
-* Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
+* Check drift: Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
 
-* Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)
+* Test the speed variation in a single read.
 
 * Generate presentitave model using spike-in data.
 
-## Problems and possible solutions
+* Check the accuracy of squiggle assignment given by Tombo (Maybe by squencing the regions near splicing sites)
 
-### Tombo resquiggle problem (talked with HJ and MK, 13/5/2019)
- In Tombo resquiggle, the accuracy of the squiggle to sequence alignment largely depends on the correctness of the provided reference sequence. However, for the queried reads, we do not know what is the proper input sequence to extract the signal that is from the exon junction.
-
-**possible solutions**:
-
-It is okay if we can not get an accuracy base-to-base assingment near the exon boundary. We can input base-called seq or annotated reference and extract signal from a wider window as long as we are sure the exon boundary is inside the window. Then we can search the best match inside.
-
-**Note**: 
-
-Mike has mentioned that in many cases the exons could be similar in a gene (because of duplication).
 
 ## Done
 
@@ -68,22 +59,5 @@ cDNA data analysis:
 * Test single site R1_102_1
 
 * Snakemake the [pipeline](snakemake_pipline.html).
-
-
-
-## Questions
-
-* Is there currently any method can be use for splicing site identification?
-  
-  FLAIR uses short reads and annotation for splice junction correction.
-  
-* Is there any recommondation of setting when using minimap2?
-  minimap2 support long-read mapping (-x map-ont/map-ont) for transcripts, -x splice is a good option for long-read spliced alignment. There are different options for mapping at the exon junctions:
-  1. force the reads map to GT-AG
-  2. don't match GT-AG (default)
-  
-* Do we compare our method to the number of support from mapping results?
-  
-    + For nanopore reads mapping, it is hard to say the splicing site is consistently support by mapped reads, since the mapper normally force the reads split at GT-AG with cost of introduce mismatches. That is what our method trying to deal with: assess the level of support from the data themselves. Thus, even if the mapping result get more accurate assignment for the splicing site, it is not as convicing as using data themselves rather than arbitrarily choose a cannonical site near by.
 
 

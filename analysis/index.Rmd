@@ -26,10 +26,11 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 
 <div class="column-left">
-# Meeting
-* ### [Tue 5 Mar 2019: project description](5_Mar_with_HJ_and_MK_.html) (with Heejung and Mike)
-* ### [Mon 18 Mar 2019:Ideas about the direction at the start of the project](18_Mar_with_HJ_and_MK.html) (with Heejung and Mike)
-* ### [Wed 10 Apr 2019: Progress Update](10_Apr_Meeting_Summary.html) (with Heejung and Mike)
+# Problem and discussion
+* ### [Project description](5_Mar_with_HJ_and_MK_.html) (Meeting with Heejung and Mike,5 Mar 2019)
+* ### [Initial idea about the solution](18_Mar_with_HJ_and_MK.html) (Meeting with Heejung and Mike,18 Mar 2019)
+* ### [Progress Update](10_Apr_Meeting_Summary.html) (Meeting with Heejung and Mike, 10 Apr 2019)
+* ### [Problem and Discussion](Problem_and_Discussion.html)
 
 # Reading
 * ### [Real-time selective sequencing using nanopore technology](Matthew_2016.html)

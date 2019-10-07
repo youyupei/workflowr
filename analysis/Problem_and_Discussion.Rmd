@@ -1,0 +1,82 @@
+---
+author: "Yupei You"
+date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
+editor:
+  inline
+---
+
+# Problems and possible solutions
+
+## Tombo resquiggle problem (talked with HJ and MK, 13/5/2019)
+ In Tombo resquiggle, the accuracy of the squiggle to sequence alignment largely depends on the correctness of the provided reference sequence. However, for the queried reads, we do not know what is the proper input sequence to extract the signal that is from the exon junction.
+
+**possible solutions**:
+It is okay if we can not get an accuracy base-to-base assingment near the exon boundary. We can input base-called seq or annotated reference and extract signal from a wider window as long as we are sure the exon boundary is inside the window. Then we can search the best match inside.
+
+
+
+
+
+## Normalisation (solved, 30/9/2019)
+
+After inspecting into some bad DTW results, I found out the some simulated signals are not at the some scale as the observed signal. I updated the normalisation methods:
+
+**Previous:** normalisation over each point use medmad, the normalistion parameters were calculated from and for trimmed junction signal and scrappy simulated signal separately. 
+**Updated: ** 
+
+* **For junction signal:** The normalisation parameters are from tombo resquiggle (details see [tombo resquiggle algorithm](https://nanoporetech.github.io/tombo/resquiggle.html)). The scale parameter from tombo will then be multiplied by 1.4826 to be consistent with scrappie output.
+
+* **For simulated signal** No action is needed. Scrappie uses similar normalisation method as tombo does, the only difference is that the scale parameter is $k*MAD$ where k is a scalor factor. Scrappie choose 1.4826 as k, which comes from normal assumption(details see [https://en.wikipedia.org/wiki/Median_absolute_deviation](https://en.wikipedia.org/wiki/Median_absolute_deviation)).
+
+## Current spike
+
+After inspecting into unexpected DTW results, I found that a lot of the bad results were coursed by the current spike. 
+
+In these spikes, some of them are clear outliers (**solved**):
+![Large spike (solved)](../docs/img/Discussion/id7_7758_normal_1(True).png)
+
+However, some of them are not:
+![Small spike](../docs/img/Discussion/Inkedid8_1671_normal_1(True)_LI.jpg)
+
+For the large spike, I applied a outlier filter. Data points with $|X_i| > 3*k*MAD$ will be identified as outlier and removed from the signal (no imputation applied currently).
+
+For the small spike:
+  * Idea: Use t-distribution instead of normal distribution. The flat tail will reduce the sensitivity of outliers. I have tested t-distribution with degree of freedom = 1, see [test2](f15_t4_t_likelihood.html)
+  * **To be discussed** Idea: use different degree of freedom for different data points.
+
+
+## Probabilistic output
+
+There are some ideas about how to implement probabilistic output (23/9/2019)
+
+* Use likelihood ratio as the ratio of probabilitis of different candidates. 
+  
+  - **Problem: ** the probabilities will depend on the # of candidates.
+  - **Possible solution: ** Reduce the number of candidates according to the matching quality. (Only give probabilities to candidates with good match. **The definition of good match will be discussed later**)
+
+* Use EM algorithm to estimate $P(z_i = k)$, where $z_i$ is the latent singal to candidate assinment.$k\in \{1..K\}$, where $K$ is the number of candidates. Then $P(z_i|X, \boldsymbol{\hat\pi})$.
+
+
+# Discussion
+
+## Some Notes
+
+1. Mike has mentioned that in many cases the exons could be similar in a gene (because of duplication).
+2. Mike has mentioned to use data with known alternative exon junction.
+
+## Questions
+
+* Is there currently any method can be use for splicing site identification?
+  
+  FLAIR uses short reads and annotation for splice junction correction.
+  
+* Is there any recommondation of setting when using minimap2?
+  minimap2 support long-read mapping (-x map-ont/map-ont) for transcripts, -x splice is a good option for long-read spliced alignment. There are different options for mapping at the exon junctions:
+  1. force the reads map to GT-AG
+  2. don't match GT-AG (default)
+  
+* Do we compare our method to the number of support from mapping results?
+  
+    + For nanopore reads mapping, it is hard to say the splicing site is consistently support by mapped reads, since the mapper normally force the reads split at GT-AG with cost of introduce mismatches. That is what our method trying to deal with: assess the level of support from the data themselves. Thus, even if the mapping result get more accurate assignment for the splicing site, it is not as convicing as using data themselves rather than arbitrarily choose a cannonical site near by.
+
+
