@@ -568,17 +568,21 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree3ff2999968d837180e9cdd857b1a1131c291e6fdtargetblank3ff2999a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/3ff2999968d837180e9cdd857b1a1131c291e6fd" target="_blank">3ff2999</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree5c70cee5d2915cf5f800bf3e04f37b30f3bb6c88targetblank5c70ceea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/5c70cee5d2915cf5f800bf3e04f37b30f3bb6c88" target="_blank">5c70cee</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree3ff2999968d837180e9cdd857b1a1131c291e6fdtargetblank3ff2999a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree5c70cee5d2915cf5f800bf3e04f37b30f3bb6c88targetblank5c70ceea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
+Untracked files:
+    Untracked:  docs/img/Discussion/Oversqueezed.PNG
+
 Unstaged changes:
     Modified:   analysis/Problem_and_Discussion.Rmd
+    Modified:   docs/img/Discussion/Inkedid8_1671_normal_1(True)_LI.jpg
 
 </code></pre>
 <p>
@@ -617,6 +621,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/5c70cee5d2915cf5f800bf3e04f37b30f3bb6c88/analysis/Problem_and_Discussion.Rmd" target="_blank">5c70cee</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-07
+</td>
+<td>
+update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/5c70cee5d2915cf5f800bf3e04f37b30f3bb6c88/docs/Problem_and_Discussion.html" target="_blank">5c70cee</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-07
+</td>
+<td>
+update
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -681,6 +719,11 @@ update
 <p>However, some of them are not: <img src="../docs/img/Discussion/Inkedid8_1671_normal_1(True)_LI.jpg" alt="Small spike" /></p>
 <p>For the large spike, I applied a outlier filter. Data points with <span class="math inline">\(|X_i| &gt; 3*k*MAD\)</span> will be identified as outlier and removed from the signal (no imputation applied currently).</p>
 <p>For the small spike: * Idea: Use t-distribution instead of normal distribution. The flat tail will reduce the sensitivity of outliers. I have tested t-distribution with degree of freedom = 1, see <a href="f15_t4_t_likelihood.html">test2</a> * <strong>To be discussed</strong> Idea: use different degree of freedom for different data points.</p>
+</div>
+<div id="over-squeezed" class="section level2">
+<h2>Over squeezed</h2>
+<p>I have also observed some cases that the scrappie model is over squeezed after alignment: <img src="../docs/img/Discussion/Oversqueezed.PNG" /></p>
+<p><strong>Possible solution:</strong> 1. Use banded accumulate matrix in DTW 2. Give penalty to over squeeze.</p>
 </div>
 <div id="probabilistic-output" class="section level2">
 <h2>Probabilistic output</h2>

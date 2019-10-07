@@ -45,6 +45,15 @@ For the small spike:
   * **To be discussed** Idea: use different degree of freedom for different data points.
 
 
+## Over squeezed
+
+I have also observed some cases that the scrappie model is over squeezed after alignment: 
+![](../docs/img/Discussion/Oversqueezed.PNG)
+
+**Possible solution:**
+  1. Use banded accumulate matrix in DTW
+  2. Give penalty to over squeeze.
+
 ## Probabilistic output
 
 There are some ideas about how to implement probabilistic output (23/9/2019)
