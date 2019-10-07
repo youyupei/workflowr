@@ -501,7 +501,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -568,23 +568,17 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreecd69eee65cef44586667db3011860e2745f03e43targetblankcd69eeea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/cd69eee65cef44586667db3011860e2745f03e43" target="_blank">cd69eee</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree3ff2999968d837180e9cdd857b1a1131c291e6fdtargetblank3ff2999a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/3ff2999968d837180e9cdd857b1a1131c291e6fd" target="_blank">3ff2999</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreecd69eee65cef44586667db3011860e2745f03e43targetblankcd69eeea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree3ff2999968d837180e9cdd857b1a1131c291e6fdtargetblank3ff2999a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-Untracked files:
-    Untracked:  analysis/Problem_and_Discussion.Rmd
-    Untracked:  docs/img/Discussion/
-
 Unstaged changes:
-    Modified:   analysis/To_Do_List.Rmd
-    Modified:   analysis/Workflow/pipline_evaluation/EMalgorithm/test_R1_102_1.Rmd
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/Problem_and_Discussion.Rmd
 
 </code></pre>
 <p>
@@ -597,9 +591,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/3ff2999968d837180e9cdd857b1a1131c291e6fd/analysis/Problem_and_Discussion.Rmd" target="_blank">3ff2999</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-07
+</td>
+<td>
+update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/3ff2999968d837180e9cdd857b1a1131c291e6fd/docs/Problem_and_Discussion.html" target="_blank">3ff2999</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-07
+</td>
+<td>
+update
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -638,6 +692,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <li><strong>Possible solution: </strong> Reduce the number of candidates according to the matching quality. (Only give probabilities to candidates with good match. <strong>The definition of good match will be discussed later</strong>)</li>
 </ul></li>
 <li><p>Use EM algorithm to estimate <span class="math inline">\(P(z_i = k)\)</span>, where <span class="math inline">\(z_i\)</span> is the latent singal to candidate assinment.<span class="math inline">\(k\in \{1..K\}\)</span>, where <span class="math inline">\(K\)</span> is the number of candidates. Then <span class="math inline">\(P(z_i|X, \boldsymbol{\hat\pi})\)</span>.</p></li>
+<li><p><strong>Main Problem:</strong> The likelihood is not comparible when data are different. Since we are applying local alignment in DTW, we are actually calculating the likelihood using different sets of data points. This factor make the comparison of likelihood non-sense. <strong>Another</strong> thing: in DTW, it is possible that a single point in observed data is assigned multiple times. It doesn’t make sense in likelihood ratio neither.</p></li>
 </ul>
 </div>
 </div>
@@ -695,9 +750,9 @@ attached base packages:
 loaded via a namespace (and not attached):
  [1] workflowr_1.4.0 Rcpp_1.0.1      digest_0.6.19   rprojroot_1.3-2
  [5] backports_1.1.4 git2r_0.25.2    magrittr_1.5    evaluate_0.14  
- [9] stringi_1.4.3   fs_1.3.1        rmarkdown_1.13  tools_3.4.4    
-[13] stringr_1.4.0   glue_1.3.1      xfun_0.7        yaml_2.2.0     
-[17] compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
+ [9] stringi_1.4.3   fs_1.3.1        whisker_0.3-2   rmarkdown_1.13 
+[13] tools_3.4.4     stringr_1.4.0   glue_1.3.1      xfun_0.7       
+[17] yaml_2.2.0      compiler_3.4.4  htmltools_0.3.6 knitr_1.23     </code></pre>
 </div>
 </div>
 </div>

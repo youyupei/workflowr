@@ -57,6 +57,9 @@ There are some ideas about how to implement probabilistic output (23/9/2019)
 * Use EM algorithm to estimate $P(z_i = k)$, where $z_i$ is the latent singal to candidate assinment.$k\in \{1..K\}$, where $K$ is the number of candidates. Then $P(z_i|X, \boldsymbol{\hat\pi})$.
 
 
+* **Main Problem:** The likelihood is not comparible when data are different. Since we are applying local alignment in DTW, we are actually calculating the likelihood using different sets of data points. This factor make the comparison of likelihood non-sense. **Another** thing: in DTW, it is possible that a single point in observed data is assigned multiple times. It doesn't make sense in likelihood ratio neither.
+
+
 # Discussion
 
 ## Some Notes
