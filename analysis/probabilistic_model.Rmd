@@ -1,0 +1,99 @@
+---
+title: "Probabilistic Model"
+author: "youyupei"
+date: "2019-10-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+<script>
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
+ 
+<button onclick="myFunction('myDIV1')">Show/hide Complete Derivation</button>
+ 
+<div id="myDIV1">
+</div>
+
+
+## Introduction
+
+The direct assignment of a quired squiggle to its best matched candidate (with best matching score) is not optimal, the certainty of each assignment can be helpful to decide that a squiggle-to-candidate assignment can be retained or discarded. We designed a probabilistic model to enable probabilistic outputs.
+
+
+## Model Description
+
+There is a lot of factors that can affect the correctness of a squiggle-to-candidate assignmet:
+  * The correctness of suiggle located by tombo.
+  * The quality of reads.
+  * The correctness of the listed candidates.
+  * And so on...
+
+Taking into account the uncertainty, we designed a probabilistic model as follow:
+  
+  
+### Preamble
+
+  The probability will be calculated for each splicing site independently. For each site:
+
+  * Observations (squiggles): $\boldsymbol x_i, i \in  \{1,...,n\}$, where $n$ is the number of junction squiggles trimmed from mapped reads.
+  
+  * Latent states: $z_i = k, k \in \{1,...,M\}$, where $m$ is the number of candidates for this site, means the $k_{th}$ candidate is true for $\boldsymbol x_i$.
+  * Latent states: $H_i \in \{0,1\}$, which indicates the whether or not true sequence of $\boldsymbol x_i$ is listed in the candidates.
+  * let $p_h = P(H_i = 1)$
+  * let $P(z_i = k | H_i = 1) = \pi_k$, where $\sum_{k=1}^{m}\pi_k = 1$
+ 
+### Derivation
+
+\begin{align}
+P(\boldsymbol{x_1, x_2, ...,x_n}) &= \prod_{i=1}^{n}P(\boldsymbol x_i)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \boldsymbol x_i\text{ is independent on each other}\\
+
+&=   \prod_{i=1}^{n}[P(\boldsymbol x_i,H_i = 1) + P(\boldsymbol x_i,H_i = 0)]\\
+
+&=   \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i,z_i =m,H_i = 1) + P(\boldsymbol x_i,H_i = 0)] \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ z_i  \text{ is not defined given }  H_i = 0\\
+
+&=   \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)\times P(H_i = 1) + P(\boldsymbol x_i|H_i = 0)\times P(H_i = 0)]\\
+&= \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m\times p_h + P(\boldsymbol x_i|H_i = 0)\times (1-p_h)]\\
+\end{align}
+
+
+We can calculate $P(\boldsymbol x_i|z_i =k, H_i =1)$ assuming the DTW alignment is given. And we could approximate $P(\boldsymbol x_i|H_i = 0)$ using empirical distribution.
+
+\begin{align}
+P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) &= P(H_i|\boldsymbol x_i)\\
+
+&= \frac{P(\boldsymbol x_i,H_i = 0)}{P(\boldsymbol x_i)}\\
+
+
+&= \frac{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0) + P(\boldsymbol x_i|H_i=1) \times P(H_i = 1)}\\
+
+&= \frac{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0) +\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)\times P(H_i = 1)
+}\\
+&= \frac{P(\boldsymbol x_i|H_i=0) \times (1-p_h)}{P(\boldsymbol x_i|H_i=0) \times (1-p_h) +\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m\times p_h
+}\\
+
+
+\end{align}
+
+and
+
+
+\begin{align}
+P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &= P(z_i=k|\boldsymbol x_i,H_i =1)\\
+
+&= \frac{P(\boldsymbol x_i,z_i = k|H_i =1)}{P(\boldsymbol x_i|H_i=1)}\\
+&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
+&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
+\end{align}
+
+
+We will finally report $P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n})$

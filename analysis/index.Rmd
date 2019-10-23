@@ -49,6 +49,9 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
   * #### [Generate candidates](candidate_generator.html)
   * #### [Generate representative squiggle for candidates](get_representative_squiggle.html)
   * #### [Run self-developed DTW](self_developed_DTW.html)
+  
+* ### [Probabilistic model](probabilistic_model.html)
+
 * ### [snakemake pipeline](snakemake_pipline.html)
   * #### [Test 1](f15_t4_mad_norm.html)
     settings:

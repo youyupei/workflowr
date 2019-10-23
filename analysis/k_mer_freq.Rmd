@@ -1,0 +1,21 @@
+---
+title: "Comparison of K-mer frequency"
+author: "youyupei"
+date: "2019-10-09"
+editor_options:
+  inline
+---
+
+## Introduction
+There we are comparing the 5-mer frequency among Squins DNA, Squins Transcript, and Squins exon junction ($\pm10$ around the splicing site.)
+
+
+# load data
+```{r}
+Squins_path = "~/data/Sequin_resources"
+Squins_DNA_kmer_count = read.csv("~/data/Sequin_resources/dna_ref_kmer_count.csv",header = F, row.names = 1)
+Squins_transcript_kmer_count = read.csv("~/data/Sequin_resources/transcript_ref_kmer_count.csv",header = F, row.names = 1)
+
+Squins_junction_kmer_count = read.csv("~/data/Sequin_resources/junction_kmer_count.csv",header = F, row.names = 1)
+```
+
