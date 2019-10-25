@@ -481,7 +481,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-10-23
+<strong>Last updated:</strong> 2019-10-25
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -505,31 +505,24 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreed78d6abf0eb55fc09f7d9fc32c2eda077d4c69b2targetblankd78d6aba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/d78d6abf0eb55fc09f7d9fc32c2eda077d4c69b2" target="_blank">d78d6ab</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree032523494041113fbe381c133d793f02bba2d7c0targetblank0325234a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/032523494041113fbe381c133d793f02bba2d7c0" target="_blank">0325234</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtreed78d6abf0eb55fc09f7d9fc32c2eda077d4c69b2targetblankd78d6aba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree032523494041113fbe381c133d793f02bba2d7c0targetblank0325234a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-Untracked files:
-    Untracked:  analysis/Workflow/pipline_evaluation/f15_t4_t_likelihood.Rmd
-    Untracked:  analysis/f15_trim4_global_t_d1.Rmd
-    Untracked:  analysis/k_mer_freq.Rmd
-    Untracked:  analysis/probabilistic_model.Rmd
-
 Unstaged changes:
-    Deleted:    analysis/f15_t4_t_likelihood.Rmd
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/probabilistic_model.Rmd
 
 </code></pre>
 <p>
@@ -542,9 +535,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/032523494041113fbe381c133d793f02bba2d7c0/analysis/probabilistic_model.Rmd" target="_blank">0325234</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/032523494041113fbe381c133d793f02bba2d7c0/docs/probabilistic_model.html" target="_blank">0325234</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-23
+</td>
+<td>
+update
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -620,7 +673,7 @@ P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &amp;= P(z_i=k|\boldsymbol x_i,
 &amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
 &amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
 \end{align}\]</span></p>
-<p>We will finally report <span class="math inline">\(P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n})\)</span></p>
+<p>We will finally report <span class="math inline">\(P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 1|\boldsymbol{x_1,x_2,...,x_n})\)</span></p>
 </div>
 </div>
 

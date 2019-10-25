@@ -96,4 +96,4 @@ P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &= P(z_i=k|\boldsymbol x_i,H_i 
 \end{align}
 
 
-We will finally report $P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n})$
+We will finally report $P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 1|\boldsymbol{x_1,x_2,...,x_n})$
