@@ -51,6 +51,7 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
   * #### [Run self-developed DTW](self_developed_DTW.html)
   
 * ### [Probabilistic model](probabilistic_model.html)
+  - [log-sum-exp trick](log-sum-exp.html)
 
 * ### [snakemake pipeline](snakemake_pipline.html)
   * #### [Test 1](f15_t4_mad_norm.html)
