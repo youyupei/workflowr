@@ -505,27 +505,24 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree4067caeba7589330b5405f14f717e6a0984cc076targetblank4067caea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/4067caeba7589330b5405f14f717e6a0984cc076" target="_blank">4067cae</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree9165a30f4bf4b1192a47f5fc26aa588a603a8101targetblank9165a30a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/9165a30f4bf4b1192a47f5fc26aa588a603a8101" target="_blank">9165a30</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree4067caeba7589330b5405f14f717e6a0984cc076targetblank4067caea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree9165a30f4bf4b1192a47f5fc26aa588a603a8101targetblank9165a30a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-Untracked files:
-    Untracked:  analysis/log-sum-exp.Rmd
-
 Unstaged changes:
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/log-sum-exp.Rmd
 
 </code></pre>
 <p>
@@ -538,9 +535,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/9165a30f4bf4b1192a47f5fc26aa588a603a8101/analysis/log-sum-exp.Rmd" target="_blank">9165a30</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-25
+</td>
+<td>
+add log sum exp trick
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/9165a30f4bf4b1192a47f5fc26aa588a603a8101/docs/log-sum-exp.html" target="_blank">9165a30</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-10-25
+</td>
+<td>
+add log sum exp trick
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -552,15 +609,18 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <div id="problems" class="section level2">
 <h2>Problems</h2>
 <p>In <a href="https://youyupei.github.io/workflowr/docs/probabilistic_model.html">our probabilistic model</a> we have to compute <span class="math inline">\(\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\)</span>, in which the <span class="math inline">\(P(\boldsymbol x_i|z_i =m, H_i =1)\)</span> is going to be subject to the underflow problem<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. What we have from the DTW is <span class="math inline">\(log\ P(\boldsymbol x_i|z_i =m, H_i =1)\)</span>, a.k.a the log-likelihood.</p>
-<p>##The idea of log-sum-exp trick:</p>
-<p>$$ <span class="math display">\[\begin{align}
-&amp; \ \ \ \ \ \ log\ \sum_i e^{a_i} \\
+<div id="the-idea-of-log-sum-exp-trick" class="section level3">
+<h3>The idea of log-sum-exp trick:</h3>
+<p><span class="math display">\[\begin{align}
+&amp; \ \ \ \ \ \ log\ \sum_i e^{a_i}  \ \ \ \ \ \ \ \ \ \ \text{,where } a_i \text{ could be super negative numbers, e.g. -1000}\\
 
 &amp; = log (e^b\sum_i e^{a_i - b}) \ \ \ \ \ \ \ \ \ \ \text{,where } b = {Max}(a_i)\\
 
 &amp;= b + log (\sum_i e^{a_i - b})
 
-\end{align}\]</span> $$</p>
+\end{align}\]</span></p>
+<p>The main idea is that, the the value of <span class="math inline">\(\sum_i e^{a_i}\)</span> is mostly affcted by <span class="math inline">\({Max}(a_i)\)</span>. Even if there are still some <span class="math inline">\(i\)</span> that <span class="math inline">\(e^{a_i-b}\)</span> is underflowing, it doesn’t really matter anymore.</p>
+</div>
 </div>
 <div class="footnotes">
 <hr />

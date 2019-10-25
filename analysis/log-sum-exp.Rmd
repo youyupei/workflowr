@@ -14,17 +14,21 @@ editor_options:
 ## Problems
 In [our probabilistic model](https://youyupei.github.io/workflowr/docs/probabilistic_model.html) we have to compute $\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)$, in which the $P(\boldsymbol x_i|z_i =m, H_i =1)$ is going to be subject to the underflow problem[^1]. What we have from the DTW is $log\ P(\boldsymbol x_i|z_i =m, H_i =1)$, a.k.a the log-likelihood. 
 
-##The idea of log-sum-exp trick:
 
-$$
+
+### The idea of log-sum-exp trick:
+
+
 \begin{align}
-& \ \ \ \ \ \ log\ \sum_i e^{a_i} \\
+& \ \ \ \ \ \ log\ \sum_i e^{a_i}  \ \ \ \ \ \ \ \ \ \ \text{,where } a_i \text{ could be super negative numbers, e.g. -1000}\\
 
 & = log (e^b\sum_i e^{a_i - b}) \ \ \ \ \ \ \ \ \ \ \text{,where } b = {Max}(a_i)\\
 
 &= b + log (\sum_i e^{a_i - b})
 
 \end{align}
-$$
+
+The main idea is that, the the value of $\sum_i e^{a_i}$ is mostly affcted by ${Max}(a_i)$. Even if there are still some $i$ that $e^{a_i-b}$ is underflowing, it doesn't really matter anymore.
+
 
 [^1]: Acctually not. The range of the  $log\ P(\boldsymbol x_i|z_i =m, H_i =1)$ is roughly (-10,-2), which could be represented in R. The log-likelihood is not that small because we are actually taking te geometric mean, i.e. we use $[P(\boldsymbol x_i|z_i =m, H_i =1)]^{-N_{m,i}}$ instead of $P(\boldsymbol x_i|z_i =m, H_i =1)$, where $N_{m,i}$ is the length of dtw path.
