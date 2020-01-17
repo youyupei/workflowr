@@ -463,7 +463,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -472,7 +472,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -481,10 +481,10 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-11-05
+<strong>Last updated:</strong> 2020-01-17
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -500,30 +500,32 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree408c35a265abb14245c415e6778ce22c2b4e25eftargetblank408c35aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/408c35a265abb14245c415e6778ce22c2b4e25ef" target="_blank">408c35a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree8610705b83fbd2636d9e3acd7d471f30ab221factargetblank8610705a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/8610705b83fbd2636d9e3acd7d471f30ab221fac" target="_blank">8610705</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree408c35a265abb14245c415e6778ce22c2b4e25eftargetblank408c35aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree8610705b83fbd2636d9e3acd7d471f30ab221factargetblank8610705a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Untracked files:
+    Untracked:  analysis/Workflow/pipline_evaluation/Single_site_minimap_nanosplicer_compare.R
     Untracked:  analysis/alternative_distribution.Rmd
     Untracked:  analysis/cheatsheat.Rmd
+    Untracked:  analysis/probabilistic_minimap2_comparison.Rmd
     Untracked:  analysis/probabilistic_output_test.Rmd
     Untracked:  analysis/probabilistic_output_test_newsuiqggle.Rmd
 
@@ -531,7 +533,6 @@ Unstaged changes:
     Modified:   analysis/_site.yml
     Modified:   analysis/index.Rmd
     Modified:   analysis/k_mer_freq.Rmd
-    Modified:   analysis/probabilistic_model.Rmd
 
 </code></pre>
 <p>
@@ -570,6 +571,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/8610705b83fbd2636d9e3acd7d471f30ab221fac/analysis/probabilistic_model.Rmd" target="_blank">8610705</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2020-01-17
+</td>
+<td>
+wflow_publish(“analysis/probabilistic_model.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/70c948b35d0717f285b15d402c86902d06f41b8a/docs/probabilistic_model.html" target="_blank">70c948b</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2019-11-05
+</td>
+<td>
+modified model
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -709,7 +744,20 @@ P(\boldsymbol{x_1, x_2, ...,x_n}) &amp;= \prod_{i=1}^{n}P(\boldsymbol x_i)\ \ \ 
 &amp;=   \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)\times P(H_i = 1) + P(\boldsymbol x_i|H_i = 0)\times P(H_i = 0)]\\
 &amp;= \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m\times p_h + P(\boldsymbol x_i|H_i = 0)\times (1-p_h)]\\
 \end{align}\]</span></p>
-<p>We can calculate <span class="math inline">\(P(\boldsymbol x_i|z_i =k, H_i =1)\)</span> assuming the DTW alignment is given. And we could approximate <span class="math inline">\(P(\boldsymbol x_i|H_i = 0)\)</span> using empirical distribution.</p>
+</div>
+<div id="assignment-probability" class="section level3">
+<h3>Assignment probability</h3>
+<p><span class="math display">\[\begin{align}
+P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &amp;= P(z_i=k|\boldsymbol x_i,H_i =1)\\
+
+&amp;= \frac{P(\boldsymbol x_i,z_i = k|H_i =1)}{P(\boldsymbol x_i|H_i=1)}\\
+&amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i=k|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
+&amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
+\end{align}\]</span></p>
+</div>
+<div id="candidate-set-uncertainty" class="section level3">
+<h3>Candidate set (un)certainty</h3>
+<p>We have define <span class="math inline">\(H_i \in \{0,1\}\)</span>, which indicates the whether or not true sequence of <span class="math inline">\(\boldsymbol x_i\)</span> is listed in the candidates.</p>
 <p><span class="math display">\[\begin{align}
 P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) &amp;= P(H_i|\boldsymbol x_i)\\
 
@@ -720,15 +768,21 @@ P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) &amp;= P(H_i|\boldsymbol x_i)\\
 
 
 \end{align}\]</span></p>
-<p>and</p>
+<p>There is no way to analytically calculate <span class="math inline">\(P(x_i | H_i)\)</span>. Luckily, we can approximate it using empirical distribution.</p>
+<p><strong>Intuition of the empirical distribution:</strong> * When <span class="math inline">\(H_i = 1\)</span>, at least one of the candidate can match <span class="math inline">\(x_i\)</span> well. * When <span class="math inline">\(H_i = 0\)</span>, none of the candidate can have a good match to <span class="math inline">\(x_i\)</span>.</p>
+<p>Here, we define <span class="math inline">\(S_i\)</span>: <strong>maximum similarity between x_i and all the candidates.</strong> We can approximate <span class="math inline">\(P(S_i | H_i)\)</span> empirically. Then</p>
 <p><span class="math display">\[\begin{align}
-P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &amp;= P(z_i=k|\boldsymbol x_i,H_i =1)\\
+&amp;P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) \\
+&amp;\\
+=&amp; P(H_i|\boldsymbol x_i)\\
+&amp;\\
+\approx &amp;P(H_i = 0 | S_i)\\
+&amp;\\
+=&amp; \frac{P(\boldsymbol S_i,H_i = 0)}{P(\boldsymbol S_i)}\\
+=&amp; \frac{P(\boldsymbol S_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol S_i|H_i=0) \times P(H_i = 0) + P(\boldsymbol S_i|H_i=1) \times P(H_i = 1)}\\
 
-&amp;= \frac{P(\boldsymbol x_i,z_i = k|H_i =1)}{P(\boldsymbol x_i|H_i=1)}\\
-&amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i=k|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
-&amp;= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
+
 \end{align}\]</span></p>
-<p>We will finally report <span class="math inline">\(P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 1|\boldsymbol{x_1,x_2,...,x_n})\)</span></p>
 </div>
 </div>
 
