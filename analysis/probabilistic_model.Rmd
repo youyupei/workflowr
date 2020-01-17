@@ -65,8 +65,20 @@ P(\boldsymbol{x_1, x_2, ...,x_n}) &= \prod_{i=1}^{n}P(\boldsymbol x_i)\ \ \ \ \ 
 &= \prod_{i=1}^{n}[\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m\times p_h + P(\boldsymbol x_i|H_i = 0)\times (1-p_h)]\\
 \end{align}
 
+### Assignment probability
 
-We can calculate $P(\boldsymbol x_i|z_i =k, H_i =1)$ assuming the DTW alignment is given. And we could approximate $P(\boldsymbol x_i|H_i = 0)$ using empirical distribution.
+\begin{align}
+P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &= P(z_i=k|\boldsymbol x_i,H_i =1)\\
+
+&= \frac{P(\boldsymbol x_i,z_i = k|H_i =1)}{P(\boldsymbol x_i|H_i=1)}\\
+&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i=k|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
+&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
+\end{align}
+
+
+### Candidate set (un)certainty
+
+We have define $H_i \in \{0,1\}$, which indicates the whether or not true sequence of $\boldsymbol x_i$ is listed in the candidates.
 
 \begin{align}
 P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) &= P(H_i|\boldsymbol x_i)\\
@@ -76,24 +88,30 @@ P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) &= P(H_i|\boldsymbol x_i)\\
 
 &= \frac{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0) + P(\boldsymbol x_i|H_i=1) \times P(H_i = 1)}\\
 
-&= \frac{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol x_i|H_i=0) \times P(H_i = 0) +\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)\times P(H_i = 1)
-}\\
-&= \frac{P(\boldsymbol x_i|H_i=0) \times (1-p_h)}{P(\boldsymbol x_i|H_i=0) \times (1-p_h) +\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m\times p_h
-}\\
-
 
 \end{align}
 
-and
 
+ There is no way to analytically calculate $P(x_i | H_i)$. Luckily, we can approximate it using empirical distribution.
+
+**Intuition of the empirical distribution:** 
+  * When $H_i = 1$, at least one of the candidate can match $x_i$ well.
+  * When $H_i = 0$, none of the candidate can have a good match to $x_i$.
+
+Here, we define $S_i$: **maximum similarity between x_i and all the candidates.**
+We can approximate $P(S_i | H_i)$ empirically. Then
 
 \begin{align}
-P(z_i = k | \boldsymbol{x_1,x_2,...,x_n},H_i =1) &= P(z_i=k|\boldsymbol x_i,H_i =1)\\
+&P(H_i = 0|\boldsymbol{x_1,x_2,...,x_n}) \\
+&\\
+=& P(H_i|\boldsymbol x_i)\\
+&\\
+\approx &P(H_i = 0 | S_i)\\
+&\\
+=& \frac{P(\boldsymbol S_i,H_i = 0)}{P(\boldsymbol S_i)}\\
+=& \frac{P(\boldsymbol S_i|H_i=0) \times P(H_i = 0)}{P(\boldsymbol S_i|H_i=0) \times P(H_i = 0) + P(\boldsymbol S_i|H_i=1) \times P(H_i = 1)}\\
 
-&= \frac{P(\boldsymbol x_i,z_i = k|H_i =1)}{P(\boldsymbol x_i|H_i=1)}\\
-&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times P(z_i|H_i=1) }{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times P(z_i=m|H_i =1)}\\
-&= \frac{P(\boldsymbol x_i|z_i =k, H_i =1) \times \pi_k}{\sum_{m = 1}^{M}P(\boldsymbol x_i|z_i =m, H_i =1)\times \pi_m}
+
 \end{align}
 
 
-We will finally report $P(z_i=k, H_i = 1|\boldsymbol{x_1,x_2,...,x_n}) = P(z_i=k| H_i = 1,\boldsymbol{x_1,x_2,...,x_n}) \times P(H_i = 1|\boldsymbol{x_1,x_2,...,x_n})$
