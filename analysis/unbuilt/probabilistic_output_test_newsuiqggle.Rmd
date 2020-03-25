@@ -1,0 +1,364 @@
+---
+title: "probabilistic_output_test"
+author: "youyupei"
+date: "2019-10-27"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+```{r CONSTANT}
+
+library(ggplot2)
+library(reshape2)
+library(magrittr)
+source("/home/ubuntu/PhD_proj/script_bin/helper.R")
+source("~/PhD_proj/old_pipeline/Script/Probabilistic_model.R")
+
+# Threshold for removing similar candidate from null distribution (e.g. 0.8 means 0.8 of the alternative one)
+NULL_PROB_THRES = 0.8
+```
+
+## Introduction
+
+This is a implementation of our [probabilistic v1](probabilistic_model.html). 
+
+
+## Empirical distributions
+
+```{r load file, warning=FALSE}
+#shuffled_likelihood = get_likelihood_matrix("~/PhD_proj/pipeline/Validation/merge_f15_t4_spikeT3_local_normal_shuffle.csv")
+likelihood = get_likelihood_matrix("~/PhD_proj/old_pipeline//Validation/merge_score_f25_t15_spikeT3_local_normal_new_resquiggle.csv")
+#pm2_likelihood = get_likelihood_matrix("/home/ubuntu/PhD_proj/pipeline/Validation/test_f15_t4_local_normal_pm2_merged_score.csv")
+```
+
+```{r, warning=FALSE}
+alternative_vector = apply(likelihood[,c(-1)],1, min, na.rm = T)
+
+best_false =  apply(likelihood[,c(-1,-2)],1,min,na.rm = T)
+
+sec_best_candidate = apply(likelihood[,c(-1)],1,function(x) sort(x)[2])
+
+filter_thres = NULL_PROB_THRES
+
+best_false_filtered = apply(likelihood[,-1],1,function(x) {
+  x = x[!is.na(x)]
+  true_value = x[1]
+  false_value = sort(x[-1])
+  false_value[abs(false_value-true_value) > -log(filter_thres)][1]
+  })
+
+best_false_filtered = na.removed(best_false_filtered)
+# remove candidates that very similar to the best one 
+sec_best_filtered = apply(likelihood[,-1],1,function(x){
+  x = x[!is.na(x)]
+  x = sort(x)
+  best = x[1]
+  others = x[-1]
+  others[abs(others - best) > -log(filter_thres)][1]
+  })
+
+sec_best_filtered = na.removed(sec_best_filtered)
+
+#best_shuffled = apply(shuffled_likelihood[,c(-1)],1,min,na.rm = T)
+#best_pm2 = apply(pm2_likelihood[,c(-1)],1,function(x) min(as.numeric(x),na.rm = T))
+
+
+
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+  geom_density(aes(x = alternative_vector,fill = "best candidates (Empirical H=1 distribution)"), alpha = 0.6)+
+  geom_density(aes(x = best_false_filtered, fill = "best false candidates \n (Estimated H=0 distribution from spike-ins)"), alpha = 0.6) +
+  geom_density(aes(x = sec_best_filtered, fill = "second best candidates \n (Empirical H=0 distribution, similar candidates removed)"), alpha = 0.6) +
+  ggtitle("Different empirical distributions") +
+  xlab("-loglikelihood")  + 
+  ylab("Density") +
+  xlim(1,5)
+
+ggplot() +
+  geom_density(aes(x = best_false, fill = "best false candidates"), alpha = 0.3) +
+  geom_density(aes(x = sec_best_candidate, fill = "second best candidates (Empirical H=0 distribution)"), alpha = 0.6)  + 
+  geom_density(aes(x = sec_best_filtered, fill = "second best candidates\n (Empirical H=0 distribution, similar candidates removed)"), alpha = 0.6) +
+  ggtitle("best false candidates vs second best aligned candidates") +
+  xlab("-loglikelihood")  + 
+  ylab("Density")  +
+  xlim(0,5)  
+
+```
+
+
+
+## Test 1
+
+**Setting:**
+Flank Size:15 bases in each side
+Candidate Squiggle trim: 4 bases in each side
+Tombo resquiggle: Correct squins isoform sequences provided.
+Normalisation: global normalisation parameter from tombo.
+Distance metrics in DTW: Negative log normal density
+Outlier threshold: $\pm 3 \times MAD$
+**The accuracy is 84.4% per squiggle before any probabilistic method applied**
+```{r Load File}
+#load file
+
+likelihood_score = get_likelihood_matrix("~/PhD_proj/old_pipeline/Validation/merge_score_f25_t15_spikeT3_local_normal_new_resquiggle.csv")
+
+# distance of best matched candidate
+min_dist = apply(likelihood_score[,-1],1,function(x) min(x, na.rm=T))
+# bool that the corresponding prodiction is correct or not
+correctness = apply(likelihood_score[,-1],1,which.min) == 1
+
+print("Accuraccy per squiggle:")
+print(sum(correctness)/length(correctness))
+length(correctness)
+```
+
+**In the section, we use:**
+
+distribution of x|H = 1: DTW score distribution of all true candidate
+
+I tried difference Null distribution (distribution of x|H=0):
+
+* best false candidate
+* best candidates in other sites (+/- 2)
+* best candidates of shuffled candidates in current site
+
+### P(Hi = 1 | x) distribution by using different P(x | Hi = 0) distribution
+
+**Density function for H1**
+```{r}
+
+# df_1: score distribution for true candidates
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+
+
+df_0 <- approxfun(density(best_false))
+p_post_best_false = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_best_false_filtered = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+df_0 <- approxfun(density(sec_best_candidate))
+p_post_sec_best = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+df_0 <- approxfun(density(sec_best_filtered))
+p_post_sec_best_filtered = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+rm(df_0)
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+    #geom_density(aes(x = p_post_best_false,fill = "Best False"),alpha = 0.5) + 
+    geom_density(aes(x = p_post_best_false_filtered,fill = "Best False,\n similar candidate ignored "),alpha = 0.5) + 
+    #geom_density(aes(x = p_post_sec_best,fill = "Empirical"),alpha = 0.5) + 
+    geom_density(aes(x = p_post_sec_best_filtered,fill = "Empirical,\n similar candidate ingnored"),alpha = 0.5) + 
+  # configure
+  ggtitle("Distribution of P(Hi = 1 | xi), true candidate known") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+### Other null distribution
+```{r, include=F, eval=F}
+# +/- 2 site
+null_vector <- best_pm2
+df_0 <- approxfun(density(null_vector))
+pm2_null_p_post  = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+  # plot
+ggplot() +
+    geom_density(aes(x = pm2_null_p_post,fill = "Null: +/-2 site candidates "),alpha = 0.5) + 
+  ggtitle("Distribution of P(Hi = 1 | xi),true candidate known") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density") + 
+  xlim(0.8,1)
+
+# shuffled candidates
+null_vector <- best_shuffled
+df_0 <- approxfun(density(null_vector))
+shuffled_null_p_post  = apply(likelihood_score[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+  #plot
+ggplot() +
+  geom_density(aes(x = shuffled_null_p_post,fill = "Null: shuffled candidates "),alpha = 0.5) + 
+  ggtitle("Distribution of P(Hi = 1 | xi),true candidate known") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density") +
+  xlim(0.9,1)
+```
+
+### Simulartion
+
+
+```{r simulartion}
+simulated_data <- likelihood_score
+false_index = sample(1:dim(likelihood_score)[1],floor(dim(likelihood_score)[1]/2))
+simulated_false = simulated_data[false_index,]
+simulated_false$X5 = NA
+has_multi_candidates = apply(simulated_false[,-1],1,function(x) sum(!is.na(x)) > 1)
+simulated_false = simulated_false[has_multi_candidates,]
+
+
+simulated_true = simulated_data[-false_index,]
+#for (i in 1:dim(simulated_data)[1]){
+ # simulated_true[i,2 + which.min(simulated_true[i,c(-1,-2)])] = NA
+#}
+
+has_multi_candidates = apply(simulated_true[,-1],1,function(x) sum(!is.na(x)) > 1)
+simulated_true = simulated_true[has_multi_candidates,]
+```
+
+##### Call H = 1 or 0 according to P(H | x)
+
+In this section, I randomly selected half of the squiggles, and removed the true candidate result for each of them to simulate the situation that $H_i = 0$. The full result set was splitted into a "True set" where  $H_i = 1$ and a "False set" where  $H_i = 0$. After remove squiggles have only one candidate in false set, 35% of the squiggle within the simlulated data are false and 65% are true. **The average number of candidates in the "False set is smaller, which may result in a higher $P(z_i=k|H_i,x_i)$"**
+```{r}
+thres = seq(0,1,0.01)
+
+
+FDR_Recall<- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  p_post_true = apply(simulated_true[,-1], 1,
+                      function(x){
+                        report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                      }
+  )
+  p_post_false = apply(simulated_false[,-1], 1,
+                       function(x){
+                         report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                       }
+  )
+  
+  
+  FDR = sapply(thres, function(x) {
+    sum(p_post_true < x) / (sum(p_post_true < x) + sum(p_post_false < x))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(p_post_false < x) / length(p_post_false)
+  })
+  
+  DiscovRate = sapply(thres, function(x) {
+    (sum(p_post_true < x) + sum(p_post_false < x))/(sum(p_post_true < 1) + sum(p_post_false < 1))
+  })
+  
+  return(list(FDR = FDR, Recall = Recall,p_post_false=p_post_false,p_post_true = p_post_true,DiscovRate = DiscovRate))
+}
+
+
+FDR_recall_best_false = FDR_Recall(best_false)
+FDR_recall_best_false_filtered = FDR_Recall(best_false_filtered)
+
+FDR_recall_best_false_emp = FDR_Recall(sec_best_candidate)
+FDR_recall_best_false_emp_filtered = FDR_Recall(sec_best_filtered)
+#################################################################################
+#####################          FDR vs Discovery rate           ##################
+#################################################################################
+
+ggplot() + 
+  geom_line(aes(x = FDR_recall_best_false$DiscovRate, y = FDR_recall_best_false$FDR, col = "Null: Best false")) + 
+  geom_line(aes(x = FDR_recall_best_false_emp$DiscovRate, y = FDR_recall_best_false_emp$FDR, col = "Null: Empirical")) + 
+  geom_line(aes(x = FDR_recall_best_false_filtered$DiscovRate, y = FDR_recall_best_false_filtered$FDR, col = "Null: Best false filtered")) + 
+  geom_line(aes(x = FDR_recall_best_false_emp_filtered$DiscovRate, y = FDR_recall_best_false_emp_filtered$FDR, col = "Null: Empirical filtered")) + 
+  xlab("Proportion of H called as 0")+
+  ylab("FDR")+
+  ggtitle("FDR vs Discovery Rate")
+
+#################################################################################
+############################          qq plot           #########################
+#################################################################################
+ggplot() + 
+  stat_qq(aes(sample = best_false))
+
+#################################################################################
+############################          ROC plot           #########################
+#################################################################################
+roc <- roc.curve(FDR_recall_best_false_filtered$p_post_true,FDR_recall_best_false_filtered$p_post_false, curve = T)
+plot(roc,xlab = "FPR (prop of 0s called as 1)", ylab="TPR (prop of 1s called as 1)")
+
+
+roc <- roc.curve(-FDR_recall_best_false_filtered$p_post_false,-FDR_recall_best_false_filtered$p_post_true, curve = T)
+plot(roc,xlab = "FPR (prop of 0s called as 1)", ylab="TPR (prop of 1s called as 1)")
+
+# test
+rnorm(10000) %>% dnorm() %>% -log(.) %>% density() %>% plot()
+
+
+
+
+```
+##### Call z = k given H = 1
+In this section, we used the spike-in dataset to simulate H=1, and tested the accuracy by picking the mininum value of P(z=k | H =1 ,x ) as well as similar candadates. When the selected candadate(s) contain the true one, we will say it is a correct call.
+
+```{r}
+thres = seq(0.0,1,0.01)
+
+
+correctness = apply(likelihood_score[,-1],1,function(x) {
+  x = na.removed(x)
+  true_value = x[1]
+  min_value = min(x)
+  abs(min_value-true_value) <= -log(thres)
+  })
+
+
+ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness,1,mean))) +
+  xlab("Threshold ratio of retained candidate \n candidate k with p(z=k|x) > thres * best p(z|x) will also be included") +
+  ylab("accuracy") +
+  xlim(1,0) +
+  ggtitle("P(z=k | H=1,x ) simulation")
+```
+
+### Relationship of P(H=1| x) and P(z=k | H=1,x )
+
+$P(H_i=1| x_i)$ can somehow reflect the quality of each squiggle, low $P(H_i=1| x_i)$ can mean the suiqggle is too noisy, or tombo resquiggle doesn't return a correct region of interest. Here, we first seletted squiggle based of some cutoff of $P(H_i=1| x_i)$, and then make decision based on $P(z_i=k | H_i=1,x_i )$. In this section, correct decision was defined when the best candidate is the true one. The filtered false candidate distribution was selected as the null distribution when calculating $P(H_i=1| x_i)$.
+
+```{r}
+p_cutoff = seq(0,0.99,0.01)
+p_post = p_post_best_false_filtered
+correctness = sapply(p_cutoff,function(t){
+    apply(likelihood_score[p_post > t ,-1],1,function(x){
+      x = na.removed(x)
+      which.min(x) == 1
+    })
+}
+)
+accuracy = unlist(lapply(correctness,mean))
+
+ggplot() +
+  geom_line(aes(x = p_cutoff, y=accuracy)) +
+  ylab("Accuraccy of choosing candidate \nwith largest P(z=k|x) as output") + 
+  xlab("cutoff of P(H=1|x)")
+```

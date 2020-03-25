@@ -3,7 +3,7 @@ title: "Comparison of K-mer frequency"
 author: "youyupei"
 date: "2019-10-09"
 editor_options:
-  inline
+  chunk_output_type: inline
 ---
 
 ## Introduction
@@ -12,10 +12,20 @@ There we are comparing the 5-mer frequency among Squins DNA, Squins Transcript, 
 
 # load data
 ```{r}
+
 Squins_path = "~/data/Sequin_resources"
 Squins_DNA_kmer_count = read.csv("~/data/Sequin_resources/dna_ref_kmer_count.csv",header = F, row.names = 1)
 Squins_transcript_kmer_count = read.csv("~/data/Sequin_resources/transcript_ref_kmer_count.csv",header = F, row.names = 1)
 
 Squins_junction_kmer_count = read.csv("~/data/Sequin_resources/junction_kmer_count.csv",header = F, row.names = 1)
+
+library(ggplot2)
+
+ggplot()+
+  geom_point(aes(y=Squins_junction_kmer_count$V2/sum(Squins_junction_kmer_count$V2), x= 1:length(Squins_junction_kmer_count$V2/sum(Squins_junction_kmer_count$V2))))
+plot(Squins_junction_kmer_count$V2/sum(Squins_junction_kmer_count$V2),type = "line")
+lines(Squins_DNA_kmer_count$V2/sum(Squins_DNA_kmer_count$V2),col = "red")
+lines(Squins_transcript_kmer_count$V2/sum(Squins_transcript_kmer_count$V2),col = "blue")
+
 ```
 

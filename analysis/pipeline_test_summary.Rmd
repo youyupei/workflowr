@@ -1,0 +1,63 @@
+---
+title: "Pipeline test summary"
+author: "youyupei"
+date: "2020-03-25"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+This document records overall accuracy of all the tests I have done.
+
+
+## Summary
+
+### First Test (acc:85.2% over 11596 junction squiggles)
+
+Settings:
+      
+  * dtw cost function: -log(f(z)), f is standard normal
+  * exon junction flank: 25 bases in each side
+  * scrappie model trim: 10 bases in each side
+  * Spike filter thres: 3
+  * normalisation: global mad normalisation for real signal
+      
+
+### New resquiggle test (acc:78.2% over 11492 junction squiggles)
+
+Settings:
+
+  * *New squiggle:* The bases in each junction was modified to a false candidate before tombo resquiggle.
+  * dtw cost function: -log(f(z)), f is standard normal
+  * exon junction flank: 15 bases in each side
+  * scrappie model trim: 4 bases in each side
+  * Spike filter thres: 3
+  * normalisation: global mad normalisation for real signal
+      
+### Banded DTW (acc:88.6% over 11596 junction squiggles)
+
+Settings:
+
+  * Band width: 0.4 of the long seq
+  * dtw cost function: -log(f(z)), f is standard normal
+  * exon junction flank: 15 bases in each side
+  * scrappie model trim: 4 bases in each side
+  * Spike filter thres: 3
+  * normalisation: global mad normalisation for real signal
+      
+### Banded DTW, long Candidate (acc:90.8% over 11585 junction squiggles)
+
+Settings:
+
+  * Band width: 0.4 of the long seq
+  * dtw cost function: -log(f(z)), f is standard normal
+  * exon junction flank: 20 bases in each side
+  * scrappie model trim: 2 bases in each side
+  * scrappie model trim: 6 bases in each side
+  * Spike filter thres: 3
+  * normalisation: global mad normalisation for real signal
+      
+
+      

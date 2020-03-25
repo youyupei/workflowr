@@ -1,0 +1,460 @@
+---
+title: "score_f15_t4_spikeT3_band_0.4_minimap"
+author: "youyupei"
+date: "2020-01-27"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r palette}
+blue = "#6B93A7"
+pink = "#CC5963"
+green = "#289680"
+orange = "#F4C300"
+```
+
+
+# Overall accuraccy 
+## minimap2 mapping result
+```{r CONSTANT}
+
+library(ggplot2)
+library(reshape2)
+library(magrittr)
+source("/home/ubuntu/PhD_proj/script_bin//helper.R")
+source("~/PhD_proj/old_pipeline/Script/Probabilistic_model.R")
+
+
+
+
+#get_likelihood_matrix = function(filename){
+filename = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/score_f15_t4_spikeT3_band_0.4_new_likelihood_minimap.csv"
+
+
+
+label_fast5_name <- function(f_names) {
+  new_f_names = f_names
+  for (name in unique(f_names)){
+    num_rep = sum(f_names == name)
+    new_name = paste0(name,'_',1:num_rep)
+    new_f_names[which(f_names == name)] = new_name
+        
+  }
+  return(new_f_names)
+  
+}
+
+ncol = 50
+  score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  while(sum(is.numeric(score_f15_t4$X2)) > 0 || sum(is.na(score_f15_t4$X2))) {
+    ncol = ncol + 50
+    score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  }
+  fast5_filenames = as.character(score_f15_t4$X2)
+  fast5_filenames = label_fast5_name(fast5_filenames)
+  minimap_correctness = score_f15_t4$X1 
+  # likelihood (single candidate junctions removed)
+  likelihood = cbind(minimap_correctness, score_f15_t4[,seq(6,ncol,3)])
+  fast5_filenames = fast5_filenames[!is.na(likelihood$X6)]
+  likelihood = likelihood[!is.na(likelihood$X6),]
+  
+  has_multi_candidates = apply(likelihood[,-1],1,function(x) sum(!is.na(x)) > 1)
+  likelihood = likelihood[has_multi_candidates,]
+  fast5_filenames = fast5_filenames[has_multi_candidates]
+
+# Threshold for removing similar candidate from null distribution (e.g. 0.8 means 0.8 of the alternative one)
+NULL_PROB_THRES = 0.8
+
+
+###################minimap accuracy#######################
+print("minimap2 accuracy:")
+mean(likelihood$minimap_correctness)
+print("Number of tested squiggles:")
+length(likelihood$minimap_correctness)
+```
+
+
+## NanoSplicer result
+
+**Setting:**
+Flank Size:15 bases in each side
+Candidate Squiggle trim: 4 bases in each side
+Tombo resquiggle: Correct squins isoform sequences provided.
+Normalisation: global normalisation parameter from tombo.
+Distance metrics in DTW: Negative log normal density
+Outlier threshold: $\pm 3 \times MAD$
+
+```{r Load File}
+# distance of best matched candidate
+min_dist = apply(likelihood[,-1],1,function(x) min(x, na.rm=T))
+# bool that the corresponding prodiction is correct or not
+correctness = apply(likelihood[,-1],1,which.min) == 1
+
+print("NanoSplicer accuraccy per squiggle:")
+print(sum(correctness)/length(correctness))
+length(correctness)
+```
+
+
+# Probabilistic output
+## Call z = k given H = 1
+In this section, we used the spike-in dataset to simulate H=1, we compared the accuracy of picking the best as well as similar P(z)
+
+```{r} 
+thres = seq(0.0,1,0.01)
+
+correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
+  x = na.removed(x)
+  true_value = x[1]
+  min_value = min(x)
+  abs(min_value-true_value) <= -log(thres)
+  })
+
+correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
+  x = na.removed(x)
+  true_value = x[1]
+  min_value = min(x)
+  abs(min_value-true_value) <= -log(thres)
+  })
+
+
+
+prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
+ggplot() + 
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  # overall acc
+  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
+  # total # of tested squiggles
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  # minimap2 correct
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("Threshold ratio") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  scale_y_continuous(limits = c(8000,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
+
+ ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness1,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  scale_y_continuous(limits = c(8000,9800),sec.axis = sec_axis(~./prop_scale, name = ""))
+
+ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness0,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=0, linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+    scale_y_continuous(limits = c(0,1800),sec.axis = sec_axis(~./dim(correctness0)[2], name = ""))
+```
+
+
+
+## H: whether or not the candidates container the truth
+
+Measure a (un)certainty on whether candidates contain a splice site for Xi (i-th squiggle)
+
+### Distribution of S|H
+**S : maximum similarity between Xi and all candidates**
+This are the empirical distributions for S|H=1 and S|H=0, which is from the density estimation:
+  * distribution for S|H=1: density of S from the spike-in dataset analysis result, in which the ground truth is known.
+  * distribution for S|H=0: density of S from the same result but the true candidates (known) have been ignored.
+```{r, warning=FALSE}
+alternative_vector = apply(likelihood[,c(-1)],1, min, na.rm = T)
+
+best_false =  apply(likelihood[,c(-1,-2)],1,min,na.rm = T)
+
+sec_best_candidate = apply(likelihood[,c(-1)],1,function(x) sort(x)[2])
+
+filter_thres = NULL_PROB_THRES
+
+best_false_filtered = apply(likelihood[,-1],1,function(x) {
+  x = x[!is.na(x)]
+  true_value = x[1]
+  false_value = sort(x[-1])
+  false_value[abs(false_value-true_value) > -log(filter_thres)][1]
+  })
+
+best_false_filtered = na.removed(best_false_filtered)
+# remove candidates that very similar to the best one 
+sec_best_filtered = apply(likelihood[,-1],1,function(x){
+  x = x[!is.na(x)]
+  x = sort(x)
+  best = x[1]
+  others = x[-1]
+  others[abs(others - best) > -log(filter_thres)][1]
+  })
+
+sec_best_filtered = na.removed(sec_best_filtered)
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+  geom_density(aes(x = -alternative_vector,fill = "best candidates (Empirical H=1 distribution)"), alpha = 0.7)+
+  geom_density(aes(x = -best_false_filtered, fill = "best false candidates \n (Estimated H=0 distribution from spike-ins)"), alpha = 0.6) +
+  ggtitle("Different empirical distributions") +
+  xlab("-loglikelihood")  + 
+  ylab("Density") +
+  xlim(-3,1)+
+    theme(axis.text=element_text(size=15)) +
+    scale_fill_manual(values = c(pink,blue))
+```
+
+
+
+### Test reliability of P(H=1|S) estimation
+
+In this section, I randomly selected half of the squiggles, and removed the true candidate result for each of them to simulate the situation that $H_i = 0$. The full result set was splitted into a "True set" where  $H_i = 1$ and a "False set" where  $H_i = 0$. 
+
+```{r}
+
+# df_1: score distribution for true candidates
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+
+
+df_0 <- approxfun(density(best_false))
+p_post_best_false = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_best_false_filtered = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(sec_best_candidate))
+p_post_sec_best = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+df_0 <- approxfun(density(sec_best_filtered))
+p_post_sec_best_filtered = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_emp_H0 = apply(likelihood[,c(-1,-2)], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(sec_best_filtered))
+p_post_est_H0 = apply(likelihood[,c(-1,-2)], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+rm(df_0)
+#################################################################################
+#########################    plot           ######################
+#################################################################################
+
+
+#simulation
+false_index = sample(1:dim(likelihood)[1],floor(dim(likelihood)[1]/2))
+count_0 = hist(p_post_emp_H0[false_index], breaks=12, plot=FALSE)
+count_1 = hist(p_post_best_false_filtered[-false_index], breaks=count_0$breaks, include.lowest=TRUE, plot=FALSE)$counts
+
+# distribution
+ggplot() +
+    theme(axis.text=element_text(size=15))+
+    geom_density(aes(x =c(p_post_emp_H0[false_index],p_post_best_false_filtered[-false_index]),fill = "Best False"),alpha = 0.6,fill= green, color = green) + 
+    xlab("")
+
+# prop of H = 1
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+    geom_col(aes(y = count_1/(count_1+count_0$counts),x = count_0$mids),fill = pink,alpha = 0.5) +
+    xlab("")+
+    ylab("") + 
+    ylim(0,1) + 
+  xlim(0,1)
+# prop of H =  0 
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+  geom_col(aes(y = 1 - count_1/(count_1+count_0$counts),x = count_0$mids),fill = blue,alpha = 0.5) +
+  xlab("")+
+  ylab("")+
+  ylim(0,1) +
+  xlim(0,1)
+
+
+```
+
+### Relationship between the accuracy and the P(H=1 | S)
+
+```{r}
+# df_1: score distribution for true candidates
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+correctness = apply(likelihood[,-1],1,which.min) == 1
+
+df_0 <- approxfun(density(best_false_filtered))
+
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 1) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both minimap2 and NanoSplicer correct") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+    p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 0) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both minimap2 found but NanoSplicer missed") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 0) * (correctness == 0) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both missed") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+p_post_plot = apply(likelihood[correctness == 0,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("NanoSplcier wrong") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+p_post_plot = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("ALL") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+```
+
+## P(H|S) and accuracy
+```{r}
+Q = p_post_plot
+correctness
+plot(y= correctness, x = Q, pch = 0.000001)
+
+thres = seq(0,1,0.01)
+y = sapply(thres, function(x){
+  mean(correctness[Q<x])
+})
+
+ggplot() +
+  geom_line(aes(y = y, x = thres), col = pink,size = 2) + 
+  theme(plot.margin = margin(2,2.8,2,2.8, "cm"))
+
+```
+
+## Filter H
+
+
+```{r}
+p_cutoff = seq(0,0.99,0.01)
+p_post = p_post_best_false_filtered
+likelihood_0 = likelihood
+correctness = sapply(p_cutoff,function(t){
+    apply(likelihood_0[p_post > t ,-1],1,function(x){
+      x = na.removed(x)
+      which.min(x) == 1
+    })
+}
+)
+
+minimap_acc = sapply(p_cutoff,function(t){
+   mean(likelihood[p_post > t ,]$minimap_correctness)
+    })
+
+
+accuracy = unlist(lapply(correctness,mean))
+remain = unlist(sapply(p_cutoff,function(x) mean(p_post>x)))
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+  geom_line(aes(x = p_cutoff, y=accuracy,col = "NanoSplicer Accuracy"),size = 1) +
+  geom_line(aes(x = p_cutoff, y=minimap_acc,col = "Minimap2 Accuracy"),size = 1) +
+    geom_line(aes(x = p_cutoff, y=remain, col = "Prop of remaining squiggles after filtering"), linetype = "dashed",size = 1) +
+  ylim(0.4,1) + xlim(0,1)+
+
+  ylab("Accuraccy of choosing candidate \nwith largest P(z=k|x) as output") + 
+  xlab("cutoff of P(H=1|x)")
+```
+
+
+
+

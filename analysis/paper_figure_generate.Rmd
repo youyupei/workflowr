@@ -1,0 +1,227 @@
+---
+title: "paper_figure_generate"
+author: "youyupei"
+date: "2020-02-04"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+#Figure 1: Comparison of different DTW metrics
+
+setting 
+flank = 15
+trim_model = 4
+spike thres = 3
+searh window = 20
+DTW band = False
+DTW adjusted = False
+
+
+# per squiggle acc
+```{r Load File}
+library(ggplot2)
+library(reshape2)
+
+#load file
+ncol = 50
+
+score_f15_t4 = read.csv(file = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/score_f15_t4_spikeT3_z_score_and_absSUM_merge.csv",header = F,col.names = seq(1, ncol))
+while(sum(is.numeric(score_f15_t4$X1)) > 0 || sum(is.na(score_f15_t4$X1))) {
+  ncol = ncol + 10
+  score_f15_t4 = read.csv(file = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/score_f15_t4_spikeT3_z_score_and_absSUM_merge.csv",header = F,col.names = seq(1, ncol))
+}
+
+# fast5 filenames
+  filenames = score_f15_t4$X1
+
+# z_score (single candidate junctions removed)
+      z_score = cbind(filenames, score_f15_t4[,seq(4,ncol,3)])
+      z_score = z_score[!is.na(z_score$X4),]
+      has_multi_candidates = apply(z_score[,-1],1,function(x) sum(!is.na(x)) > 1)
+      z_score = z_score[has_multi_candidates,]
+      # distance of best matched candidate
+      min_dist = apply(z_score[,-1],1,function(x) min(x, na.rm=T))
+      # bool that the corresponding prodiction is correct or not
+      z_score_correctness = apply(z_score[,-1],1,which.min) == 1
+      mean(z_score_correctness)
+
+# manhattan
+
+      manhattan = cbind(filenames, score_f15_t4[,seq(6,ncol,3)])
+      manhattan = manhattan[!is.na(manhattan$X6),]
+      has_multi_candidates = apply(manhattan[,-1],1,function(x) sum(!is.na(x)) > 1)
+      manhattan = manhattan[has_multi_candidates,]
+      # distance of best matched candidate
+      min_dist = apply(manhattan[,-1],1,function(x) min(x, na.rm=T))
+      # bool that the corresponding prodiction is correct or not
+      manhattan_correctness = apply(manhattan[,-1],1,which.min) == 1
+      mean(manhattan_correctness)
+```
+
+manhattan: 83.7%
+z-score: 82.1%
+
+#per site acc
+```{r load accuracy Per site accuracy, include=FALSE}
+#load file
+prediction_dir = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/correct_prodiction_f15_t4_spikeT3_z_score_and_absSUM"
+
+# merge all the tables in folder
+
+prediction = data.frame()
+
+for (file in list.files(prediction_dir)) {
+  file = paste(prediction_dir, file ,sep = '/')
+  tryCatch({
+    x = read.csv(file,header = T, sep = ",",stringsAsFactors=FALSE)
+    prediction = rbind(prediction, x)
+  }, error = function(x) {
+    print("error:")  
+    print(file)
+  }, warning = function(x) {
+    print("warning:")
+    print(file)}
+    )
+}
+
+prediction = prediction[which(prediction$num_of_candidates > 1),]
+accuracy_manhattan = prediction$manhattan_correct/prediction$mapped_reads
+accuracy_z_score = prediction$z_score_correct/prediction$mapped_reads
+accuracy_mapper_support=prediction$num_of_support/prediction$mapped_reads
+############temp!!!! caused by incorrect count of mapper supports####
+#prediction$accuracy_mapper_support[prediction$accuracy_mapper_support >1] = 1
+
+#load file
+prediction_dir = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/correct_prodiction_f15_t4_spikeT3_1_21/"
+
+# merge all the tables in folder
+
+prediction2 = data.frame()
+
+for (file in list.files(prediction_dir)) {
+  file = paste(prediction_dir, file ,sep = '/')
+  tryCatch({
+    x = read.csv(file,header = T, sep = ",",stringsAsFactors=FALSE)
+    prediction2 = rbind(prediction2, x)
+  }, error = function(x) {
+    print("error:")  
+    print(file)
+  }, warning = function(x) {
+    print("warning:")
+    print(file)}
+    )
+}
+
+prediction2 = prediction2[which(prediction2$num_of_candidates > 1),]
+accuracy_loglikelihood = prediction2$log_correct/prediction2$mapped_reads
+
+print(paste0("Manhattan accuracy: ", mean(accuracy_manhattan)))
+print(paste0("z_score accuracy: ", mean(accuracy_z_score)))
+print(paste0("mapper accuracy: ", mean(accuracy_mapper_support)))
+print(paste0("loglikelihood accuracy: ", mean(accuracy_loglikelihood)))
+
+```
+
+### Boxplot, DTW vs Minimap2 in terms of splicing site selection.
+```{r message=FALSE}
+data <- melt(data.frame(
+  manhattan = (prediction$manhattan_correct)/prediction$mapped_reads,
+  zscore = (prediction$z_score_correct)/prediction$mapped_reads,
+  likelihood = (prediction2$log_correct)/prediction$mapped_reads,
+  minimap = (prediction$num_of_support)/prediction$mapped_reads))
+
+ggplot(data,aes(y=value, x=variable, fill = variable)) +  
+  geom_boxplot(alpha=0.4) + labs(y = '',x = '') +
+  ggtitle("DTW vs minimap2 in splicing site characterisition") +
+  xlab("Distance metrics")  + 
+  ylab("Percentage") + 
+  theme(plot.title = element_text(hjust = 0.5, size = 15)) + 
+  scale_y_continuous(labels=scales::percent)
+```
+
+# band = 0.4
+```{r}
+
+prediction_dir = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/correct_prodiction_f15_t4_spikeT3_band_0.4/"
+
+# merge all the tables in folder
+
+prediction = data.frame()
+
+for (file in list.files(prediction_dir)) {
+  file = paste(prediction_dir, file ,sep = '/')
+  tryCatch({
+    x = read.csv(file,header = T, sep = ",",stringsAsFactors=FALSE)
+    prediction = rbind(prediction, x)
+  }, error = function(x) {
+    print("error:")  
+    print(file)
+  }, warning = function(x) {
+    print("warning:")
+    print(file)}
+    )
+}
+
+prediction = prediction[which(prediction$num_of_candidates > 1),]
+accuracy_mapper_support=prediction$num_of_support/prediction$mapped_reads
+accuracy_loglikelihood = prediction$log_correct/prediction$mapped_reads
+print(paste0("mapper accuracy: ", mean(accuracy_mapper_support)))
+print(paste0("loglikelihood accuracy: ", mean(accuracy_loglikelihood)))
+
+```
+
+boxplot
+```{r}
+library(gridExtra)
+
+data <- melt(data.frame(
+  #manhattan = (prediction$manhattan_correct)/prediction$mapped_reads,
+  #zscore = (prediction$z_score_correct)/prediction$mapped_reads,
+  likelihood = (prediction$log_correct)/prediction$mapped_reads
+  #minimap = (prediction$num_of_support)/prediction$mapped_reads,
+  #diff = (prediction$log_correct - prediction$num_of_support) / (prediction$mapped_reads-prediction$num_of_support)
+  ))
+
+p1 <-ggplot() +  
+  geom_boxplot(aes(y = (prediction$log_correct)/prediction$mapped_reads),alpha=0.4, fill = '1') + labs(y = '',x = '') +
+  ggtitle("DTW vs minimap2 in splicing site characterisition") +
+  xlab("Distance metrics")  + 
+  #ylab("Percentage") + 
+  #theme(plot.title = element_text(hjust = 0.5, size = 15)) + 
+  scale_y_continuous(labels=scales::percent) + 
+  ylim(0.5,1)
+
+p2 <-ggplot() +  
+  geom_boxplot(aes(y = (prediction$num_of_support)/prediction$mapped_reads),alpha=0.4, fill = '2') + labs(y = '',x = '') +
+  ggtitle("DTW vs minimap2 in splicing site characterisition") +
+  xlab("Distance metrics")  + 
+  #ylab("Percentage") + 
+  #theme(plot.title = element_text(hjust = 0.5, size = 15)) + 
+  scale_y_continuous(labels=scales::percent) +
+  ylim(0.5,1)
+
+p3 <-ggplot() +  
+  geom_boxplot(aes(y = (prediction$log_correct - prediction$num_of_support)/prediction$mapped_reads),alpha=0.4, fill = '3') + labs(y = '',x = '') +
+  ggtitle("DTW vs minimap2 in splicing site characterisition") +
+  xlab("Distance metrics") +
+  ylim(-0.5,0.5)+
+  #+ ylab("Percentage") + 
+  #theme(plot.title = element_text(hjust = 0.5, size = 15)) + 
+  #scale_y_continuous(labels=scales::percent)
+  coord_flip()
+
+grid.arrange(p1, p2, p3, nrow = 3)
+mean((prediction$log_correct - prediction$num_of_support)/prediction$mapped_reads)
+
+```
+
+
+```{r accuracy vs num of candidates, eval=FALSE, include=FALSE}
+########PLOT3##############
+ggplot(prediction, aes(y = accuracy_loglik_score, x = num_of_candidates)) + geom_point() +  geom_smooth(method=lm,  se = F,linetype="dashed",color="darkred",fill="blue") + ggtitle("Accuracy VS # of candidates") +  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+

@@ -1,0 +1,10 @@
+---
+title: "cheatsheat"
+author: "youyupei"
+date: "2019-10-25"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+*[Selectively hide text with button](https://chrisbeeley.net/?p=1104)

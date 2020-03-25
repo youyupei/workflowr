@@ -4,6 +4,7 @@ site: workflowr::wflow_site
 ---
 
 Welcome! This is a website for organizing the summaries of my meetings and readings.
+[Rmarkdown cheatsheet](cheatsheat.html)
 
 <style>
 .column-left{
@@ -54,14 +55,16 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
   - [log-sum-exp trick](log-sum-exp.html)
 
 * ### [snakemake pipeline](snakemake_pipline.html)
-  * #### [Test 1](f15_t4_mad_norm.html)
+  * #### [Test 1:](f15_t4_mad_norm.html)
     settings:
-      1. exon junction flank: 15 bases in each side
-      2. scrappie model trim: 4 bases in each side
-      3. normalisation: global mad normalisation for real signal
-  * #### [Test 2: t-distribution with v = 1](f15_t4_t_likelihood.html)
-      
+      *   dtw cost function: -log(f(z)), f is standard normal
+      *   exon junction flank: 15 bases in each side
+      *   scrappie model trim: 4 bases in each side
+      *   normalisation: global mad normalisation for real signal
+  * #### [Pipeline test summary](pipeline_test_summary.html)
+# Document
 
+* [Comfirmation report](Confirmation_Report_Yupei.pdf)
 
 </div>
 

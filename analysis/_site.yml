@@ -2,7 +2,7 @@ name: myproject
 output_dir: ../docs
 navbar:
   icon: fa-code-fork
-  title: workflowr
+  title: Cheatsheat
   left:
   - icon: fa-home
     text: Home

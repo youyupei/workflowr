@@ -1,0 +1,1213 @@
+---
+title: "cDNA spike-in test"
+author: "youyupei"
+date: "2019-10-27"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r palette}
+blue = "#6B93A7"
+pink = "#CC5963"
+green = "#289680"
+orange = "#F4C300"
+```
+
+
+# Overall accuraccy 
+## minimap2 mapping result
+```{r CONSTANT}
+
+library(ggplot2)
+library(reshape2)
+library(magrittr)
+source("/home/ubuntu/PhD_proj/script_bin//helper.R")
+source("~/PhD_proj/old_pipeline//Script/Probabilistic_model.R")
+
+
+
+
+#get_likelihood_matrix = function(filename){
+filename = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/score_f15_t4_spikeT3_1_21_minimap.csv"
+
+
+
+label_fast5_name <- function(f_names) {
+  new_f_names = f_names
+  for (name in unique(f_names)){
+    num_rep = sum(f_names == name)
+    new_name = paste0(name,'_',1:num_rep)
+    new_f_names[which(f_names == name)] = new_name
+        
+  }
+  return(new_f_names)
+  
+}
+
+ncol = 50
+  score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  while(sum(is.numeric(score_f15_t4$X2)) > 0 || sum(is.na(score_f15_t4$X2))) {
+    ncol = ncol + 50
+    score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  }
+  fast5_filenames = as.character(score_f15_t4$X2)
+  fast5_filenames = label_fast5_name(fast5_filenames)
+  minimap_correctness = score_f15_t4$X1 
+  # likelihood (single candidate junctions removed)
+  likelihood = cbind(minimap_correctness, score_f15_t4[,seq(6,ncol,3)])
+  fast5_filenames = fast5_filenames[!is.na(likelihood$X6)]
+  likelihood = likelihood[!is.na(likelihood$X6),]
+  
+  has_multi_candidates = apply(likelihood[,-1],1,function(x) sum(!is.na(x)) > 1)
+  likelihood = likelihood[has_multi_candidates,]
+  fast5_filenames = fast5_filenames[has_multi_candidates]
+
+# Threshold for removing similar candidate from null distribution (e.g. 0.8 means 0.8 of the alternative one)
+NULL_PROB_THRES = 0.8
+
+
+###################minimap accuracy#######################
+print("minimap2 accuracy:")
+mean(likelihood$minimap_correctness)
+print("Number of tested squiggles:")
+length(likelihood$minimap_correctness)
+```
+
+
+## NanoSplicer result
+
+**Setting:**
+Flank Size:15 bases in each side
+Candidate Squiggle trim: 4 bases in each side
+Tombo resquiggle: Correct squins isoform sequences provided.
+Normalisation: global normalisation parameter from tombo.
+Distance metrics in DTW: Negative log normal density
+Outlier threshold: $\pm 3 \times MAD$
+
+```{r Load File}
+# distance of best matched candidate
+min_dist = apply(likelihood[,-1],1,function(x) min(x, na.rm=T))
+# bool that the corresponding prodiction is correct or not
+correctness = apply(likelihood[,-1],1,which.min) == 1
+
+print("NanoSplicer accuraccy per squiggle:")
+print(sum(correctness)/length(correctness))
+```
+
+
+# Probabilistic output
+## Call z = k given H = 1
+In this section, we used the spike-in dataset to simulate H=1, we compared the accuracy of picking the best as well as similar P(z)
+
+```{r} 
+thres = seq(0.0,1,0.01)
+
+correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
+  x = na.removed(x)
+  true_value = x[1]
+  min_value = min(x)
+  abs(min_value-true_value) <= -log(thres)
+  })
+
+correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
+  x = na.removed(x)
+  true_value = x[1]
+  min_value = min(x)
+  abs(min_value-true_value) <= -log(thres)
+  })
+
+
+prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
+ggplot() + 
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  # overall acc
+  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
+  # total # of tested squiggles
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  # minimap2 correct
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("Threshold ratio") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  scale_y_continuous(limits = c(8000,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
+
+ ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness1,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  scale_y_continuous(limits = c(8000,9800),sec.axis = sec_axis(~./prop_scale, name = ""))
+
+ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness0,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=0, linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+    scale_y_continuous(limits = c(0,1800),sec.axis = sec_axis(~./dim(correctness0)[2], name = ""))
+```
+
+
+
+# weighted count
+```{r eval=FALSE, include=FALSE}
+thres = seq(0.0,1,0.01)
+
+correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
+  x = na.removed(x)
+  x = exp(-x)
+  sapply(thres, function(i){
+    x = x*(x>= i * max(x))
+    x = x/sum(x)
+    x[1]
+  })
+  })
+
+correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
+  x = na.removed(x)
+  x = exp(-x)
+  sapply(thres, function(i){
+    x = x*(x>= i * max(x))
+    x = x/sum(x)
+    x[1]
+  })
+  })
+
+
+prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
+ggplot() + 
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  # overall acc
+  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
+  # total # of tested squiggles
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  # minimap2 correct
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("Threshold ratio") +
+  ylab("") +
+  xlim(1,0.0) +
+  ggtitle("") +
+  scale_y_continuous(limits = c(0,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
+
+ ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness1,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  scale_y_continuous(limits = c(8000,9800),sec.axis = sec_axis(~./prop_scale, name = ""))
+
+ggplot() + 
+  geom_line(aes(x = thres, y = apply(correctness0,1,sum)),size = 1.5,color = green) +
+  geom_hline(yintercept=dim(correctness0)[2], linetype="dashed", color = "black",size = 0.5) +
+  geom_hline(yintercept=0, linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("") +
+  ylab("") +
+  xlim(1,0.8) +
+  ggtitle("") +
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+    scale_y_continuous(limits = c(0,1800),sec.axis = sec_axis(~./dim(correctness0)[2], name = ""))
+```
+
+## H: whether or not the candidates container the truth
+
+Measure a (un)certainty on whether candidates contain a splice site for Xi (i-th squiggle)
+
+### Distribution of S|H
+**S : maximum similarity between Xi and all candidates**
+This are the empirical distributions for S|H=1 and S|H=0, which is from the density estimation:
+  * distribution for S|H=1: density of S from the spike-in dataset analysis result, in which the ground truth is known.
+  * distribution for S|H=0: density of S from the same result but the true candidates (known) have been ignored.
+```{r, warning=FALSE}
+alternative_vector = apply(likelihood[,c(-1)],1, min, na.rm = T)
+
+best_false =  apply(likelihood[,c(-1,-2)],1,min,na.rm = T)
+
+sec_best_candidate = apply(likelihood[,c(-1)],1,function(x) sort(x)[2])
+
+filter_thres = NULL_PROB_THRES
+
+best_false_filtered = apply(likelihood[,-1],1,function(x) {
+  x = x[!is.na(x)]
+  true_value = x[1]
+  false_value = sort(x[-1])
+  false_value[abs(false_value-true_value) > -log(filter_thres)][1]
+  })
+
+best_false_filtered = na.removed(best_false_filtered)
+# remove candidates that very similar to the best one 
+sec_best_filtered = apply(likelihood[,-1],1,function(x){
+  x = x[!is.na(x)]
+  x = sort(x)
+  best = x[1]
+  others = x[-1]
+  others[abs(others - best) > -log(filter_thres)][1]
+  })
+
+sec_best_filtered = na.removed(sec_best_filtered)
+
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+  geom_density(aes(x = -alternative_vector,fill = "best candidates (Empirical H=1 distribution)"), alpha = 0.7)+
+  geom_density(aes(x = -best_false_filtered, fill = "best false candidates \n (Estimated H=0 distribution from spike-ins)"), alpha = 0.6) +
+  ggtitle("Different empirical distributions") +
+  xlab("-loglikelihood")  + 
+  ylab("Density") +
+  xlim(-5,-1)+
+    theme(axis.text=element_text(size=15)) +
+    scale_fill_manual(values = c(pink,blue))
+```
+
+
+
+### Test reliability of P(H=1|S) estimation
+
+In this section, I randomly selected half of the squiggles, and removed the true candidate result for each of them to simulate the situation that $H_i = 0$. The full result set was splitted into a "True set" where  $H_i = 1$ and a "False set" where  $H_i = 0$. 
+
+```{r}
+
+# df_1: score distribution for true candidates
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+
+
+df_0 <- approxfun(density(best_false))
+p_post_best_false = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_best_false_filtered = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(sec_best_candidate))
+p_post_sec_best = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+
+df_0 <- approxfun(density(sec_best_filtered))
+p_post_sec_best_filtered = apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_emp_H0 = apply(likelihood[,c(-1,-2)], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+df_0 <- approxfun(density(sec_best_filtered))
+p_post_est_H0 = apply(likelihood[,c(-1,-2)], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+rm(df_0)
+#################################################################################
+#########################    plot           ######################
+#################################################################################
+
+
+#simulation
+false_index = sample(1:dim(likelihood)[1],floor(dim(likelihood)[1]/2))
+count_0 = hist(p_post_emp_H0[false_index], breaks=12, plot=FALSE)
+count_1 = hist(p_post_best_false_filtered[-false_index], breaks=count_0$breaks, include.lowest=TRUE, plot=FALSE)$counts
+
+# distribution
+ggplot() +
+    theme(axis.text=element_text(size=15))+
+    geom_density(aes(x =c(p_post_emp_H0[false_index],p_post_best_false_filtered[-false_index]),fill = "Best False"),alpha = 0.6,fill= green, color = green) + 
+    xlab("")
+
+# prop of H = 1
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+    geom_col(aes(y = count_1/(count_1+count_0$counts),x = count_0$mids),fill = pink,alpha = 0.5) +
+    xlab("")+
+    ylab("") + 
+    ylim(0,1) + 
+  xlim(0,1)
+# prop of H =  0 
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+  geom_col(aes(y = 1 - count_1/(count_1+count_0$counts),x = count_0$mids),fill = blue,alpha = 0.5) +
+  xlab("")+
+  ylab("")+
+  ylim(0,1) +
+  xlim(0,1)
+
+
+```
+
+### Relationship between the accuracy and the P(H=1 | S)
+
+```{r}
+# df_1: score distribution for true candidates
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+correctness = apply(likelihood[,-1],1,which.min) == 1
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 1) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both minimap2 and NanoSplicer correct") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 0) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both minimap2 found but NanoSplicer missed") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+
+p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 0) * (correctness == 0) == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+#################################################################################
+#########################          density  plot           ######################
+#################################################################################
+ggplot() +
+    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
+  # configure
+  ggtitle("Both missed") +
+  xlab("")  + 
+  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
+  scale_fill_manual(values = c(blue))
+
+
+```
+
+## joint prob weighted sum
+```{r}
+thres = seq(0.0,1,0.01)
+
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+correctness = apply(likelihood[,-1],1,which.min) == 1
+
+df_0 <- approxfun(density(best_false_filtered))
+p_post_plot_0 = apply(likelihood[likelihood$minimap_correctness == 0,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+p_post_plot_1 = apply(likelihood[likelihood$minimap_correctness == 1,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                 }
+)
+
+correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
+  x = na.removed(x)
+  x = exp(-x)
+  sapply(thres, function(i){
+    x = x*(x>= i * max(x))
+    x = x/sum(x)
+    x[1]
+  })
+  })
+
+correctness0 = t(apply(correctness0, 1, function(x) x*p_post_plot_0/sum(p_post_plot_0)*length(p_post_plot_0)))
+
+correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
+  x = na.removed(x)
+  x = exp(-x)
+  sapply(thres, function(i){
+    x = x*(x>= i * max(x))
+    x = x/sum(x)
+    x[1]
+  })
+  })
+
+correctness1 = t(apply(correctness1, 1, function(x) x*p_post_plot_1/sum(p_post_plot_1)*length(p_post_plot_1)))
+
+
+prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
+ggplot() + 
+  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
+  # overall acc
+  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
+  # total # of tested squiggles
+  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
+  # minimap2 correct
+  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
+  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
+  xlab("Threshold ratio") +
+  ylab("") +
+  xlim(1,0.0) +
+  ggtitle("") +
+  scale_y_continuous(limits = c(0,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
+```
+
+
+
+## Filter H
+
+
+```{r}
+p_cutoff = seq(0,0.99,0.01)
+p_post = p_post_best_false_filtered
+likelihood_0 = likelihood
+correctness = sapply(p_cutoff,function(t){
+    apply(likelihood_0[p_post > t ,-1],1,function(x){
+      x = na.removed(x)
+      which.min(x) == 1
+    })
+}
+)
+
+minimap_acc = sapply(p_cutoff,function(t){
+   mean(likelihood[p_post > t ,]$minimap_correctness)
+    })
+
+
+accuracy = unlist(lapply(correctness,mean))
+remain = unlist(sapply(p_cutoff,function(x) mean(p_post>x)))
+ggplot() +
+  theme(axis.text=element_text(size=15))+
+  geom_line(aes(x = p_cutoff, y=accuracy,col = "NanoSplicer Accuracy"),size = 1) +
+  geom_line(aes(x = p_cutoff, y=minimap_acc,col = "Minimap2 Accuracy"),size = 1) +
+    geom_line(aes(x = p_cutoff, y=remain, col = "Prop of remaining squiggles after filtering"), linetype = "dashed",size = 1) +
+  ylim(0.7,1) + xlim(0,0.35)+
+
+  ylab("Accuraccy of choosing candidate \nwith largest P(z=k|x) as output") + 
+  xlab("cutoff of P(H=1|x)")
+```
+
+
+
+
+# use f25_t14 for squiggle with p(H=1|S) < 0.3
+```{r}
+filename = "~/PhD_proj/pipeline/Validation/score_f25_t14_spikeT3_local_merge.csv"
+ncol = 50
+  score_f25_t14 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  while(sum(is.numeric(score_f25_t14$X2)) > 0 || sum(is.na(score_f25_t14$X2))) {
+    ncol = ncol + 50
+    score_f25_t14 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  }
+  fast5_filenames_25 = as.character(score_f25_t14$X1)
+  fast5_filenames_25 = label_fast5_name(fast5_filenames_25)
+
+  # likelihood_25 (single candidate junctions removed)
+  likelihood_25 = score_f25_t14[,seq(5,ncol,3)]
+  fast5_filenames_25 = fast5_filenames_25[!is.na(likelihood_25$X5)]
+  likelihood_25 = likelihood_25[!is.na(likelihood_25$X5),]
+  
+  has_multi_candidates = apply(likelihood_25,1,function(x) sum(!is.na(x)) > 1)
+  likelihood_25 = likelihood_25[has_multi_candidates,]
+  fast5_filenames_25 = fast5_filenames_25[has_multi_candidates]
+  
+  correctness_25 = apply(likelihood_25,1,which.min) == 1
+  mean(correctness_25)
+```
+
+```{r}
+p_post = p_post_best_false_filtered
+p_cutoff_f25 = 0.2
+mean(correctness[p_post < p_cutoff_f25])
+sum(p_post < p_cutoff_f25)
+a = do.call(rbind,lapply(fast5_filenames[p_post < p_cutoff_f25], function(x) {
+   likelihood_25[which(fast5_filenames_25 == x),]
+}))
+
+mean(apply(a,1,which.min) == 1)
+
+```
+
+
+
+
+
+
+
+##### Special case investigation
+
+```{r}
+test_data = cbind(score_f15_t4$X2, score_f15_t4[,seq(6,ncol,3)])[minimap_correctness == 1,]
+  test_data = test_data[!is.na(test_data$X6),]
+  has_multi_candidates = apply(test_data[,-1],1,function(x) sum(!is.na(x)) > 1)
+  test_data = test_data[has_multi_candidates,]
+
+w0.5_filnames = test_data$`score_f15_t4$X2`[apply(test_data[,-1],1,function(x) x[1] > min(x[-1],na.rm = T) - log(0.5))]
+
+
+View(head(w0.5_filnames))
+```
+
+### Relationship of P(H=1| x) and P(z=k | H=1,x )
+
+$P(H_i=1| x_i)$ can somehow reflect the quality of each squiggle, low $P(H_i=1| x_i)$ can mean the suiqggle is too noisy, or tombo resquiggle doesn't return a correct region of interest. Here, we first seletted squiggle based of some cutoff of $P(H_i=1| x_i)$, and then make decision based on $P(z_i=k | H_i=1,x_i )$. In this section, correct decision was defined when the best candidate is the true one. The filtered false candidate distribution was selected as the null distribution when calculating $P(H_i=1| x_i)$.
+
+```{r}
+p_cutoff = seq(0,0.99,0.01)
+p_post = p_post_best_false_filtered
+correctness = sapply(p_cutoff,function(t){
+    apply(likelihood[p_post > t ,-1],1,function(x){
+      x = na.removed(x)
+      which.min(x) == 1
+    })
+}
+)
+accuracy = unlist(lapply(correctness,mean))
+
+ggplot() +
+  geom_line(aes(x = p_cutoff, y=accuracy)) +
+  ylab("Accuraccy of choosing candidate \nwith largest P(z=k|x) as output") + 
+  xlab("cutoff of P(H=1|x)")
+```
+#### Joint probability PRC
+Last plot showed that higher $P(H_i=1|x_i)$ implies higher chance of correct decision. Let's try to make decision based on the joint probabiliy $P(z_i = k , H_i = 1| x_i)$. **Note: the probabilities will not sum up to 1 for across candidates.**
+
+
+##### Spike-in data (all H = 1)
+```{r}
+library(PRROC)
+
+get_pr <- function(df_1,df_0){
+  final_prob = apply(likelihood[,-1], 1,
+                     function(x){
+                       report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                     }
+  )
+  
+  correctness = sapply(final_prob,simplify = T,function(x) which.max(x) == 1)
+  max_prob =  sapply(final_prob,simplify = T,max)
+  pr.curve(max_prob[correctness],max_prob[!correctness], curve = T)
+}
+
+
+
+
+
+pr1 = get_pr(df_1 =  approxfun(density(best_candidate)),df_0 =  approxfun(density(best_false_filtered)))
+pr2 = get_pr(df_1 =  approxfun(density(best_candidate)),df_0 =  approxfun(density(sec_best_filtered)))
+
+pi_post = apply(likelihood[,-1], 1,
+                function(x){
+                  report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                }
+)
+
+# PR for P(z=k | H=1)
+correctness = sapply(pi_post,simplify = T,function(x) which.max(x) == 1)
+max_prob =  sapply(pi_post,simplify = T,max)
+pi_post_pr = pr.curve(max_prob[correctness],max_prob[!correctness], curve = T)
+
+# Selected by p, decide by pi
+p_cutoff = seq(0,0.99,0.01)
+p_post = p_post_best_false_filtered
+correctness = sapply(p_cutoff,function(t){
+    apply(likelihood[p_post > t ,-1],1,function(x){
+      x = na.removed(x)
+      which.min(x) == 1
+    })
+}
+)
+p_cutoff_precision = unlist(lapply(correctness,mean))
+
+p_cutoff_recall = sapply(p_cutoff,simplify = T,function(t) sum(
+  apply(likelihood[p_post > t ,-1],1,function(x){
+    x = na.removed(x)
+  which.min(x) == 1
+  })
+  )/length(p_post))
+
+#################################################################################
+############################          PRcurve          #########################
+#################################################################################
+ggplot() + 
+  geom_line(aes(x = pr1$curve[,1]*0.8442892, y =  pr1$curve[,2], col = paste("Best False Candidate (filtered)\nAUC:", pr1$auc.integral))) +
+  geom_line(aes(x = pr2$curve[,1]*0.8442892, y =  pr2$curve[,2], col = paste("Empirical Candidate (filtered)\nAUC:", pr2$auc.integral))) +
+  geom_line(aes(x = pi_post_pr$curve[,1]*0.8442892, y =  pi_post_pr$curve[,2], col = paste("All P(H=1) =1\nAUC:", pi_post_pr$auc.integral))) +
+  geom_line(aes(x = p_cutoff_recall, y =  p_cutoff_precision, col = "Make a cutoff by H and make decision by z")) +
+  
+  xlab("Recall") +
+  ylab("Precision") + 
+  theme(legend.title = element_blank()) + 
+  ylim(0.8,1)
+
+```
+
+##### Simulated Data
+
+```{r}
+
+get_pr <- function(df_1,df_0){
+  final_prob_false = apply(simulated_false[,-1], 1,
+                     function(x){
+                       report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                     }
+  )
+  max_prob_false =  sapply(final_prob_false,simplify = T,max)
+
+  
+  final_prob_true = apply(simulated_true[,-1], 1,
+                     function(x){
+                       report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                     })
+                     
+  correctness = sapply(final_prob_true,simplify = T,function(x) which.max(x) == 1)
+  max_prob_true =  sapply(final_prob_true,simplify = T,max)
+  
+  pr.curve(max_prob_true[correctness],c(max_prob_true[!correctness],max_prob_false), curve = T)
+}
+
+
+
+# Selected by p, decide by pi
+n_true = dim(simulated_true)[1]
+n_correct = sum(sapply(final_prob_true,simplify = T,function(x) which.max(x) == 1))
+p_cutoff = seq(0,0.99,0.01)
+
+df_1 =  approxfun(density(best_candidate))
+df_0 =  approxfun(density(best_false_filtered))
+
+p_post_true = apply(simulated_true[,-1], 1,
+                      function(x){
+                        report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                      }
+  )
+p_post_false = apply(simulated_false[,-1], 1,
+                     function(x){
+                       report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                     }
+)
+
+
+
+p_cutoff_pre_recall = sapply(p_cutoff, simplify = T, function(x){
+  n_positive = sum(p_post_false > x) +  sum(p_post_true > x)
+  correctness = apply(simulated_true[p_post_true > x ,-1],1,function(y){
+      y = na.removed(y)
+      which.min(y) == 1
+    })
+  c(sum(correctness)/n_positive,sum(correctness)/n_true)
+})
+
+  
+
+#################################################################################
+############################          PRcurve          #########################
+#################################################################################
+
+
+
+
+pr1 = get_pr(df_1 =  approxfun(density(best_candidate)),df_0 =  approxfun(density(best_false_filtered)))
+pr2 = get_pr(df_1 =  approxfun(density(best_candidate)),df_0 =  approxfun(density(sec_best_filtered)))
+
+# PR for P(z=k | H=1)
+pi_post_false = apply(simulated_false[,-1], 1,
+                function(x){
+                  report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                }
+)
+max_prob_false =  sapply(pi_post_false,simplify = T,max)
+
+pi_post_true = apply(simulated_true[,-1], 1,
+                function(x){
+                  report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                }
+)
+max_prob_true =  sapply(pi_post_true,simplify = T,max)
+
+correctness = apply(simulated_true[,-1],1,function(x) which.min(x) == 1)
+
+pi_post_pr = pr.curve(max_prob_true[correctness],c(max_prob_true[!correctness],max_prob_false), curve = T)
+
+ggplot() + 
+  geom_line(aes(x = pr1$curve[,1]*n_correct/n_true, y =  pr1$curve[,2], col = paste("Best False Candidate (filtered)\nAUC:", pr1$auc.integral))) +
+  geom_line(aes(x = pr2$curve[,1]*n_correct/n_true, y =  pr2$curve[,2], col = paste("Empirical Candidate (filtered)\nAUC:", pr2$auc.integral))) +
+  geom_line(aes(x = pi_post_pr$curve[,1]*n_correct/n_true, y =  pi_post_pr$curve[,2], col = paste("All P(H=1) =1\nAUC:", pi_post_pr$auc.integral))) +
+   geom_line(aes(x = p_cutoff_pre_recall[2,], y =  p_cutoff_pre_recall[1,], col = "Make a cutoff by H and make decision by z")) +
+  xlab("Recall") +
+  ylab("Precision") + 
+  theme(legend.title = element_blank())
+
+```
+
+
+
+
+##### Call z = k according to P(z | H =1 ,x) and **$P(H=1,z=k|x)$**
+
+
+```{r}
+
+thres = seq(0.0,1,0.01)
+
+FDR_recall <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  final_prob_false = apply(simulated_false[,-1], 1,
+                           function(x){
+                             report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                           }
+  )
+  
+  final_prob_true = apply(simulated_true[,-1], 1,
+                          function(x){
+                            report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                          }
+  )
+
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/ (sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > x}) == 1))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/dim(simulated_true)[1]
+  })
+  
+  Perportion_of_call = sapply(thres, function(x) {
+    (sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > x}) == 1))/(sum(lapply(final_prob_true,function(y){max(y) > 0}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > 0}) == 1))
+  })
+  
+  
+  return(list(FDR = FDR, Recall = Recall,final_prob_false=final_prob_false,final_prob_true=final_prob_true,Perportion_of_call=Perportion_of_call))
+}
+
+FDR_recall_pi <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  final_prob_false = apply(simulated_false[,-1], 1,
+                           function(x){
+                             report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                           }
+  )
+  
+  final_prob_true = apply(simulated_true[,-1], 1,
+                          function(x){
+                            report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                          }
+  )
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/ (sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > x}) == 1))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/dim(simulated_true)[1]
+  })
+  
+  Perportion_of_call = sapply(thres, function(x) {
+    (sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > x}) == 1))/(sum(lapply(final_prob_true,function(y){max(y) > 0}) == 1)+sum(lapply(final_prob_false,function(y){max(y) > 0}) == 1))
+  })
+  
+  
+  return(list(FDR = FDR, Recall = Recall,final_prob_false=final_prob_false,final_prob_true=final_prob_true,Perportion_of_call=Perportion_of_call))
+}
+
+
+
+Est_final = FDR_recall(best_false)
+Est_pi =FDR_recall_pi(best_false)
+Emp_final = FDR_recall(sec_best_candidate)
+Emp_pi = Est_pi
+
+#ggplot() + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_false$FDR, col = "Null: best false",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_false$Recall, col = "Null: best false",linetype = "Recall")) + 
+#    geom_line(aes(x = thres, y = FDR_recall_best_pm2$FDR, col = "Null: best  candidate in +/- 2 site",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_pm2$Recall, col = "Null: best  candidate in +/- 2 site",linetype = "Recall")) + 
+#    geom_line(aes(x = thres, y = FDR_recall_best_shuffled$FDR, col = "Null: best shuffled candidate",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_shuffled$Recall, col = "Null: best shuffled candidate",linetype = "Recall")) +
+#    ylab("FDR/Recall")+
+#  ggtitle("FDR/Recall vs Threshold(x), P(H=1) > x will be called as H = 1")
+
+ggplot()+
+  geom_line(aes(x = Emp_final$Perportion_of_call, y = Emp_final$FDR, col = "Null:Empirical")) + 
+  geom_line(aes(x = Est_final$Perportion_of_call, y = Est_final$FDR, col = "Null: Estimated")) + 
+  geom_line(aes(x = Emp_pi$Perportion_of_call, y = Emp_pi$FDR, col = "P(z|H,x)")) + 
+  #geom_line(aes(x = Est_pi$Perportion_of_call, y = Est_pi$FDR, col = "Null: best false",linetype = "P(z|H,x)")) + 
+  ylab("FDR")+
+  xlab("Proportion of positives") + 
+  ggtitle("FDR vs Proportion of positives ")
+  
+```
+
+
+#### **FDR/Recall curve for true set only**
+
+
+```{r}
+thres = seq(0.0,1,0.01)
+
+FDR_recall <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  final_prob_false = apply(simulated_false[,-1], 1,
+                           function(x){
+                             report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                           }
+  )
+  
+  final_prob_true = apply(simulated_true[,-1], 1,
+                          function(x){
+                            report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                          }
+  )
+
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/ sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/dim(simulated_true)[1]
+  })
+  
+  Perportion_of_call = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)/sum(lapply(final_prob_true,function(y){max(y) > 0}) == 1)
+  })
+  
+  
+  return(list(FDR = FDR, Recall = Recall,final_prob_false=final_prob_false,final_prob_true=final_prob_true,Perportion_of_call=Perportion_of_call))
+}
+
+FDR_recall_pi <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  final_prob_false = apply(simulated_false[,-1], 1,
+                           function(x){
+                             report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                           }
+  )
+  
+  final_prob_true = apply(simulated_true[,-1], 1,
+                          function(x){
+                            report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                          }
+  )
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/dim(simulated_true)[1]
+  })
+  
+  Perportion_of_call = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){max(y) > x}) == 1)/sum(lapply(final_prob_true,function(y){max(y) > 0}) == 1)
+  })
+  
+  
+  return(list(FDR = FDR, Recall = Recall,final_prob_false=final_prob_false,final_prob_true=final_prob_true,Perportion_of_call=Perportion_of_call))
+}
+
+
+
+Est_final = FDR_recall(best_false)
+Est_pi =FDR_recall_pi(best_false)
+Emp_final = FDR_recall(sec_best_candidate)
+Emp_pi = Est_pi
+
+#ggplot() + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_false$FDR, col = "Null: best false",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_false$Recall, col = "Null: best false",linetype = "Recall")) + 
+#    geom_line(aes(x = thres, y = FDR_recall_best_pm2$FDR, col = "Null: best  candidate in +/- 2 site",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_pm2$Recall, col = "Null: best  candidate in +/- 2 site",linetype = "Recall")) + 
+#    geom_line(aes(x = thres, y = FDR_recall_best_shuffled$FDR, col = "Null: best shuffled candidate",linetype = "FDR")) + 
+#  geom_line(aes(x = thres, y = FDR_recall_best_shuffled$Recall, col = "Null: best shuffled candidate",linetype = "Recall")) +
+#    ylab("FDR/Recall")+
+#  ggtitle("FDR/Recall vs Threshold(x), P(H=1) > x will be called as H = 1")
+
+ggplot()+
+  geom_line(aes(x = Emp_final$Perportion_of_call, y = Emp_final$FDR, col = "Null:Empirical")) + 
+  geom_line(aes(x = Est_final$Perportion_of_call, y = Est_final$FDR, col = "Null: Estimated")) + 
+  geom_line(aes(x = Emp_pi$Perportion_of_call, y = Emp_pi$FDR, col = "P(z|H,x)")) + 
+  #geom_line(aes(x = Est_pi$Perportion_of_call, y = Est_pi$FDR, col = "Null: best false",linetype = "P(z|H,x)")) + 
+  ylab("FDR")+
+  xlab("Proportion of positives") + 
+  ggtitle("FDR vs Proportion of positives ")
+  
+```
+
+
+
+
+
+```{r}
+FDR_recall <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  final_prob_false = apply(simulated_false[,-1], 1,
+                           function(x){
+                             report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                           }
+  )
+  
+  final_prob_true = apply(likelihood[,-1], 1,
+                          function(x){
+                            report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$final_prob
+                          }
+  )
+
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/ (sum(lapply(final_prob_true,function(y){max(y) > x}) == 1))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(lapply(final_prob_true,function(y){which.max(y) == 1 && max(y) > x}) == 1)/dim(likelihood)[1]
+  })
+  return(list(FDR = FDR, Recall = Recall,final_prob_false=final_prob_false,final_prob_true=final_prob_true))
+}
+
+
+FDR_recall_pi <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  pi_post = apply(likelihood[,-1], 1,
+                       function(x){
+                         report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$pi_post
+                       }
+  )
+
+  FDR = sapply(thres, function(x) {
+  1 - sum(lapply(pi_post,function(y){which.max(y) == 1 && y[1] > x}) == 1)/ sum(lapply(pi_post,function(y){y[1] > x}) == 1)
+  })
+  
+  Recall = sapply(thres, function(x) {
+    mean(lapply(pi_post,function(y){which.max(y) == 1 && y[1] > x}) == 1)
+  })
+  return(list(FDR = FDR, Recall = Recall))
+}
+
+
+
+
+y_best_false = FDR_recall(best_false)
+y_best_false_pi =FDR_recall_pi(best_false)
+
+ggplot() + 
+  geom_line(aes(x = thres, y = y_best_false$FDR, col = "Concider P(H)",linetype = "FDR")) + 
+  geom_line(aes(x = thres, y = y_best_false$Recall, col = "Concider P(H)",linetype = "Recall")) +
+  geom_line(aes(x = thres, y = y_best_false_pi$FDR, col = "Not Concider P(H)",linetype = "FDR")) +
+  geom_line(aes(x = thres, y = y_best_false_pi$Recall, col = "Not Concider P(H)",linetype = "Recall")) +
+  ylab("FDR/Recall")+
+  ggtitle("FDR/Recall vs Threshold(x), P(H=1) > x will be called as H = 1")
+
+ggplot() + 
+  geom_line(aes(x = y_best_false$Recall, y = y_best_false$FDR, col = "Concider P(H)")) + 
+  geom_line(aes(x = y_best_false_pi$Recall, y = y_best_false_pi$FDR, col = "Not Concider P(H)")) +
+  ylab("FDR")+
+  xlab("recall") + 
+  ggtitle("FDR vs Recall")
+```
+
+
+
+#### When the true candidates are unknown
+
+Sometime the true candidates are unknown. When it is so, we build the distribution of $x_i|H_i=1$ according to the best matched candidate by assuming **most of the $H_i$ is 1**.
+
+**Density function for H1: best aligned candidates**
+```{r}
+df_1 = approxfun(density(alternative_vector,na.rm = T))
+```
+
+##### Second best candidates
+To replace the best false distribution in previous sections, we use the second best matched candidate for each squiggle.
+```{r}
+null_vector <- sec_best_candidate
+df_0 <- approxfun(density(null_vector))
+false_null_p_post_2 = unlist(apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)[1]
+                 })
+)
+ggplot() +
+  geom_density(aes(x = false_null_p_post_2,fill = "truth unkown(best candidates vs second best candidates) "),alpha = 0.5) + 
+  geom_density(aes(x = false_null_p_post,fill = "truth known(true candidates vs best false candidates) "),alpha = 0.5) + 
+  ggtitle("Distribution of P(Hi = 1 | xi)") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density")+
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggplot() +
+  geom_point(aes(x = false_null_p_post,y =false_null_p_post_2),alpha = 0.5) + 
+  geom_abline(slope = 1, intercept = 0, col = "red") +
+  ggtitle("P(Hi = 1| xi) for 11592 squiggles for different H0 and H1 distribution") +
+  xlab("Truth known\nH0: best false candidate, H1: True candidate")  + 
+  ylab("Truth unkown\nH0: second best candidate, H1: best candidate") +
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+
+##### Other null distribution
+```{r}
+null_vector <- best_pm2
+df_0 <- approxfun(density(null_vector))
+pm2_null_p_post  = unlist(apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)[1]
+                 })
+)
+
+ggplot() +
+    geom_density(aes(x = pm2_null_p_post,fill = "Null: +/-2 site candidates "),alpha = 0.5) + 
+  ggtitle("Distribution of P(Hi = 1 | xi),true candidate unknown") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density")
+
+```
+
+```{r}
+null_vector <- best_shuffled
+df_0 <- approxfun(density(null_vector))
+shuffled_null_p_post  = unlist(apply(likelihood[,-1], 1,
+                 function(x){
+                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)[1]
+                 })
+)
+ggplot() +
+  geom_density(aes(x = pm2_null_p_post,fill = "Null: shuffled candidates "),alpha = 0.5) + 
+  ggtitle("Distribution of P(Hi = 1 | xi),true candidate unknown") +
+  xlab("Probabilistic Output")  + 
+  ylab("Density") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+
+
+
+#####**FDR/Recall**
+
+
+```{r}
+
+simulated_data <- likelihood
+false_index = sample(1:dim(likelihood)[1],floor(dim(likelihood)[1]/2))
+simulated_false = simulated_data[false_index,]
+simulated_false$X5 = NA
+has_multi_candidates = apply(simulated_false[,-1],1,function(x) sum(!is.na(x)) > 1)
+simulated_false = simulated_false[has_multi_candidates,]
+
+
+simulated_true = simulated_data[-false_index,]
+#for (i in 1:dim(simulated_data)[1]){
+ # simulated_true[i,2 + which.min(simulated_true[i,c(-1,-2)])] = NA
+#}
+
+has_multi_candidates = apply(simulated_true[,-1],1,function(x) sum(!is.na(x)) > 1)
+simulated_true = simulated_true[has_multi_candidates,]
+
+thres = seq(0,1,0.01)
+FDR_recall <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  p_post_true = apply(simulated_true[,-1], 1,
+                      function(x){
+                        report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                      }
+  )
+  p_post_false = apply(simulated_false[,-1], 1,
+                       function(x){
+                         report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                       }
+  )
+
+  FDR = sapply(thres, function(x) {
+    sum(p_post_false > x) / (sum(p_post_false > x) + sum(p_post_true > x))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(p_post_true > x) / length(p_post_true)
+  })
+  return(list(FDR = FDR, Recall = Recall,p_post_false=p_post_false,p_post_true = p_post_true))
+}
+
+FDR_recall_best_false = FDR_recall(best_false)
+
+FDR_recall <- function(null_vector){
+  df_0 <- approxfun(density(null_vector))
+  p_post_true = apply(simulated_true[,-1], 1,
+                      function(x){
+                        report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                      }
+  )
+  p_post_false = apply(simulated_false[,-1], 1,
+                       function(x){
+                         report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
+                       }
+  )
+
+  FDR = sapply(thres, function(x) {
+    sum(p_post_false > x) / (sum(p_post_false > x) + sum(p_post_true > x))
+  })
+  
+  Recall = sapply(thres, function(x) {
+    sum(p_post_true > x) / length(p_post_true)
+  })
+  return(list(FDR = FDR, Recall = Recall,p_post_false=p_post_false,p_post_true = p_post_true))
+}
+
+FDR_recall_sec_bset = FDR_recall(sec_best_candidate)
+
+ggplot() + 
+  geom_line(aes(x = thres, y = FDR_recall_sec_bset$FDR, col = "truth unkown(best candidates vs second best candidates)",linetype = "FDR")) + 
+  geom_line(aes(x = thres, y = FDR_recall_sec_bset$Recall, col = "truth unkown(best candidates vs second best candidates)",linetype = "Recall")) +
+    geom_line(aes(x = thres, y = FDR_recall_best_false$FDR, col = "truth known(true candidates vs best false candidates)",linetype = "FDR")) + 
+  geom_line(aes(x = thres, y = FDR_recall_best_false$Recall, col = "truth known(true candidates vs best false candidates)",linetype = "Recall"))  +
+  ylab("FDR/Recall") +
+  xlab("threshold")  +
+  ggtitle("FDR/Recall vs Threshold(x), P(H=1) > x will be called as H = 1")
+
+
+
+ggplot() + 
+  geom_line(aes(x = FDR_recall_sec_bset$Recall, y = FDR_recall_sec_bset$FDR, col = "truth unkown(best candidates vs second best candidates)")) + 
+  geom_line(aes(x = FDR_recall_best_false$Recall, y = FDR_recall_best_false$FDR, col = "truth known(true candidates vs best false candidates)")) + 
+  ylab("FDR") +
+  xlab("Recall")  +
+  ggtitle("FDR vs Recall")
+```
+
+
+

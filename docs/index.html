@@ -568,10 +568,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree617e5b5a02a9d215aaed375d00d5e590a1db9370targetblank617e5b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/617e5b5a02a9d215aaed375d00d5e590a1db9370" target="_blank">617e5b5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree132c5342031226304fd2935327df3e7fa3636307targetblank132c534a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/132c5342031226304fd2935327df3e7fa3636307" target="_blank">132c534</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree617e5b5a02a9d215aaed375d00d5e590a1db9370targetblank617e5b5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree132c5342031226304fd2935327df3e7fa3636307targetblank132c534a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -583,16 +583,19 @@ Untracked files:
     Untracked:  analysis/cheatsheat.Rmd
     Untracked:  analysis/f20_ts6_t2_spikeT3_band0.4_stand_likelihood.Rmd
     Untracked:  analysis/paper_figure_generate.Rmd
+    Untracked:  analysis/pipeline_test_summary.Rmd
     Untracked:  analysis/probabilistic_minimap2_comparison.Rmd
     Untracked:  analysis/probabilistic_output_test.Rmd
     Untracked:  analysis/probabilistic_output_test_newsuiqggle.Rmd
     Untracked:  analysis/score_f15_t4_spikeT3_band_0.4_minimap.Rmd
-    Untracked:  docs/Confirmation_Report_Yupei.pdf
+    Untracked:  analysis/unbuilt/
 
 Unstaged changes:
+    Deleted:    10_Apr_Meeting_Summary.Rmd
+    Deleted:    analysis/TALON.Rmd
     Modified:   analysis/_site.yml
     Modified:   analysis/index.Rmd
-    Modified:   analysis/k_mer_freq.Rmd
+    Deleted:    analysis/k_mer_freq.Rmd
 
 </code></pre>
 <p>
@@ -631,6 +634,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/132c5342031226304fd2935327df3e7fa3636307/docs/index.html" target="_blank">132c534</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2020-03-25
+</td>
+<td>
+add Confirmation report
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1491,18 +1511,19 @@ Start workflowr project.
 </ul></li>
 <li><h3 id="snakemake-pipeline"><a href="snakemake_pipline.html">snakemake pipeline</a></h3>
 <ul>
-<li><h4 id="test-1"><a href="f15_t4_mad_norm.html">Test 1</a></h4>
+<li><h4 id="test-1"><a href="f15_t4_mad_norm.html">Test 1:</a></h4>
 settings:
-<ol style="list-style-type: decimal">
+<ul>
+<li>dtw cost function: -log(f(z)), f is standard normal</li>
 <li>exon junction flank: 15 bases in each side</li>
 <li>scrappie model trim: 4 bases in each side</li>
 <li>normalisation: global mad normalisation for real signal</li>
-</ol></li>
-<li><h4 id="test-2-t-distribution-with-v-1"><a href="f15_t4_t_likelihood.html">Test 2: t-distribution with v = 1</a></h4></li>
 </ul></li>
+<li><h4 id="pipeline-test-summary"><a href="pipeline_test_summary.html">Pipeline test summary</a></h4>
+<h1 id="document">Document</h1></li>
+</ul></li>
+<li><a href="Confirmation_Report_Yupei.pdf">Comfirmation report</a></li>
 </ul>
-<h1 id="document">Document</h1>
-<p><a href="Confirmation_Report_Yupei.pdf">Comfirmation report</a></p>
 </div>
 <br>
 <p>

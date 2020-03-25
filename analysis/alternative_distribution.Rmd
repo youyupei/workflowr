@@ -1,0 +1,78 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r Load File}
+library(ggplot2)
+library(reshape2)
+
+get_likelihood_matrix = function(filename){
+  ncol = 100
+  #score_f15_t4 = read.csv(file = "~/PhD_proj/pipeline/Validation/score_f15_t4_merge.csv",header = F,col.names = seq(1, ncol))
+  score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  while(sum(is.numeric(score_f15_t4$X1)) > 0 || sum(is.na(score_f15_t4$X1))) {
+    ncol = ncol + 50
+    score_f15_t4 = read.csv(file = filename,header = F,col.names = seq(1, ncol))
+  }
+  
+  
+  # fast5 filenames
+  filenames = score_f15_t4$X1
+  #junctionID = c(1)
+  #for (i in 8900:length(filenames)){
+  #  if (filenames[i] == filenames[i-1]){
+  #    junctionID[i] = junctionID[i-1] + 1
+  #  }else{
+  #    junctionID[i] = 1
+  #  }
+  #}
+  
+  # likelihood_score (single candidate junctions removed)
+  likelihood_score = cbind(filenames, score_f15_t4[,seq(5,ncol,3)])
+  likelihood_score = likelihood_score[!is.na(likelihood_score$X5),]
+  has_multi_candidates = apply(likelihood_score[,-1],1,function(x) sum(!is.na(x)) > 1)
+  likelihood_score = likelihood_score[has_multi_candidates,]
+  return(likelihood_score)
+}
+#load file
+
+pm2_file = "/home/ubuntu/PhD_proj/pipeline/Validation/test_f15_t4_local_normal_pm2_merged_score.csv"
+shuffled_file = "~/PhD_proj/pipeline/Validation/merge_f15_t4_spikeT3_local_normal_shuffle.csv"
+original_file = "~/PhD_proj/pipeline/Validation/f15_t4_spikeT3_merge.csv"
+
+shuffled_likelihood = get_likelihood_matrix(shuffled_file)
+likelihood = get_likelihood_matrix(original_file)
+pm2_likelihood = get_likelihood_matrix(pm2_file)
+
+#v = as.vector(as.matrix(likelihood[,c(-1,-2)]))
+#v = v[!is.na(v)]
+#plot(density(shuffled_likelihood$X5),xlim = c(0,20),ylim=c(0,1))
+#lines(density(likelihood$X5))
+#lines(density(likelihood$X8))
+#lines(density(v))
+
+pick_one_random <- function(x){
+  x = x[!is.na(x)]
+  if(length(x) == 1){
+    return(x)
+  } else{
+    return(sample(x,1))
+  }
+}
+
+false_candidate = apply(likelihood[,c(-1,-2)],1,function(x) min(x,na.rm = T))
+#shuffled_candidate = apply(shuffled_likelihood[,c(-1)],1,pick_one)
+shuffled_best = apply(shuffled_likelihood[,c(-1)],1,function(x) min(x,na.rm = T))
+likelihood_best = apply(likelihood[,c(-1)],1,function(x) min(x,na.rm = T))
+true_candidate = likelihood$X5
+pm2_best = apply(pm2_likelihood[,c(-1)],1,function(x) min(as.numeric(x),na.rm = T))
+
+
+ggplot() +
+  geom_density(aes(x = likelihood_best,fill = "best candidates"), alpha = 0.6)+
+  geom_density(aes(x = false_candidate, fill = "best false candidates"), alpha = 0.6) +
+  geom_density(aes(x = shuffled_best, fill = "best shuffled candidates"), alpha = 0.3) +
+  geom_density(aes(x = pm2_best, fill = "best plus/minus 2 sites candidates"), alpha = 0.3)
+          
+```
