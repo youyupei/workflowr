@@ -4,19 +4,17 @@ author: "Yupei You"
 date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 ---
 
-## To Do (ordered by the priority)
+## To Do
 
-* Check the k-mer distribution in the condidates (is there any k-mer bias to junction/squins)
-
-* Investigate some specific cases in the following situations:
+* Enable resquiggle without transcript reference (Tombo script)
+* Coding the new restriction of DTW path
+* Talk with Heejung about all probabilities go to 0/1
+* Deep Sequins data analysis
+* Match short and long read analysis
+* Write up the paper except for the real RNA anaylsis part.
   
-  1. Check signal alignment of site in which a false candidate get very good score and much better than the true one.
-  2. The site with very low accuraccy when running dtw
-  3. The site with large discrepency of the support from dtw or minimap2
-  4. **Tips:** Ignore confusing junctions for which we are not sure the exact transcript the reads come from.
-  
-* Think about penalty for shrink in DTW
 
+## To Do (relatively low priority)
 * Investigate the frequency of the **current spike** (Terry mentioned *robust statistics*).
 
 * Check drift: Statistics of current level to check whether or not the average level will vary in differet channel or different time in a same channel
@@ -30,6 +28,8 @@ date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 
 ## Done
 
+* Think about penalty for shrink in DTW
+
 cDNA data analysis:
 
   * Select Spike-in reads from cDNA dataset
@@ -42,6 +42,13 @@ cDNA data analysis:
   * able to extract squiggle from Tombo resquiggle output
   * Learn about the scappie squiggle (10/5/2019)
   * Figure out how does FLAIR work. 
+  * Check the k-mer distribution in the condidates (is there any k-mer bias to junction/squins)
+  * Investigate some specific cases in the following situations:
+  
+    1. Check signal alignment of site in which a false candidate get very good score and much better than the true one.
+    2. The site with very low accuraccy when running dtw
+    3. The site with large discrepency of the support from dtw or minimap2
+    4. **Tips:** Ignore confusing junctions for which we are not sure the exact transcript the reads come from.
   
   * Play with the spike-in reads: 
 
