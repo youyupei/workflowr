@@ -62,6 +62,10 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
       *   scrappie model trim: 4 bases in each side
       *   normalisation: global mad normalisation for real signal
   * #### [Pipeline test summary](pipeline_test_summary.html)
+  * #### Workflow overview updated on 18 Jan 2021
+      *   [Workflow diagram (Sequins analysis based on the truth)](Workflow_Diagram.pdf)
+      *   [Workflow diagram (Sequins analysis assuming truth unknown)](Workflow_Diagram2.pdf)
+      
 
 * ### [Short read Analysis](Short_Read_preprocessing.html)
 
