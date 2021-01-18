@@ -1,0 +1,61 @@
+---
+title: "Junction squiggle selection"
+output: html_notebook
+---
+
+```{r load data}
+data <- read.csv("PhD_proj/test_junction_seletion/Validation/score_f20_ts6_t2_spikeT3_local_test.csv", header = F)
+
+names(data) <- c("tombo_to_basecalls_start",
+                 "tombo_to_basecalls_end",
+                 "guppy_to_basecalls_start",
+                 "guppy_to_basecalls_end",
+                 "tombo_to_ref_start",
+                 "tombo_to_ref_end")
+```
+
+
+```{r}
+library(gridExtra)
+tombo_ref_len = data$tombo_to_ref_end - data$tombo_to_ref_start
+tombo_to_basecalls_start_shift_norm = (data$tombo_to_basecalls_start- data$tombo_to_ref_start)/tombo_ref_len
+tombo_to_basecalls_end_shift_norm = (data$tombo_to_basecalls_end- data$tombo_to_ref_end)/tombo_ref_len
+
+p_start <-ggplot() +
+        geom_histogram(aes(tombo_to_basecalls_start_shift_norm)) +
+        xlim(-0.15,0.15) +
+        labs(title = "junction squiggle start pos shift") +
+        xlab("normalised shift")
+dim
+p_end <-ggplot() +
+        geom_histogram(aes(tombo_to_basecalls_end_shift_norm)) +
+        xlim(-0.15,0.15) +
+        labs(title = "junction squiggle end pos shift") +
+        xlab("normalised shift")
+
+grid.arrange(p_start, p_end, nrow = 1)
+```
+
+
+
+
+```{r}
+library(gridExtra)
+tombo_ref_len = data$tombo_to_ref_end - data$tombo_to_ref_start
+guppy_to_basecalls_start_shift_norm = (data$guppy_to_basecalls_start- data$tombo_to_ref_start)/tombo_ref_len
+guppy_to_basecalls_end_shift_norm = (data$guppy_to_basecalls_end- data$tombo_to_ref_end)/tombo_ref_len
+
+p_start <-ggplot() +
+        geom_histogram(aes(guppy_to_basecalls_start_shift_norm)) +
+        xlim(-0.15,0.15) +
+        labs(title = "junction squiggle start pos shift") +
+        xlab("normalised shift")
+
+p_end <-ggplot() +
+        geom_histogram(aes(guppy_to_basecalls_end_shift_norm)) +
+        xlim(-0.15,0.15) +
+        labs(title = "junction squiggle end pos shift") +
+        xlab("normalised shift")
+
+grid.arrange(p_start, p_end, nrow = 1)
+```

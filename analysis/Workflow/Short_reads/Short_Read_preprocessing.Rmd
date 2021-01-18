@@ -1,0 +1,102 @@
+---
+title: "Short Read preprocessing"
+author: "Yupei You"
+date: "2020-04-24"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Data description
+
+The dataset comes from Matthew's paper: https://academic.oup.com/nar/article/45/5/e30/2605867
+
+## Pipeline overview
+
+1. Mapping with STAR
+
+## Mapping with STAR
+
+This step follows the pipeline described the tutorial at https://ycl6.gitbooks.io/rna-seq-data-analysis/mapping_with_star.html
+
+Details of the options in STAR can be found at: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+
+### Reference genome
+
+The reference genome and anotation fastq files were saved in on spartan: /data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis,
+
+The reference genome (GRCh38)  was downloaded from ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.fna.gz (on 23/4/2020)
+
+The reference annotation on the corresponding genome was from: ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/GRCh38_latest_genomic.gff.gz (23/4/2020)
+
+### Create mapping indices
+
+The mapping indices are required before we can perfrom NGS read mapping. Indices are reusable if the reference genome remains the same.
+
+#### Usage
+
+```{bash, eval = F}
+STAR --runMode genomeGenerate --genomeDir <path_to_genomedir> --genomeFastFiles <reference_fasta_file>
+```
+–runMode genomeGenerate option directs STAR to run genome indices generation job.
+–genomeDir specifies path to the directory (henceforth called “genome directory” where the genome indices are stored. This directory has to be created (with mkdir) before STAR run and needs to writing permissions.
+
+Optional:
+–runThreadN option defines the number of threads to be used for genome generation, it has to be set to the number of available cores on the server node.
+–sjdbGTFfile specifies the path to the file with annotated transcripts in the standard GTF format. STAR will extract splice junctions from this file and use them to greatly improve accuracy of the mapping. While this is optional, and STAR can be run without annotations, using annotations is highly recommended whenever they are available.
+
+
+#### Execute
+
+```{bash, eval = F}
+module load STAR
+
+echo STAR version: $(STAR --version)
+path_to_genomedir=/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis/GRCh38_latest_genomic_indice_with_genecode_annotation
+
+reference_fasta_file=/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis/GRCh38_latest_genomic.fna
+
+path_to_gtf=/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis/gencode.v33.annotation.gtf
+
+mkdir -p $path_to_genomedir
+STAR --runMode genomeGenerate --genomeDir $path_to_genomedir --genomeFastaFiles $reference_fasta_file --sjdbGTFfile $path_to_gtf --runThreadN 8 --sjdbOverhang 100
+```
+
+
+### Mapping with STAR
+
+The tag "XS" might be required for downstream analysis (e.g. regtools), so the argument `--outSAMattributes` was specified to include all the tags: `--outSAMattributes NH HI AS nM NM MD jM jI XS MC ch`.
+
+The preprossed (by Zhen Zuo) fastq file has been saved in `/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/trim_fastq` base on the description on NCBI, each sample contains 4 fastq files. Each BAM file will be generated per sample.
+
+Bash script `mapping_genecode_annotation.sh`
+```{bash, eval = F}
+module load STAR
+a="$1";
+b="$2";
+c="$3";
+d="$4";
+FILENAME=`basename ${a%%.*}`;
+
+path_to_genomedir=/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis/GRCh38_latest_genomic_indice_with_genecode_annotation
+
+
+bam_out_path=/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/splice_site_analysis/GRCh38_bam_with_genecode_annotation/
+
+mkdir -p $bam_out_path;
+STAR --genomeDir $path_to_genomedir \
+    --readFilesIn ${a},${b},${c},${d} \
+    --outSAMattributes NH HI AS nM NM MD jM jI XS MC ch \
+    --outSAMtype BAM SortedByCoordinate --outSAMunmapped Within \
+    --twopassMode Basic --quantMode TranscriptomeSAM \
+    --runThreadN 3 \ 
+    --outFileNamePrefix $bam_out_path/${FILENAME};
+```
+
+sbatch command:
+```{bash, eval = F}
+arr=(/data/cephfs/punim0614/shared/shared_data/external_public/RNASeqMixology/trim_fastq/*.fastq);
+for ((i=0; i<${#arr[@]}; i=i+4)); do
+    sbatch mapping_genecode_annotation.sh "${arr[$i]}" "${arr[$i+1]}" "${arr[$i+2]}" "${arr[$i+3]}";
+done
+```

@@ -1,0 +1,39 @@
+---
+title: "Short reads bed file analysis"
+output: html_notebook
+---
+# Load data
+
+
+```{r}
+# bed file extracted from mapping with annotation
+bed_annotated <- read.csv("/home/ubuntu/data/Short_read_bam/annotated/SRR1706767_1Aligned.sortedByCoord.out.bam.bed", header = F, sep = '\t')
+
+# bed file extracted from mapping without annotation
+bed_unannotated <- read.csv("/home/ubuntu/data/Short_read_bam/un_annotated/SRR1706767_1Aligned.sortedByCoord.out.bam.bed", header = F, sep = '\t')
+
+header <- c("chrom", "chromStart", "chromEnd", "name", "score", "strand", "thickStart", "thickEnd", "itemRgb", "blockCount", "blockSizes", "blockStarts")
+
+colnames(bed_annotated) <- header
+colnames(bed_unannotated) <- header
+```
+
+
+
+# Summary of reads supported junctions
+
+```{r}
+merged_bed <- merge(bed_unannotated, bed_annotated, by = c("chrom", "chromStart", "chromEnd"), suffixes = c('_unanno','_anno'))
+
+
+summary(bed_annotated$score)
+
+summary(bed_unannotated$score)
+
+library(ggplot2)
+
+
+ggplot(data = merged_bed) +
+  geom_histogram(aes(x = log(merged_bed$score_unanno), fill = "un_annotated"), bins = 300, alpha = 0.8) + 
+  geom_histogram(aes(x = log(merged_bed$score_anno), bins = 300,fill = "annotated"),  bins = 300, alpha = 0.6)
+```

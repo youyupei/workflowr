@@ -1,5 +1,5 @@
 ---
-title: "cDNA spike-in test"
+title: "test"
 author: "youyupei"
 date: "2019-10-27"
 output: workflowr::wflow_html
@@ -22,14 +22,14 @@ orange = "#F4C300"
 library(ggplot2)
 library(reshape2)
 library(magrittr)
-source("/home/ubuntu/PhD_proj/script_bin/helper.R")
-source("~/PhD_proj/script_bin/Probabilistic_model.R")
+source("/home/ubuntu/PhD_proj/script_bin//helper.R")
+source("~/PhD_proj/old_pipeline//Script/Probabilistic_model.R")
 
 
 
 
 #get_likelihood_matrix = function(filename){
-filename = "/home/ubuntu/PhD_proj/pipeline_1.21/Validation/score_f20_ts6_t2_spikeT3_band_0.4_stand_likelihood_more_info_2_19_minimap.csv"
+filename = "/home/ubuntu/PhD_proj/Deep_Sequins_analysis/Validation/score_f20_ts6_t2_spikeT3_local_boundary_warping_disabled_adaptive_bandwidth_0.4_thres_minimap.csv"
 
 
 
@@ -55,13 +55,15 @@ ncol = 50
   fast5_filenames = label_fast5_name(fast5_filenames)
   minimap_correctness = score_f15_t4$X1 
   # likelihood (single candidate junctions removed)
-  likelihood = cbind(minimap_correctness, score_f15_t4[,seq(6,ncol,3)])
-  fast5_filenames = fast5_filenames[!is.na(likelihood$X6)]
-  likelihood = likelihood[!is.na(likelihood$X6),]
+  likelihood =  score_f15_t4[,seq(5,ncol,3)]
+  fast5_filenames = fast5_filenames[!is.na(likelihood$X5)]
+  minimap_correctness = minimap_correctness[!is.na(likelihood$X5)]
+  likelihood = likelihood[!is.na(likelihood$X5),]
   
-  has_multi_candidates = apply(likelihood[,-1],1,function(x) sum(!is.na(x)) > 1)
+  has_multi_candidates = apply(likelihood,1,function(x) sum(!is.na(x)) > 1)
   likelihood = likelihood[has_multi_candidates,]
   fast5_filenames = fast5_filenames[has_multi_candidates]
+  minimap_correctness = minimap_correctness[has_multi_candidates]
 
 # Threshold for removing similar candidate from null distribution (e.g. 0.8 means 0.8 of the alternative one)
 NULL_PROB_THRES = 0.8
@@ -69,9 +71,9 @@ NULL_PROB_THRES = 0.8
 
 ###################minimap accuracy#######################
 print("minimap2 accuracy:")
-mean(likelihood$minimap_correctness)
+mean(minimap_correctness)
 print("Number of tested squiggles:")
-length(likelihood$minimap_correctness)
+length(minimap_correctness)
 ```
 
 
@@ -87,14 +89,13 @@ Outlier threshold: $\pm 3 \times MAD$
 
 ```{r Load File}
 # distance of best matched candidate
-min_dist = apply(likelihood[,-1],1,function(x) min(x, na.rm=T))
+min_dist = apply(likelihood,1,function(x) min(x, na.rm=T))
 # bool that the corresponding prodiction is correct or not
-correctness = apply(likelihood[,-1],1,which.min) == 1
+NanoSplicer_correctness = apply(likelihood,1,which.min) == 1
 
 print("NanoSplicer accuraccy per squiggle:")
-print(sum(correctness)/length(correctness))
+print(mean(NanoSplicer_correctness))
 ```
-
 
 
 # acc plot
@@ -103,18 +104,14 @@ print(sum(correctness)/length(correctness))
 library(reshape2)
 
 
-df = data.frame(Method = c("NanoSplicer","Minimap2"),
-                Value = c(10515,9781),
-                Share = c(9042,9042))
-                
-
-
-  
+df = data.frame(Method = c("NanoSplicer","minimap2"),
+                Value = c(sum(NanoSplicer_correctness == 1),sum(minimap_correctness == 1)),
+                Share = c(sum(NanoSplicer_correctness == 1 & minimap_correctness == 1),sum(NanoSplicer_correctness == 1 & minimap_correctness == 1)))
 
 ggplot(df) +
   geom_bar( aes(x = Method, y = Value,fill = "Squiggles/Junction within reads\n correctly identified by both method"), alpha = 0.6,stat = "identity")+
   geom_bar( aes(x = Method, y = Share, fill = "share"), color = "black",alpha = 0.0,stat = "identity")+
-  scale_y_continuous(limits=c(0,11585),sec.axis = sec_axis(~. /11585)) +
+  scale_y_continuous(limits=c(0,length(NanoSplicer_correctness)),sec.axis = sec_axis(~. /length(NanoSplicer_correctness))) +
   scale_fill_manual(values = c("white",pink)) +
   theme(text=element_text(size=15))
   
@@ -124,137 +121,6 @@ ggplot(df) +
 ```
 
 
-
-# Probabilistic output
-## Call z = k given H = 1
-In this section, we used the spike-in dataset to simulate H=1, we compared the accuracy of picking the best as well as similar P(z)
-
-```{r} 
-thres = seq(0.0,1,0.01)
-
-correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
-  x = na.removed(x)
-  true_value = x[1]
-  min_value = min(x)
-  abs(min_value-true_value) <= -log(thres)
-  })
-
-correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
-  x = na.removed(x)
-  true_value = x[1]
-  min_value = min(x)
-  abs(min_value-true_value) <= -log(thres)
-  })
-
-
-prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
-ggplot() + 
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-  # overall acc
-  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
-  # total # of tested squiggles
-  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
-  # minimap2 correct
-  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("Threshold ratio") +
-  ylab("") +
-  xlim(1,0.8) +
-  ggtitle("") +
-  scale_y_continuous(limits = c(8000,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
-
- ggplot() + 
-  geom_line(aes(x = thres, y = apply(correctness1,1,sum)),size = 1.5,color = green) +
-  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
-  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("") +
-  ylab("") +
-  xlim(1,0.8) +
-  ggtitle("") +
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-  scale_y_continuous(limits = c(8000,9800),sec.axis = sec_axis(~./prop_scale, name = ""))
-
-ggplot() + 
-  geom_line(aes(x = thres, y = apply(correctness0,1,sum)),size = 1.5,color = green) +
-  geom_hline(yintercept=dim(correctness0)[2], linetype="dashed", color = "black",size = 0.5) +
-  geom_hline(yintercept=0, linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("") +
-  ylab("") +
-  xlim(1,0.8) +
-  ggtitle("") +
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-    scale_y_continuous(limits = c(0,1800),sec.axis = sec_axis(~./dim(correctness0)[2], name = ""))
-```
-
-
-
-# weighted count
-```{r eval=FALSE, include=FALSE}
-thres = seq(0.0,1,0.01)
-
-correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
-  x = na.removed(x)
-  x = exp(-x)
-  sapply(thres, function(i){
-    x = x*(x>= i * max(x))
-    x = x/sum(x)
-    x[1]
-  })
-  })
-
-correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
-  x = na.removed(x)
-  x = exp(-x)
-  sapply(thres, function(i){
-    x = x*(x>= i * max(x))
-    x = x/sum(x)
-    x[1]
-  })
-  })
-
-
-prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
-ggplot() + 
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-  # overall acc
-  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
-  # total # of tested squiggles
-  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
-  # minimap2 correct
-  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("Threshold ratio") +
-  ylab("") +
-  xlim(1,0.0) +
-  ggtitle("") +
-  scale_y_continuous(limits = c(0,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
-
- ggplot() + 
-  geom_line(aes(x = thres, y = apply(correctness1,1,sum)),size = 1.5,color = green) +
-  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
-  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("") +
-  ylab("") +
-  xlim(1,0.8) +
-  ggtitle("") +
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-  scale_y_continuous(limits = c(8000,9800),sec.axis = sec_axis(~./prop_scale, name = ""))
-
-ggplot() + 
-  geom_line(aes(x = thres, y = apply(correctness0,1,sum)),size = 1.5,color = green) +
-  geom_hline(yintercept=dim(correctness0)[2], linetype="dashed", color = "black",size = 0.5) +
-  geom_hline(yintercept=0, linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("") +
-  ylab("") +
-  xlim(1,0.8) +
-  ggtitle("") +
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-    scale_y_continuous(limits = c(0,1800),sec.axis = sec_axis(~./dim(correctness0)[2], name = ""))
-```
 
 ## H: whether or not the candidates container the truth
 
@@ -267,43 +133,19 @@ This are the empirical distributions for S|H=1 and S|H=0, which is from the dens
   * distribution for S|H=0: density of S from the same result but the true candidates (known) have been ignored.
 ```{r, warning=FALSE}
 false_index = sample(1:dim(likelihood)[1],floor(dim(likelihood)[1]/2))
-alternative_vector = apply(likelihood[,c(-1)],1, min, na.rm = T)
+alternative_vector = apply(likelihood[-false_index,],1, min, na.rm = T)
 
 #alternative_vector = sort(alternative_vector)[0:11385]
-
-best_false =  apply(likelihood[false_index,c(-1,-2)],1,min,na.rm = T)
-
-sec_best_candidate = apply(likelihood[,c(-1)],1,function(x) sort(x)[2])
-
-filter_thres = NULL_PROB_THRES
-
-best_false_filtered = apply(likelihood[-false_index,-1],1,function(x) {
-  x = x[!is.na(x)]
-  true_value = x[1]
-  false_value = sort(x[-1])
-  false_value[abs(false_value-true_value) > -log(filter_thres)][1]
-  })
-
-best_false_filtered = na.removed(best_false_filtered)
-# remove candidates that very similar to the best one 
-sec_best_filtered = apply(likelihood[,-1],1,function(x){
-  x = x[!is.na(x)]
-  x = sort(x)
-  best = x[1]
-  others = x[-1]
-  others[abs(others - best) > -log(filter_thres)][1]
-  })
-
-sec_best_filtered = na.removed(sec_best_filtered)
+best_false =  apply(likelihood[false_index,c(-1)],1,min,na.rm = T)
 
 #################################################################################
 #########################          density  plot           ######################
 #################################################################################
 ggplot() +
   geom_density(aes(x = -alternative_vector,fill = "best candidates (Empirical H=1 distribution)"), alpha = 0.7)+
-  geom_density(aes(x = -best_false_filtered, fill = "best false candidates \n (Estimated H=0 distribution from spike-ins)"), alpha = 0.6) +
+  geom_density(aes(x = -best_false, fill = "best false candidates \n (Estimated H=0 distribution from spike-ins)"), alpha = 0.6) +
   ggtitle("Different empirical distributions") +
-  xlab("-loglikelihood")  + 
+  xlab("-loglikelihood (adjusted by # of alignment)")  + 
   ylab("Density") +
   xlim(-7,0)+
     theme(axis.text=element_text(size=15)) +
@@ -324,47 +166,18 @@ df_1 = approxfun(density(alternative_vector,na.rm = T))
 
 
 df_0 <- approxfun(density(best_false))
-p_post_best_false = apply(likelihood[,-1], 1,
+p_post_best_false_H1 = apply(likelihood, 1,
                  function(x){
                    report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
                  }
 )
 
-df_0 <- approxfun(density(best_false_filtered))
-p_post_best_false_filtered = apply(likelihood[,-1], 1,
+p_post_best_false_H0 = apply(likelihood[,-1], 1,
                  function(x){
                    report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
                  }
 )
 
-df_0 <- approxfun(density(sec_best_candidate))
-p_post_sec_best = apply(likelihood[,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-
-
-df_0 <- approxfun(density(sec_best_filtered))
-p_post_sec_best_filtered = apply(likelihood[,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-
-df_0 <- approxfun(density(best_false_filtered))
-p_post_emp_H0 = apply(likelihood[,c(-1,-2)], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-
-df_0 <- approxfun(density(sec_best_filtered))
-p_post_est_H0 = apply(likelihood[,c(-1,-2)], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
 
 rm(df_0)
 #################################################################################
@@ -375,13 +188,13 @@ rm(df_0)
 #simulation
 breaks = seq(0,1,0.05)
 false_index = sample(1:dim(likelihood)[1],floor(dim(likelihood)[1]/2))
-count_0 = hist(p_post_emp_H0[false_index], breaks=breaks, plot=FALSE)
-count_1 = hist(p_post_best_false_filtered[-false_index], breaks=breaks, include.lowest=TRUE, plot=FALSE)$counts
+count_0 = hist(p_post_best_false_H1[false_index], breaks=breaks, plot=FALSE)
+count_1 = hist(p_post_best_false_H0[-false_index], breaks=breaks, include.lowest=TRUE, plot=FALSE)$counts
 
 # distribution
 ggplot() +
     theme(axis.text=element_text(size=15))+
-    geom_density(aes(x =c(p_post_emp_H0[false_index],p_post_best_false_filtered[-false_index]),fill = "Best False"),alpha = 0.6,fill= green, color = green) + 
+    geom_density(aes(x =c(p_post_best_false_H0[false_index],p_post_best_false_H1[-false_index]),fill = "Best False"),alpha = 0.6,fill= green, color = green) + 
     xlab("")
 
 # prop of H = 1
@@ -407,191 +220,25 @@ ggplot() +
 
 ```
 
-### Relationship between the accuracy and the P(H=1 | S)
-
-```{r}
-# df_1: score distribution for true candidates
-df_1 = approxfun(density(alternative_vector,na.rm = T))
-correctness = apply(likelihood[,-1],1,which.min) == 1
-
-df_0 <- approxfun(density(best_false_filtered))
-p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 1) == 1,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-#################################################################################
-#########################          density  plot           ######################
-#################################################################################
-ggplot() +
-    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
-  # configure
-  ggtitle("Both minimap2 and NanoSplicer correct") +
-  xlab("")  + 
-  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
-  scale_fill_manual(values = c(blue)) +
-  xlim(0,1)
-
-p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 1) * (correctness == 0) == 1,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-#################################################################################
-#########################          density  plot           ######################
-#################################################################################
-ggplot() +
-    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
-  # configure
-  ggtitle("Both minimap2 found but NanoSplicer missed") +
-  xlab("")  + 
-  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
-  scale_fill_manual(values = c(blue)) +
-  xlim(0,1)
-
-
-p_post_plot = apply(likelihood[(likelihood$minimap_correctness == 0) * (correctness == 0) == 1,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-#################################################################################
-#########################          density  plot           ######################
-#################################################################################
-ggplot() +
-    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
-  # configure
-  ggtitle("Both missed") +
-  xlab("")  + 
-  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
-  scale_fill_manual(values = c(blue)) +
-  xlim(0,1)
-
-
-p_post_plot = apply(likelihood[correctness == 0,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-#################################################################################
-#########################          density  plot           ######################
-#################################################################################
- p_fail = ggplot() +
-    geom_density(aes(x = p_post_plot, fill = "1"),alpha = 0.5) + 
-  # configure
-  #ggtitle("NanoSplicer found") +
-  xlab("")  + 
-  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
-  scale_fill_manual(values = c(blue)) + 
-  xlim(0,1) 
-
-
-p_post_plot_suc = apply(likelihood[correctness == 1,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-#################################################################################
-#########################          density  plot           ######################
-#################################################################################
-ggplot() +
-    geom_density(aes(x = p_post_plot_suc, fill = "1"),alpha = 0.5) + 
-  # configure
-  #ggtitle("NanoSplicer failed") +
-  xlab("")  + 
-  ylab("") + theme(plot.title = element_text(hjust = 0.5),axis.text=element_text(size=12))  +
-  scale_fill_manual(values = c(blue)) + 
-  xlim(0,1) -> p_suc
-
-grid.arrange(p_suc, p_fail, nrow = 2)
-
-```
-
-## joint prob weighted sum
-```{r}
-thres = seq(0.0,1,0.01)
-
-df_1 = approxfun(density(alternative_vector,na.rm = T))
-correctness = apply(likelihood[,-1],1,which.min) == 1
-
-df_0 <- approxfun(density(best_false_filtered))
-p_post_plot_0 = apply(likelihood[likelihood$minimap_correctness == 0,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-
-p_post_plot_1 = apply(likelihood[likelihood$minimap_correctness == 1,-1], 1,
-                 function(x){
-                   report_probability(v = x[!is.na(x)], df_0 = df_0,df_1 = df_1)$p_post
-                 }
-)
-
-correctness0 = apply(likelihood[likelihood$minimap_correctness == 0,-1],1,function(x) {
-  x = na.removed(x)
-  x = exp(-x)
-  sapply(thres, function(i){
-    x = x*(x>= i * max(x))
-    x = x/sum(x)
-    x[1]
-  })
-  })
-
-correctness0 = t(apply(correctness0, 1, function(x) x*p_post_plot_0/sum(p_post_plot_0)*length(p_post_plot_0)))
-
-correctness1 = apply(likelihood[likelihood$minimap_correctness == 1,-1],1,function(x) {
-  x = na.removed(x)
-  x = exp(-x)
-  sapply(thres, function(i){
-    x = x*(x>= i * max(x))
-    x = x/sum(x)
-    x[1]
-  })
-  })
-
-correctness1 = t(apply(correctness1, 1, function(x) x*p_post_plot_1/sum(p_post_plot_1)*length(p_post_plot_1)))
-
-
-prop_scale = dim(correctness0)[2] + dim(correctness1)[2]
-ggplot() + 
-  theme(axis.text=element_text(size=12),plot.margin = margin(.0,2.8,.0,2.8, "cm")) +
-  # overall acc
-  geom_line(aes(x = thres, y = apply(cbind(correctness0,correctness1),1,sum)), color = pink, size = 1.5) +
-  # total # of tested squiggles
-  geom_hline(yintercept=dim(correctness0)[2] + dim(correctness1)[2], linetype="dashed", color = "black",size = 0.5) +
-  # minimap2 correct
-  geom_hline(yintercept=dim(correctness1)[2], linetype="dashed", color = blue,size = 0.9) +
-  scale_y_continuous(sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = "")) + 
-  xlab("Threshold ratio") +
-  ylab("") +
-  xlim(1,0.0) +
-  ggtitle("") +
-  scale_y_continuous(limits = c(0,11600),sec.axis = sec_axis(~./(dim(correctness0)[2] + dim(correctness1)[2]), name = ""))
-```
-
-
 
 ## Filter H
 
 
 ```{r}
 p_cutoff = seq(0,0.99,0.01)
-p_post = p_post_best_false_filtered
-likelihood_0 = likelihood
+p_post = p_post_best_false_H1
+p_post[is.na(p_post)] = 0
+
+
+
 correctness = sapply(p_cutoff,function(t){
-    apply(likelihood_0[p_post > t ,-1],1,function(x){
-      x = na.removed(x)
-      which.min(x) == 1
+  mean(NanoSplicer_correctness[p_post > t])
     })
-}
-)
 
 minimap_acc = sapply(p_cutoff,function(t){
-   mean(likelihood[p_post > t ,]$minimap_correctness)
+  mean(minimap_correctness[p_post > t])
     })
 
-
-accuracy = unlist(lapply(correctness,mean))
 remain = unlist(sapply(p_cutoff,function(x) mean(p_post>x)))
 ggplot() +
   theme(axis.text=element_text(size=15))+
@@ -609,6 +256,7 @@ ggplot() +
 ```{r}
 p_cutoff = seq(0,0.99,0.01)
 p_post = p_post_best_false_filtered[likelihood$minimap_correctness == 1]
+p_post[is.na(p_post)] = 0
 likelihood_0 = likelihood[likelihood$minimap_correctness == 1,]
 correctness = sapply(p_cutoff,function(t){
     apply(likelihood_0[p_post > t ,-1],1,function(x){

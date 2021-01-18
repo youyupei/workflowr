@@ -62,7 +62,9 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
       *   scrappie model trim: 4 bases in each side
       *   normalisation: global mad normalisation for real signal
   * #### [Pipeline test summary](pipeline_test_summary.html)
-  
+
+* ### [Short read Analysis](Short_Read_preprocessing.html)
+
 # Document
 
 * [Comfirmation report](Confirmation_Report_Yupei.pdf)
