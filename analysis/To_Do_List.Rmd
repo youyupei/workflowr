@@ -6,7 +6,6 @@ date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 
 ## To Do
 
-* Enable resquiggle without transcript reference (Tombo script)
 * Coding the new restriction of DTW path
 * Talk with Heejung about all probabilities go to 0/1
 * Deep Sequins data analysis
@@ -28,6 +27,7 @@ date: "`r format(Sys.time(), 'last updated: %d-%B-%Y  %H:%m')`"
 
 ## Done
 
+* Enable resquiggle without transcript reference (Tombo script)
 * Think about penalty for shrink in DTW
 
 cDNA data analysis:

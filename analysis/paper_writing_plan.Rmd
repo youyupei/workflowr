@@ -1,0 +1,48 @@
+---
+title: "To Do"
+author: "youyupei"
+date: "2021-01-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+## To-Do
+
+### Writing
+  
+1. Change the terminology
+  + "exon junction" need to be replaced by "set of junction wihin reads"  
+  + Clarify other related term as well
+
+2. Update the Sequins workflow2 (the real data pipeline for sequins) onto Overleaf.
+
+3. Write the workflow diagrams for read data analysis
+  
+
+### Analysis
+
+1. S_i analysis for false Positives (or check whether or not NanoSplicer can identify the FP)
+2. Update the way of calculating accuracy (map reads to isoforms to get the ground truth)
+3. Re-run the all the pipelines and record the failed cases (different error type)
+4. Adding functions that user can provides genome coordinate to run specific exon junctions
+5. Data analysis on Sequins workflow1 (the one using the truth to find junction within reads)
+6. In real data analysis, check the quantification part, find examples when NanoSplicer is good and when NanoSplicer is not good. 
+  + Note: Even if the quantification results are similar, the actual assignment of each junction within reads could be different. So it is worth to check
+
+
+## Done
+
+### Sequins analysis using real data anaysis pipeline
+
+  We've already got some results for this pipeline but the result turns out to be not very good. Diagnosis of S_i. The way we calculate the accuracy need to be updated (See to-do list).
+
+### Finish squiggle information assessment (workflow1)
+  * Rebasecall the fast5s with new version of guppy to check whether or not the poly A tails can be trimmed.
+  
+  * get the result for barcode01. (We have 4 samples but I guess that testing our method on one of the sample could be enough. Enough reads can be found in the tested sample which uses barcode01
+  
+  * Coding the pipeline but less priority, because this analysis is less important than the one assuming the truth unknown during the analysis.
+
+
+  
+  

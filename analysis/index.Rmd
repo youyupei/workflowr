@@ -68,6 +68,8 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
       
 
 * ### [Short read Analysis](Short_Read_preprocessing.html)
+* ### [TO-DO LIST before manuscript submission](paper_writing_plan.html)
+
 
 # Document
 
