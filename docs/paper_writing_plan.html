@@ -505,24 +505,24 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree28a7aa7ed142f96495b9a6ef78e6f93b50bbb695targetblank28a7aa7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/28a7aa7ed142f96495b9a6ef78e6f93b50bbb695" target="_blank">28a7aa7</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree8a8bfe5c30396550b404adef5a0a960592c24888targetblank8a8bfe5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/youyupei/workflowr/tree/8a8bfe5c30396550b404adef5a0a960592c24888" target="_blank">8a8bfe5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree28a7aa7ed142f96495b9a6ef78e6f93b50bbb695targetblank28a7aa7a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomyouyupeiworkflowrtree8a8bfe5c30396550b404adef5a0a960592c24888targetblank8a8bfe5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-Untracked files:
-    Untracked:  analysis/paper_writing_plan.Rmd
+Unstaged changes:
+    Modified:   analysis/paper_writing_plan.Rmd
 
 </code></pre>
 <p>
@@ -535,9 +535,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/youyupei/workflowr/blob/8a8bfe5c30396550b404adef5a0a960592c24888/analysis/paper_writing_plan.Rmd" target="_blank">8a8bfe5</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2021-01-28
+</td>
+<td>
+update to-do
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/youyupei/workflowr/8a8bfe5c30396550b404adef5a0a960592c24888/docs/paper_writing_plan.html" target="_blank">8a8bfe5</a>
+</td>
+<td>
+youyupei
+</td>
+<td>
+2021-01-28
+</td>
+<td>
+update to-do
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -552,7 +612,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <ul>
 <li>“exon junction” need to be replaced by “set of junction wihin reads”<br />
 </li>
-<li>Clarify other related term as well</li>
+<li>Clarify other related term as well (e.g. splice junction)</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Update the Sequins workflow2 (the real data pipeline for sequins) onto Overleaf.</p></li>
@@ -564,6 +624,12 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 <ol style="list-style-type: decimal">
 <li>S_i analysis for false Positives (or check whether or not NanoSplicer can identify the FP)</li>
 <li>Update the way of calculating accuracy (map reads to isoforms to get the ground truth)</li>
+</ol>
+<ul>
+<li>note the cases when the true candidate is not included.</li>
+<li>clearly report the number of false negatives (NanoSplicer wouldn’t run ont those junctions, but it worth to report the potential limitation)</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
 <li>Re-run the all the pipelines and record the failed cases (different error type)</li>
 <li>Adding functions that user can provides genome coordinate to run specific exon junctions</li>
 <li>Data analysis on Sequins workflow1 (the one using the truth to find junction within reads)</li>

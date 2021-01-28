@@ -12,7 +12,7 @@ editor_options:
   
 1. Change the terminology
   + "exon junction" need to be replaced by "set of junction wihin reads"  
-  + Clarify other related term as well
+  + Clarify other related term as well (e.g. splice junction)
 
 2. Update the Sequins workflow2 (the real data pipeline for sequins) onto Overleaf.
 
@@ -23,6 +23,8 @@ editor_options:
 
 1. S_i analysis for false Positives (or check whether or not NanoSplicer can identify the FP)
 2. Update the way of calculating accuracy (map reads to isoforms to get the ground truth)
+  + note the cases when the true candidate is not included. 
+  + clearly report the number of false negatives (NanoSplicer wouldn't run ont those junctions, but it worth to report the potential limitation)
 3. Re-run the all the pipelines and record the failed cases (different error type)
 4. Adding functions that user can provides genome coordinate to run specific exon junctions
 5. Data analysis on Sequins workflow1 (the one using the truth to find junction within reads)
