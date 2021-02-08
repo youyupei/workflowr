@@ -27,6 +27,15 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 
 
 <div class="column-left">
+
+# 2021 meeting document
+
+* ## [TO-DO LIST before manuscript submission](paper_writing_plan.html)
+* ## Workflow overview updated on 18 Jan 2021
+    *   [Workflow diagram (Sequins analysis based on the truth)](Workflow_Diagram.pdf)
+    *   [Workflow diagram (Sequins analysis assuming truth unknown)](Workflow_Diagram2.pdf)
+* ## [5 Feb meeting notes](Feb5_meeting_note.pdf)
+
 # Problem and discussion
 * ### [Project description](5_Mar_with_HJ_and_MK_.html) (Meeting with Heejung and Mike,5 Mar 2019)
 * ### [Initial idea about the solution](18_Mar_with_HJ_and_MK.html) (Meeting with Heejung and Mike,18 Mar 2019)
@@ -62,13 +71,11 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
       *   scrappie model trim: 4 bases in each side
       *   normalisation: global mad normalisation for real signal
   * #### [Pipeline test summary](pipeline_test_summary.html)
-  * #### Workflow overview updated on 18 Jan 2021
-      *   [Workflow diagram (Sequins analysis based on the truth)](Workflow_Diagram.pdf)
-      *   [Workflow diagram (Sequins analysis assuming truth unknown)](Workflow_Diagram2.pdf)
+
       
 
 * ### [Short read Analysis](Short_Read_preprocessing.html)
-* ### [TO-DO LIST before manuscript submission](paper_writing_plan.html)
+
 
 
 # Document
