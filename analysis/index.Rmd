@@ -35,6 +35,7 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
     *   [Workflow diagram (Sequins analysis based on the truth)](Workflow_Diagram.pdf)
     *   [Workflow diagram (Sequins analysis assuming truth unknown)](Workflow_Diagram2.pdf)
 * ## [5 Feb meeting notes](Feb5_meeting_note.pdf)
+* ## [10 Feb meeting notes](Feb10_meeting_note.pdf)
 
 # Problem and discussion
 * ### [Project description](5_Mar_with_HJ_and_MK_.html) (Meeting with Heejung and Mike,5 Mar 2019)
