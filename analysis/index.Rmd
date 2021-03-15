@@ -38,7 +38,12 @@ Welcome! This is a website for organizing the summaries of my meetings and readi
 * ## [10 Feb meeting notes](Feb10_meeting_note.pdf)
 * ## [17 Feb meeting notes](Feb_17_meeting_notes.pdf)
 * ## [All figure for paper (draft)](Paper_figure.pdf)
+* ## [H_i distribution generate update](S_i empirical_distribution.pdf)
 * ## [18 Feb meeting(paper outline)](Meeting_summary20210218.pdf)
+* ## [24 Feb meeting(paper outline)](Meeting_summary20210224.pdf)
+* ## [03 Mar meeting(main figure update)](Main_figure_update_(Mar_03_2021).pdf)
+
+
 
 # Problem and discussion
 * ### [Project description](5_Mar_with_HJ_and_MK_.html) (Meeting with Heejung and Mike,5 Mar 2019)
